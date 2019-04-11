@@ -4,8 +4,8 @@ class NeyronСnn
 public:
 	// Конструкторы ----------------------------------------------------------
 	NeyronСnn();
-	NeyronСnn(const int& i, const int& j);
-	NeyronСnn(const int** arr, const int& i, const int& j);
+	NeyronСnn(const int& i_, const int& j_);
+	NeyronСnn(const int** arr_, const int& i_, const int& j_);
 	NeyronСnn(const NeyronСnn& copy);
 
 	// Методы класса ---------------------------------------------------------
@@ -13,12 +13,21 @@ public:
 	// Pooling(); // Операция "пулинга"
 	void Svertka(); // Операция свертки над матрицей значений
 
+	// Перегрузка операторов -------------------------------------------------
+	int* operator[] (const int& i) // Оператор индексирования
+	{
+		return arr[i];
+	}
+	const int* operator[] (const int& i) const // Оператор индексирования
+	{
+		return arr[i];
+	}
 
 	// Деструктор ------------------------------------------------------------
 	~NeyronСnn();
 private:
 	// Поля класса -----------------------------------------------------------
 	int** arr; // Матрица значений
-	int i, j; // Размер матрицы
+	int n, m; // Размер матрицы
 
 };
