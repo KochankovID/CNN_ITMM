@@ -43,6 +43,28 @@ Matrix::Matrix(const Matrix & copy) : n(copy.n), m(copy.m)
 	}
 }
 
+int** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
+	if ((n < 0) || (m < 0)) {
+		throw Matrix::MatrixExeption("Неверная позиция верхнего левого элемента подматрицы!");
+	}
+	if ((poz_n_ + n_ > n) || (poz_m_ + m_ > m)) {
+		throw Matrix::MatrixExeption("Подматрица выходит за границы матрицы!");
+	}
+
+	int** rez;
+	rez = new int*[n_];
+	for (int i = 0; i < n_; i++) {
+		rez[i] = new int[m_];
+	}
+
+	for (int i = 0; i < n_; i++) {
+		for (int j = 0; j < m_; j++) {
+			rez[i][j] = arr[poz_n_ + i][poz_m_ + j];
+		}
+	}
+	return rez;
+}
+
 Matrix & Matrix::operator=(const Matrix & copy)
 {
 	if (this == &copy) {

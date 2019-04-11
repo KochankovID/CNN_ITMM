@@ -11,18 +11,26 @@ public:
 	Matrix(const Matrix& copy); // Конструктор копирования 
 
 	// Методы класса --------------------------------
-	int getN() const // Получение количества строк
+	// Получение количества строк
+	int getN() const
 	{
 		return n;
 	}
-	int getM() const // Получение колисчества столбцов
+
+	// Получение колисчества столбцов
+	int getM() const
 	{
 		return m;
 	}
-	const int** asArray() const // Получение матрицы в виде массива
+
+	// Получение матрицы в виде массива
+	const int** asArray() const
 	{
 		return const_cast<const int**>(arr);
 	}
+
+	// Получение подматрицы
+	int** getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_);
 
 	// Перегрузки операторов ------------------------
 	Matrix& operator= (const Matrix& copy); // Оператор присваивания
@@ -40,12 +48,14 @@ public:
 	// Деструктор -----------------------------------
 	~Matrix();
 
-	// Структура исключений ----------------------------
-	struct MatrixExeption : std::runtime_error
+	// Класс исключений ----------------------------
+	class MatrixExeption : std::runtime_error
 	{
+	public:
 		MatrixExeption(std::string s) : std::runtime_error(s) {}
+		~MatrixExeption() {}
 	};
-private:
+protected:
 
 	// Поля класса ----------------------------------
 	int n, // Количество строк в матрице
