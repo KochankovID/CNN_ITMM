@@ -49,7 +49,7 @@ public:
 	~Matrix();
 
 	// Класс исключений ----------------------------
-	class MatrixExeption : std::runtime_error
+	class MatrixExeption : public std::runtime_error
 	{
 	public:
 		MatrixExeption(std::string s) : std::runtime_error(s) {}

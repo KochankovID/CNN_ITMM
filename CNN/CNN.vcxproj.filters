@@ -13,25 +13,25 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Tests">
-      <UniqueIdentifier>{b75f8f2f-662e-4c1c-91ab-ca08901c6d08}</UniqueIdentifier>
+    <Filter Include="Исходные файлы\Сама сеть">
+      <UniqueIdentifier>{0625036c-b0c1-4c30-a743-856f81128afb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Фильтр">
+      <UniqueIdentifier>{0077b135-e814-48b8-b710-06f5460d765f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Матрица">
+      <UniqueIdentifier>{1021ccaf-8a27-4a8f-b676-cba043aed8c0}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Test.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
     <ClCompile Include="NeyronCnn.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Сама сеть</Filter>
     </ClCompile>
     <ClCompile Include="Filter.cpp">
-      <Filter>Исходные файлы</Filter>
+      <Filter>Исходные файлы\Фильтр</Filter>
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
-      <Filter>Исходные файлы</Filter>
-    </ClCompile>
-    <ClCompile Include="TestMatrix.cpp">
-      <Filter>Tests</Filter>
+      <Filter>Исходные файлы\Матрица</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -44,13 +44,5 @@
     <ClInclude Include="Matrix.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="TestMatrix.h">
-      <Filter>Tests</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="Text.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
   </ItemGroup>
 </Project>

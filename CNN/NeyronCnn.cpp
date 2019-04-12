@@ -29,7 +29,7 @@ void NeyronÑnn::Padding()
 	}
 	for (int i = 1; i < n-1; i++) {
 		for (int j = 1; j < m-1; j++) {
-			copy[i][j] = arr[i][j];
+			copy[i][j] = arr[i-1][j-1];
 		}
 	}
 	for (int i = 0; i < n - 2; i++) {
@@ -41,7 +41,6 @@ void NeyronÑnn::Padding()
 
 void NeyronÑnn::Svertka(Filter& F)
 {
-	Padding();
 	int** rez;
 	int n_out = (n - F.getN())/step+1;
 	int m_out = (m - F.getM()) / step + 1;
@@ -86,4 +85,18 @@ NeyronÑnn & NeyronÑnn::operator=(const NeyronÑnn & copy)
 
 NeyronÑnn::~NeyronÑnn()
 {
+}
+
+std::ostream & operator<<(std::ostream & out, const NeyronÑnn & mat)
+{
+	out << (Matrix&)mat;
+	out << mat.step;
+	return out;
+}
+
+std::istream & operator>>(std::istream & out, NeyronÑnn & mat)
+{
+	out >> ((Matrix&)mat);
+	out >> mat.step;
+	return out;
 }

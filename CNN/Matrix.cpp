@@ -44,10 +44,10 @@ Matrix::Matrix(const Matrix & copy) : n(copy.n), m(copy.m)
 }
 
 int** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
-	if ((n < 0) || (m < 0)) {
+	if ((poz_n_ < 0) || (poz_m_ < 0)) {
 		throw Matrix::MatrixExeption("Неверная позиция верхнего левого элемента подматрицы!");
 	}
-	if ((poz_n_ + n_ > n) || (poz_m_ + m_ > m)) {
+	if (((poz_n_ + n_) > n) || ((poz_m_ + m_) > m)) {
 		throw Matrix::MatrixExeption("Подматрица выходит за границы матрицы!");
 	}
 

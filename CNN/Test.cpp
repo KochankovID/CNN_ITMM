@@ -3,12 +3,17 @@
 #include <string>
 #include "Matrix.h"
 #include "TestMatrix.h"
+#include "TestNeyronCnn.h"
+#include <Suite.h>
 
 using namespace std;
 int main()
 {
-	TestMatrix t;
+	TestSuite::Suite t("CNN TEST");
+	t.addTest(new TestMatrix());
+	t.addTest(new TestNeyronCnn());
 	t.run();
 	t.report();
+	t.free();
 	system("pause");
 }

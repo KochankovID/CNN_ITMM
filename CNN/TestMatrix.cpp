@@ -40,6 +40,18 @@ void TestMatrix::testMetods()
 	}
 	Matrix b(a, 2, 4);
 	test_(b.asArray()[1][3] == 3);
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			B[i][j] = i;
+		}
+	}
+	Matrix t (B.getPodmatrix(0, 0, 2, 2), 2,2);
+
+	test_(((t[0][0] == 0) || (t[0][1] == 0) || (t[1][0] == 1) || (t[1][1] == 1)));
+
+	Matrix y (B.getPodmatrix(1, 1, 2, 2), 2,2);
+
+	test_(((y[0][0] == 1) || (y[0][1] == 1) || (y[1][0] == 2) || (y[1][1] == 2)));
 }
 
 void TestMatrix::testOperators()
@@ -69,11 +81,11 @@ void TestMatrix::testOperators()
 	test_(A[0][0] == 48);
 
 	ofstream file;
-	file.open("Text.txt");
+	file.open("MatrixText.txt");
 	file << A;
 	file.close();
 	ifstream file1;
-	file1.open("Text.txt");
+	file1.open("MatrixText.txt");
 	file1 >> a;
 	file1.close();
 	test_(a[0][0] == 48);
@@ -104,6 +116,22 @@ void TestMatrix::testExeptions()
 	try {
 		B * t;
 		fail_("Не вызванно исключение оператора *");
+	}
+	catch (std::runtime_error& e) {
+		succeed_();
+	}
+
+	try {
+		B.getPodmatrix(-1,-2, 1, 1);
+		fail_("Не вызванно исключение метода получение подматрицы *");
+	}
+	catch (std::runtime_error& e) {
+		succeed_();
+	}
+
+	try {
+		B.getPodmatrix(1, 2, 10, 10);
+		fail_("Не вызванно исключение метода получение подматрицы *");
 	}
 	catch (std::runtime_error& e) {
 		succeed_();

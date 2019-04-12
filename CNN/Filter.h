@@ -1,12 +1,13 @@
 #pragma once
-class Filter
+#include "Matrix.h"
+class Filter : public Matrix
 {
 public:
 	// Конструкторы ----------------------------------------------------------
-	Filter();
-	Filter(const int& i_, const int& j_);
-	Filter(const int** arr_, const int& i_, const int& j_);
-	Filter(const Filter& copy);
+	Filter(); // По умолчанию
+	Filter(const int& i_, const int& j_); // Инициализатор (нулевая матрица)
+	Filter(int** arr_, const int& i_, const int& j_); // Инициализатор
+	Filter(const Filter& copy); // Копирования 
 
 	// Деструктор ------------------------------------------------------------
 	~Filter();
