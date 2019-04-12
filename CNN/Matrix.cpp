@@ -7,7 +7,7 @@ Matrix::Matrix() : n(0), m(0)
 	arr = nullptr;
 }
 
-Matrix::Matrix(int** arr_, const int& i, const int& j) : n(i), m(j)
+Matrix::Matrix(double** arr_, const int& i, const int& j) : n(i), m(j)
 {
 	if ((n < 0) || (m < 0)) {
 		throw Matrix::MatrixExeption("Неверный размер матрицы!");
@@ -43,7 +43,7 @@ Matrix::Matrix(const Matrix & copy) : n(copy.n), m(copy.m)
 	}
 }
 
-int** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
+double** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
 	if ((poz_n_ < 0) || (poz_m_ < 0)) {
 		throw Matrix::MatrixExeption("Неверная позиция верхнего левого элемента подматрицы!");
 	}
@@ -51,10 +51,10 @@ int** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, 
 		throw Matrix::MatrixExeption("Подматрица выходит за границы матрицы!");
 	}
 
-	int** rez;
-	rez = new int*[n_];
+	double** rez;
+	rez = new double*[n_];
 	for (int i = 0; i < n_; i++) {
-		rez[i] = new int[m_];
+		rez[i] = new double[m_];
 	}
 
 	for (int i = 0; i < n_; i++) {
@@ -64,6 +64,34 @@ int** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, 
 	}
 	return rez;
 }
+
+double Matrix::Max(double** arr_, const int& n_, const int& m_) {
+	double max = arr_[0][0];
+	for (int i = 0; i < n_; i++) {
+		for (int j = 0; j < m_; j++) {
+			if (arr_[i][j] > max) {
+				max = arr_[i][j];
+			}
+		}
+	}
+	return max;
+}
+
+double** Matrix::getCopy()
+{
+	double** copy;
+	copy = new double*[n];
+	for (int i = 0; i < n; i++) {
+		copy[i] = new double[m];
+	}
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			copy[i][j] = arr[i][j];
+		}
+	}
+	return copy;
+}
+
 
 Matrix & Matrix::operator=(const Matrix & copy)
 {
@@ -133,13 +161,13 @@ Matrix Matrix::operator*(const int k) const
 	return tmp;
 }
 
-int* Matrix::operator[](int index)
+double* Matrix::operator[](int index)
 {
 	isInRange(index);
 	return arr[index];
 }
 
-const int* Matrix::operator[](int index) const
+const double* Matrix::operator[](int index) const
 {
 	isInRange(index);
 	return arr[index];
@@ -156,8 +184,8 @@ bool Matrix::operator==(const Matrix & mat) const
 				return false;
 			}
 		}
-		return true;
 	}
+	return true;
 }
 
 Matrix::~Matrix()
@@ -170,9 +198,9 @@ Matrix::~Matrix()
 
 void Matrix::initMat()
 {
-	arr = new int*[n];
+	arr = new double*[n];
 	for (int i = 0; i < n; i++) {
-		arr[i] = new int[m];
+		arr[i] = new double[m];
 	}
 }
 

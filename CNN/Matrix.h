@@ -6,7 +6,7 @@ class Matrix
 public:
 	// Конструкторы ---------------------------------
 	Matrix(); // Конструктор по умолчанию -----------
-	Matrix(int** arr, const int& i, const int& j); // Конструктор инициализатор
+	Matrix(double** arr_, const int& i, const int& j); // Конструктор инициализатор
 	Matrix(const int& i, const int& j); // Конструктор инициализатор (создает матрицу заданного размера заполненную 0)
 	Matrix(const Matrix& copy); // Конструктор копирования 
 
@@ -23,14 +23,20 @@ public:
 		return m;
 	}
 
+	// Поиск максимума в матрице
+	static double Max(double** arr_, const int& n_, const int& m_);
+
 	// Получение матрицы в виде массива
-	const int** asArray() const
+	const double** asArray() const
 	{
-		return const_cast<const int**>(arr);
+		return const_cast<const double**>(arr);
 	}
 
+	// Получение копии матрицы в виде массива
+	double** getCopy();
+
 	// Получение подматрицы
-	int** getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_);
+	double** getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_);
 
 	// Перегрузки операторов ------------------------
 	Matrix& operator= (const Matrix& copy); // Оператор присваивания
@@ -40,8 +46,8 @@ public:
 	friend Matrix operator* (const int k, const Matrix& mat); // Оператор произведения на число
 	friend std::ostream& operator<<(std::ostream& out, const Matrix& mat); // Оператор вывод матрицы в поток
 	friend std::istream& operator>>(std::istream& out, Matrix& mat); // Оператор чтение матрицы из потока
-	int* operator[] (int index); // Оператор индексации
-	const int* operator[] (int index) const; // Оператор индексации константы
+	double* operator[] (int index); // Оператор индексации
+	const double* operator[] (int index) const; // Оператор индексации константы
 	bool operator==(const Matrix& mat) const; // Оператор сравнения матриц
 
 
@@ -60,7 +66,7 @@ protected:
 	// Поля класса ----------------------------------
 	int n, // Количество строк в матрице
 		m; // Количество столбцов с матрице
-	int** arr; // Матрица
+	double** arr; // Матрица
 
 	// Скрытые матоды класса ------------------------
 	void initMat(); // Выделение памяти для матрицы

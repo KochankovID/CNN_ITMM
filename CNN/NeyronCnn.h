@@ -9,14 +9,15 @@ public:
 	// Конструкторы ----------------------------------------------------------
 	NeyronСnn();
 	NeyronСnn(const int& i_, const int& j_, const int& step_ = 1);
-	NeyronСnn(int** arr_, const int& i_, const int& j_, const int& step_ = 1);
+	NeyronСnn(double** arr_, const int& i_, const int& j_, const int& step_ = 1);
 	NeyronСnn(const NeyronСnn& copy);
 
 	// Методы класса ---------------------------------------------------------
 	 // Добавление "полей" к матрице
 	void Padding();
 
-	// Pooling(); // Операция "пулинга"
+	// Операция "Макс пулинга"
+	void Pooling(const int& n_, const int& m_);
 
 	 // Операция свертки над матрицей значений
 	void Svertka(Filter& F);

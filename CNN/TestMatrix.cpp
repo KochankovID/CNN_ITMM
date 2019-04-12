@@ -6,9 +6,9 @@ using namespace std;
 
 void TestMatrix::testConstruktors()
 {
-	int** a = new int*[2];
-	a[0] = new int[4];
-	a[1] = new int[4];
+	double** a = new double*[2];
+	a[0] = new double[4];
+	a[1] = new double[4];
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < 4; j++) {
 			a[i][j] = 3;
@@ -30,14 +30,15 @@ void TestMatrix::testMetods()
 {
 	test_(A.getN() == 3);
 	test_(A.getM() == 3);
-	int** a = new int*[2];
-	a[0] = new int[4];
-	a[1] = new int[4];
+	double** a = new double*[2];
+	a[0] = new double[4];
+	a[1] = new double[4];
 	for (int i = 0; i < 2; i++) {
 		for (int j = 0; j < 4; j++) {
 			a[i][j] = 3;
 		}
 	}
+
 	Matrix b(a, 2, 4);
 	test_(b.asArray()[1][3] == 3);
 	for (int i = 0; i < 3; i++) {
@@ -52,6 +53,15 @@ void TestMatrix::testMetods()
 	Matrix y (B.getPodmatrix(1, 1, 2, 2), 2,2);
 
 	test_(((y[0][0] == 1) || (y[0][1] == 1) || (y[1][0] == 2) || (y[1][1] == 2)));
+	double** ff = y.getCopy();
+	test_(ff[0][0] == 1);
+	for (int i = 0; i < 2; i++) {
+		delete[] ff[i];
+	}
+	delete[] ff;
+	a[0][3] = 10;
+	test_(Matrix::Max(a, 2, 4)  == 10);
+	
 }
 
 void TestMatrix::testOperators()

@@ -10,10 +10,12 @@ public:
 		testMetods();
 		testOperators();
 		testExeptions();
+		Visualisator();
 	}
 	void testMetods();
 	void testOperators();
 	void testExeptions();
+	void Visualisator();
 
 	~TestNeyronCnn();
 private:
