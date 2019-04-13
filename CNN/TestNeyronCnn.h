@@ -5,15 +5,13 @@
 class TestNeyronCnn : public TestSuite::Test
 {
 public:
-	TestNeyronCnn() : A(3, 3), B(6, 6) {}
+	TestNeyronCnn() : A() {}
 	void run() {
 		testMetods();
-		testOperators();
 		testExeptions();
 		Visualisator();
 	}
 	void testMetods();
-	void testOperators();
 	void testExeptions();
 	void Visualisator();
 
