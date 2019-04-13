@@ -3,24 +3,23 @@
 #include <string>
 #include "Filter.h"
 
-class NeyronСnn : public Matrix
+class NeyronСnn
 {
 public:
 	// Конструкторы ----------------------------------------------------------
 	NeyronСnn();
-	NeyronСnn(const int& i_, const int& j_, const int& step_ = 1);
-	NeyronСnn(double** arr_, const int& i_, const int& j_, const int& step_ = 1);
-	NeyronСnn(const NeyronСnn& copy);
+	explicit NeyronСnn(const int& step_ );
+	NeyronСnn(const NeyronСnn& copy) = delete; // Запрет копирования
 
 	// Методы класса ---------------------------------------------------------
 	 // Добавление "полей" к матрице
-	void Padding();
+	void Padding(Matrix& a);
 
 	// Операция "Макс пулинга"
-	void Pooling(const int& n_, const int& m_);
+	void Pooling(Matrix& a, const int& n_, const int& m_);
 
 	 // Операция свертки над матрицей значений
-	void Svertka(Filter& F);
+	void Svertka(const Filter& F, Matrix& a);
 
 	// Получение шага свертки
 	int GetStep() const { return step; }
@@ -28,16 +27,16 @@ public:
 	// Установка шага свертки
 	void SetStep(const int& step_)
 	{
-		if ((step_ < 0) || (step_ > n) || (step_ > m)) {
+		if (step_ < 0) {
 			throw NeyronСnnExeption("Задан невозможный шаг свертки!");
 		}
 		step = step_;
 	}
 
 	// Перегрузка операторов -------------------------------------------------
-	NeyronСnn& operator= (const NeyronСnn& copy); // Перегрузка оператора присваивания
-	friend std::ostream& operator<<(std::ostream& out, const NeyronСnn& mat); // Оператор вывод матрицы в поток
-	friend std::istream& operator>>(std::istream& out, NeyronСnn& mat); // Оператор чтение матрицы из потока
+	NeyronСnn& operator= (const NeyronСnn& copy) = delete; // Запрет копирования
+	friend std::ostream& operator<<(std::ostream& out, const NeyronСnn& mat) = delete; // Запрет вывода в поток
+	friend std::istream& operator>>(std::istream& out, NeyronСnn& mat) = delete; // Запрет считывания из потока
 
 	// Деструктор ------------------------------------------------------------
 	~NeyronСnn();

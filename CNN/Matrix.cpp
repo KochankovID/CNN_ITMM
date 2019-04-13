@@ -43,7 +43,7 @@ Matrix::Matrix(const Matrix & copy) : n(copy.n), m(copy.m)
 	}
 }
 
-double** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
+Matrix Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
 	if ((poz_n_ < 0) || (poz_m_ < 0)) {
 		throw Matrix::MatrixExeption("Неверная позиция верхнего левого элемента подматрицы!");
 	}
@@ -51,11 +51,7 @@ double** Matrix::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n
 		throw Matrix::MatrixExeption("Подматрица выходит за границы матрицы!");
 	}
 
-	double** rez;
-	rez = new double*[n_];
-	for (int i = 0; i < n_; i++) {
-		rez[i] = new double[m_];
-	}
+	Matrix rez(n_, m_);
 
 	for (int i = 0; i < n_; i++) {
 		for (int j = 0; j < m_; j++) {
@@ -76,6 +72,19 @@ double Matrix::Max(double** arr_, const int& n_, const int& m_) {
 	}
 	return max;
 }
+
+double Matrix::Max(const Matrix& a) {
+	double max = a[0][0];
+	for (int i = 0; i < a.getN(); i++) {
+		for (int j = 0; j < a.getM(); j++) {
+			if (a[i][j] > max) {
+				max = a[i][j];
+			}
+		}
+	}
+	return max;
+}
+
 
 double** Matrix::getCopy()
 {

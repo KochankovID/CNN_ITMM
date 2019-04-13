@@ -2,143 +2,75 @@
 
 
 
-NeyronÑnn::NeyronÑnn() :  Matrix(), step(1)
+NeyronÑnn::NeyronÑnn() :  step(1)
 {
 }
 
-NeyronÑnn::NeyronÑnn(const int & i_, const int & j_, const int& step_) : Matrix(i_,j_), step(step_)
+NeyronÑnn::NeyronÑnn(const int& step_) : step(step_)
 {
 }
 
-NeyronÑnn::NeyronÑnn(double ** arr_, const int & i_, const int & j_, const int& step_) : Matrix(arr_, i_, j_), step(step_)
+void NeyronÑnn::Padding(Matrix& a)
 {
-}
+	Matrix copy(a.getN() + 2, a.getM() + 2);
 
-NeyronÑnn::NeyronÑnn(const NeyronÑnn & copy) : Matrix(copy), step(1)
-{
-}
-
-void NeyronÑnn::Padding()
-{
-	n += 2;
-	m += 2;
-	double** copy;
-	copy = new double*[n];
-	for (int i = 0; i < n; i++) {
-		copy[i] = new double[m];
-	}
-	for (int i = 0; i < n; i++) {
-		for (int j = 0; j < m; j++) {
-			if ((i == 0)||(j == 0)||(j == (m-1))||(i == (n-1))) {
+	for (int i = 0; i < copy.getN(); i++) {
+		for (int j = 0; j < copy.getM(); j++) {
+			if ((i == 0)||(j == 0)||(j == (copy.getM() -1))||(i == (copy.getN() -1))) {
 				copy[i][j] = 0;
 			}
 			else {
-				copy[i][j] = arr[i - 1][j - 1];
+				copy[i][j] = a[i - 1][j - 1];
 			}
 		}
 	}
 
-	for (int i = 0; i < n - 2; i++) {
-		delete[] arr[i];
-	}
-	delete[] arr;
-	arr = copy;
+	a = copy;
 }
 
-void NeyronÑnn::Pooling(const int& n_, const int& m_)
+void NeyronÑnn::Pooling(Matrix& a,const int& n_, const int& m_)
 {
-	if ((n_ < 0) || (m_ < 0)||(n_ > n)||(m_ > m)) {
+	if ((n_ < 0) || (m_ < 0)||(n_ > a.getN())||(m_ > a.getM())) {
 		throw NeyronÑnn::NeyronÑnnExeption("Íåâåğíûé ğàçìåğ ÿäğà!");
 	}
 
-	double** rez;
-	int n_out = n / n_;
-	int m_out = m / m_;
+	Matrix copy(a.getN() / n_, a.getM() / m_);
 
-	rez = new double*[n_out];
-	for (int i = 0; i < n_out; i++) {
-		rez[i] = new double[m_out];
-	}
-
-	double **fokus;
-	for (int i = 0; i < n_out; i++) {
-		for (int j = 0; j < m_out; j++) {
-			fokus = getPodmatrix(i*n_, j*m_, n_, m_);
-			rez[i][j] = Matrix::Max(fokus, n_, m_);
-			for (int i = 0; i < n_; i++) {
-				delete[] fokus[i];
-			}
-			delete[] fokus;
+	for (int i = 0; i < copy.getN(); i++) {
+		for (int j = 0; j < copy.getM(); j++) {
+			copy[i][j] = Matrix::Max(a.getPodmatrix(i*n_, j*m_, n_, m_));
 		}
 	}
-	for (int i = 0; i < n; i++) {
-		delete[] arr[i];
-	}
-	delete[] arr;
-	arr = rez;
-	n = n_out;
-	m = m_out;
+	a = copy;
 }
 
-void NeyronÑnn::Svertka(Filter& F)
+void NeyronÑnn::Svertka(const Filter& F, Matrix& a)
 {
-	double** rez;
-	int n_out = (n - F.getN())/step+1;
-	int m_out = (m - F.getM()) / step + 1;
-	rez = new double*[n];
 
-	for (int i = 0; i < n_out; i++) {
-		rez[i] = new double[m_out];
+	if ((step > a.getN()) || (step > a.getM())) {
+		throw NeyronÑnnExeption("Çàäàí íåâîçìîæíûé øàã ñâåğòêè!");
 	}
-	
-	double sum;
-	double **fokus;
 
-	for (int i = 0; i < n_out; i++) {
-		for (int j = 0; j < m_out; j++) {
+	Matrix rez((a.getN() - F.getN()) / step + 1, (a.getM() - F.getM()) / step + 1);
+
+	double sum;
+	Matrix fokus;
+	for (int i = 0; i < rez.getN(); i++) {
+		for (int j = 0; j < rez.getM(); j++) {
 			sum = 0;
-			fokus = getPodmatrix(i*step, j*step, F.getN(), F.getM());
+			fokus = a.getPodmatrix(i*step, j*step, F.getN(), F.getM());
 			for (int ii = 0; ii < F.getN(); ii++) {
 				for (int jj = 0; jj < F.getM(); jj++) {
 					sum += fokus[ii][jj] * F[ii][jj];
 				}
 			}
 			rez[i][j] = sum;
-			delete fokus;
 		}
 	}
-	for (int i = 0; i < n; i++) {
-		delete[] arr[i];
-	}
-	delete[] arr;
-	n = n_out;
-	m = m_out;
-	arr = rez;
+	a = rez;
 }
 
-NeyronÑnn & NeyronÑnn::operator=(const NeyronÑnn & copy)
-{
-	if (&copy == this) {
-		return *this;
-	}
-	Matrix::operator=(copy);
-	return *this;
-}
 
 NeyronÑnn::~NeyronÑnn()
 {
-}
-
-std::ostream & operator<<(std::ostream & out, const NeyronÑnn & mat)
-{
-	out << (Matrix&)mat;
-	out << mat.step;
-	return out;
-}
-
-std::istream & operator>>(std::istream & out, NeyronÑnn & mat)
-{
-	out >> ((Matrix&)mat);
-	out >> mat.step;
-	return out;
 }

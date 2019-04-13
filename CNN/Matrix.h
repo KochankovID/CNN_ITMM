@@ -25,6 +25,7 @@ public:
 
 	// Поиск максимума в матрице
 	static double Max(double** arr_, const int& n_, const int& m_);
+	static double Max(const Matrix& m);
 
 	// Получение матрицы в виде массива
 	const double** asArray() const
@@ -36,7 +37,7 @@ public:
 	double** getCopy();
 
 	// Получение подматрицы
-	double** getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_);
+	Matrix getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_);
 
 	// Перегрузки операторов ------------------------
 	Matrix& operator= (const Matrix& copy); // Оператор присваивания

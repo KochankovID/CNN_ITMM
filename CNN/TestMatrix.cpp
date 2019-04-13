@@ -46,11 +46,11 @@ void TestMatrix::testMetods()
 			B[i][j] = i;
 		}
 	}
-	Matrix t (B.getPodmatrix(0, 0, 2, 2), 2,2);
+	Matrix t = B.getPodmatrix(0, 0, 2, 2);
 
 	test_(((t[0][0] == 0) || (t[0][1] == 0) || (t[1][0] == 1) || (t[1][1] == 1)));
 
-	Matrix y (B.getPodmatrix(1, 1, 2, 2), 2,2);
+	Matrix y = B.getPodmatrix(1, 1, 2, 2);
 
 	test_(((y[0][0] == 1) || (y[0][1] == 1) || (y[1][0] == 2) || (y[1][1] == 2)));
 	double** ff = y.getCopy();
@@ -60,7 +60,9 @@ void TestMatrix::testMetods()
 	}
 	delete[] ff;
 	a[0][3] = 10;
+	Matrix bb(a, 2, 4);
 	test_(Matrix::Max(a, 2, 4)  == 10);
+	test_(Matrix::Max(bb) == 10);
 	
 }
 
