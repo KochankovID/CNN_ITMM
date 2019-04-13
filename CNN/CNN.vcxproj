@@ -127,12 +127,14 @@
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="NeyronCnn.h" />
     <ClInclude Include="NeyronPerceptron.h" />
+    <ClInclude Include="Weights.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="Filter.cpp" />
     <ClCompile Include="Matrix.cpp" />
     <ClCompile Include="NeyronCnn.cpp" />
     <ClCompile Include="NeyronPerceptron.cpp" />
+    <ClCompile Include="Weights.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

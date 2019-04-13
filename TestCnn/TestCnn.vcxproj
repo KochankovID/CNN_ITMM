@@ -23,6 +23,7 @@
     <ProjectGuid>{F581B200-0181-486D-A11D-02C7C19D9D6B}</ProjectGuid>
     <RootNamespace>TestCnn</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
+    <ProjectName>TestNeyroSet</ProjectName>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

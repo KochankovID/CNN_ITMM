@@ -62,7 +62,7 @@ void TestMatrix::testMetods()
 	a[0][3] = 10;
 	Matrix bb(a, 2, 4);
 	test_(Matrix::Max(a, 2, 4)  == 10);
-	test_(Matrix::Max(bb) == 10);
+	test_(bb.Max() == 10);
 	
 }
 

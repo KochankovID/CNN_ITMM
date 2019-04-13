@@ -13,9 +13,6 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
-    <Filter Include="Исходные файлы\Фильтр">
-      <UniqueIdentifier>{0077b135-e814-48b8-b710-06f5460d765f}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Исходные файлы\Матрица">
       <UniqueIdentifier>{1021ccaf-8a27-4a8f-b676-cba043aed8c0}</UniqueIdentifier>
     </Filter>
@@ -25,19 +22,25 @@
     <Filter Include="Исходные файлы\Perceptron">
       <UniqueIdentifier>{e7f08b22-56fd-4e7b-9880-0e77a57bd6d5}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Вспомогательные классы">
+      <UniqueIdentifier>{0077b135-e814-48b8-b710-06f5460d765f}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="NeyronCnn.cpp">
       <Filter>Исходные файлы\CNN</Filter>
     </ClCompile>
     <ClCompile Include="Filter.cpp">
-      <Filter>Исходные файлы\Фильтр</Filter>
+      <Filter>Исходные файлы\Вспомогательные классы</Filter>
     </ClCompile>
     <ClCompile Include="Matrix.cpp">
       <Filter>Исходные файлы\Матрица</Filter>
     </ClCompile>
     <ClCompile Include="NeyronPerceptron.cpp">
       <Filter>Исходные файлы\Perceptron</Filter>
+    </ClCompile>
+    <ClCompile Include="Weights.cpp">
+      <Filter>Исходные файлы\Вспомогательные классы</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -51,6 +54,9 @@
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
     <ClInclude Include="NeyronPerceptron.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="Weights.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

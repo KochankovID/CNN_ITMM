@@ -25,7 +25,7 @@ public:
 
 	// Поиск максимума в матрице
 	static double Max(double** arr_, const int& n_, const int& m_);
-	static double Max(const Matrix& m);
+	double Max();
 
 	// Получение матрицы в виде массива
 	const double** asArray() const

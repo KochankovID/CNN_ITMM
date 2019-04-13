@@ -1,24 +1,35 @@
 #pragma once
 #include "Matrix.h"
+#include "Weights.h"
 
-class NeyronPerceptron : public Matrix
+class NeyronPerceptron
 {
 public:
 	// Конструкторы ----------------------------------------------------------
 	NeyronPerceptron();
-	NeyronPerceptron(const int& i_, const int& j_);
-	NeyronPerceptron(double** arr_, const int& i_, const int& j_);
-	NeyronPerceptron(const NeyronPerceptron& copy);
+	NeyronPerceptron(const NeyronPerceptron& copy) = delete; // Запрет копирования
 
 	// Методы класса ---------------------------------------------------------
 	// Операция суммированию произведений входов на веса нейрона
-	double Summator(double** arr_); 
+	double Summator(Matrix& a, const Weights& w);
 
 	// Функция активации нейрона
-	double FunkActiv(const double& x, double(*func)(const double&, const double&));
+	double FunkActiv(const double& x, const double& a, double(*func)(const double&, const double&));
+
+	// Перегрузка операторов -------------------------------------------------
+	NeyronPerceptron& operator= (const NeyronPerceptron& copy) = delete; // Запрет копирования
+	friend std::ostream& operator<<(std::ostream& out, const NeyronPerceptron& mat) = delete; // Запрет вывода в поток
+	friend std::istream& operator>>(std::istream& out, NeyronPerceptron& mat) = delete; // Запрет считывания из потока
 
 	// Деструктор ------------------------------------------------------------
 	~NeyronPerceptron();
+
+	// Класс исключения ------------------------------------------------------
+	class NeyronPerceptronExeption : public std::runtime_error {
+	public:
+		NeyronPerceptronExeption(std::string str) : std::runtime_error(str) {};
+		~NeyronPerceptronExeption() {};
+	};
 };
 
 

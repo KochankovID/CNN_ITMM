@@ -2,35 +2,40 @@
 
 
 
-NeyronPerceptron::NeyronPerceptron() : Matrix()
+NeyronPerceptron::NeyronPerceptron()
 {
 }
 
-NeyronPerceptron::NeyronPerceptron(const int & i_, const int & j_) : Matrix(i_, j_)
+
+double NeyronPerceptron::Summator(Matrix & a, const Weights & w)
 {
+	if ((a.getN() != w.getN()) || (a.getM() != w.getM())) {
+		throw NeyronPerceptron::NeyronPerceptronExeption("Ќесовпадение размера матрицы весов и размера матрицы входных сигналов!");
+	}
+	double sum = 0;
+	for (int i = 0; i < a.getN(); i++) {
+		for (int j = 0; j < a.getM(); j++) {
+			sum += a[i][j] * w[i][j];
+		}
+	}
+	return sum;
 }
 
-NeyronPerceptron::NeyronPerceptron(double ** arr_, const int & i_, const int & j_) : Matrix(arr_, i_, j_), step(step_)
+double NeyronPerceptron::FunkActiv(const double & x, const double & a, double(*func)(const double &, const double &))
 {
+	return func(x,a);
 }
 
-NeyronPerceptron::NeyronPerceptron(const NeyronPerceptron & copy) : Matrix(copy)
+NeyronPerceptron::~NeyronPerceptron()
 {
-}
-
-double NeyronPerceptron::Summator(double ** arr_)
-{
-	return 0.0;
-}
-
-double NeyronPerceptron::FunkActiv(const double & x, double(*func)(const double &, const double &))
-{
-	return 0.0;
 }
 
 double SingHopFunc(const double & x, const double & b)
 {
-	return 0.0;
+	if (x >= b) {
+		return 1;
+	}
+	return 0;
 }
 
 double Sigfunc(const double & x, const double & b)
