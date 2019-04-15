@@ -41,7 +41,7 @@ public:
 	Matrix<T> operator+ (const Matrix<T>& mat) const; // Оператор суммы
 	Matrix<T> operator* (const Matrix<T>& mat) const; // Оператор произведения
 	Matrix<T> operator* (const int k) const; // Оператор произведения на число
-	friend Matrix<T> operator* (const int k, const Matrix<T>& mat); // Оператор произведения на число
+	template <typename T1> friend Matrix<T1> operator* (const int k, const Matrix<T1>& mat); // Оператор произведения на число
 	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Matrix<T1>& mat); // Оператор вывод матрицы в поток
 	template <typename T1> friend std::istream& operator>> (std::istream& out, Matrix<T1>& mat); // Оператор чтение матрицы из потока
 	std::shared_ptr<T[]> operator[] (int index); // Оператор индексации
@@ -232,7 +232,7 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T> & mat) const
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < mat.m; j++) {
 			for (int o = 0; o < m; o++) {
-				tmp[i][j] += arr[i][o] * mat.arr[o][j];
+				tmp[i][j] += (arr[i][o] * mat.arr[o][j]);
 			}
 		}
 	}

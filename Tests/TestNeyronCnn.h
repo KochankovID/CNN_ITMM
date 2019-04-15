@@ -1,5 +1,5 @@
 #pragma once
-#include <Test.h>
+#include "Test.h"
 #include "NeyronCnn.h"
 
 class TestNeyronCnn : public TestSuite::Test

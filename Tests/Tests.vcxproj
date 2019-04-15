@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{9A13FF42-12FA-4F98-ADAC-A6AEE04B4F8C}</ProjectGuid>
-    <RootNamespace>Perceptron</RootNamespace>
+    <ProjectGuid>{AA18A21E-7DA6-41D1-B848-ADDED430A198}</ProjectGuid>
+    <RootNamespace>Tests</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17134.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -76,7 +76,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>C:\Users\Илья\Documents\CNN_ITMM\CNN;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
+    <Link>
+      <AdditionalDependencies>TestSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -115,6 +119,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\CNN\Matrix.h" />
+    <ClInclude Include="..\CNN\NeyronCnn.h" />
+    <ClInclude Include="Suite.h" />
+    <ClInclude Include="Test.h" />
+    <ClInclude Include="TestMatrix.h" />
+    <ClInclude Include="TestNeyronCnn.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="StartTest.cpp" />
+    <ClCompile Include="TestMatrix.cpp" />
+    <ClCompile Include="TestNeyronCnn.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CNN\CNN.vcxproj">
+      <Project>{165b9706-afa6-4d4b-a1ed-17ab49cf9854}</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="MatrixTest.txt" />
+    <Text Include="NeyronTest.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

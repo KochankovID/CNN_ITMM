@@ -30,9 +30,6 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Matrix.h">
-      <Filter>Исходные файлы\Матрица</Filter>
-    </ClInclude>
     <ClInclude Include="NeyronCnn.h">
       <Filter>Исходные файлы\CNN</Filter>
     </ClInclude>
@@ -65,6 +62,9 @@
     </ClInclude>
     <ClInclude Include="PLearns.h">
       <Filter>Исходные файлы\Perceptron\Styding</Filter>
+    </ClInclude>
+    <ClInclude Include="Matrix.h">
+      <Filter>Исходные файлы\Матрица</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

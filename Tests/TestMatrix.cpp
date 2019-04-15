@@ -100,8 +100,8 @@ void TestMatrix::testMetods()
 
 	test_(T[0][0] == 4);
 	test_(T[0][1] == 5);
-	test_(T[0][2] == 7);
-	test_(T[1][0] == 8);
+	test_(T[1][0] == 7);
+	test_(T[1][1] == 8);
 }
 
 void TestMatrix::testOperators()
@@ -147,24 +147,24 @@ void TestMatrix::testOperators()
 	// Оператор произведения
 	Matrix<double> O(3, 1);
 	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
+		for (int j = 0; j < 1; j++) {
 			Y[i][j] = 0;
 		}
 	}
 
 	O = Y * O;
 	test_(O.getN() == 3);
-	test_(O.getM() == 6);
+	test_(O.getM() == 1);
 
 	test_(O[0][0] == 0);
-	test_(O[0][1] == 0);
-	test_(O[0][2] == 0);
+	test_(O[1][0] == 0);
+	test_(O[2][0] == 0);
 
 	// Оператор произведения на число
 	Matrix<double> U(3, 3);
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
-			Y[i][j] = 1;
+			U[i][j] = 1;
 		}
 	}
 	U = U * 8;
