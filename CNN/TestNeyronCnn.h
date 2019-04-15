@@ -5,7 +5,7 @@
 class TestNeyronCnn : public TestSuite::Test
 {
 public:
-	TestNeyronCnn() : A() {}
+	TestNeyronCnn() : A(), B() {}
 	void run() {
 		testMetods();
 		testExeptions();
@@ -17,6 +17,7 @@ public:
 
 	~TestNeyronCnn();
 private:
-	Neyron—nn A, B;
+	Neyron—nn<int> A;
+	Neyron—nn<double> B;
 };
 

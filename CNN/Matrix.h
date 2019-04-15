@@ -30,12 +30,6 @@ public:
 	// Поиск максимума в матрице
 	T Max();
 
-	// Получение матрицы в виде массива
-	const T** asArray() const
-	{
-		return const_cast<const T**>(arr);
-	}
-
 	// Получение копии матрицы в виде массива
 	T** getCopy();
 
@@ -48,8 +42,8 @@ public:
 	Matrix<T> operator* (const Matrix<T>& mat) const; // Оператор произведения
 	Matrix<T> operator* (const int k) const; // Оператор произведения на число
 	friend Matrix<T> operator* (const int k, const Matrix<T>& mat); // Оператор произведения на число
-	friend std::ostream& operator<<(std::ostream& out, const Matrix<T>& mat); // Оператор вывод матрицы в поток
-	friend std::istream& operator>>(std::istream& out, Matrix<T>& mat); // Оператор чтение матрицы из потока
+	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Matrix<T1>& mat); // Оператор вывод матрицы в поток
+	template <typename T1> friend std::istream& operator>> (std::istream& out, Matrix<T1>& mat); // Оператор чтение матрицы из потока
 	std::shared_ptr<T[]> operator[] (int index); // Оператор индексации
 	const std::shared_ptr<T[]> operator[] (int index) const; // Оператор индексации константы
 	bool operator==(const Matrix<T>& mat) const; // Оператор сравнения матриц
@@ -77,6 +71,8 @@ protected:
 	void isInRange(int index) const; // Проверяет, находится ли индекс в допустимых границах
 };
 
+
+// Реализация ---------------------------------------
 template<typename T>
 Matrix<T>::Matrix() : n(0), m(0)
 {
@@ -124,7 +120,7 @@ Matrix<T>::Matrix(const Matrix<T> & copy) : n(copy.n), m(copy.m)
 
 template<typename T>
 Matrix<T> Matrix<T>::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
-	if ((poz_n_ < 0) || (poz_m_ < 0)) {
+	if ((poz_n_ < 0) || (poz_m_ < 0)||(poz_n_ >= n)||(poz_m_ >= m)) {
 		throw Matrix::MatrixExeption("Неверная позиция верхнего левого элемента подматрицы!");
 	}
 	if (((poz_n_ + n_) > n) || ((poz_m_ + m_) > m)) {
@@ -299,9 +295,9 @@ Matrix<T>::~Matrix()
 template<typename T>
 void Matrix<T>::initMat()
 {
-	arr = new std::shared_ptr<shared_ptr<T []>[]> [n];
+	arr.reset(new std::shared_ptr<T []>[n]);
 	for (int i = 0; i < n; i++) {
-		arr[i] = new std::shared_ptr<T[]>[m];
+		arr[i].reset(new T[m]);
 	}
 }
 
@@ -326,9 +322,9 @@ Matrix<T> operator*(const int k, const Matrix<T> & mat)
 }
 
 template<typename T>
-ostream& operator<<(ostream& out, const Matrix<T>& mat)
+std::ostream& operator<<(std::ostream& out, const Matrix<T> & mat)
 {
-	out << mat.n << ' ' << mat.m << endl; // Для совместимости с вводом из файла
+	out << mat.n << ' ' << mat.m << std::endl; // Для совместимости с вводом из файла
 
 	for (int i = 0; i < mat.n; i++) {
 		for (int j = 0; j < mat.m; j++) {
@@ -340,12 +336,12 @@ ostream& operator<<(ostream& out, const Matrix<T>& mat)
 }
 
 template<typename T>
-istream& operator>>(istream & in, Matrix<T>& mat)
+std::istream& operator>>(std::istream & in, Matrix<T> & mat)
 {
 	in >> mat.n;
 	in >> mat.m;
 	if ((mat.n < 0) || (mat.m < 0)) {
-		throw Matrix::MatrixExeption("Неверный размер матрицы!");
+		throw Matrix<T>::MatrixExeption("Неверный размер матрицы!");
 	}
 	mat.initMat();
 	for (int i = 0; i < mat.n; i++) {

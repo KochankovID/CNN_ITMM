@@ -36,12 +36,6 @@
     <ClCompile Include="..\CNN\Test.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="..\CNN\Matrix.cpp">
-      <Filter>Исходные файлы\Tests\Matrix</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CNN\NeyronCnn.cpp">
-      <Filter>Исходные файлы\Tests\NeyronCnn</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\CNN\TestMatrix.h">

@@ -15,18 +15,23 @@ public:
 	virtual void Padding(Matrix<T>&);
 
 	// Операция "Макс пулинга"
-	virtual void Pooling(Matrix<T>&, const int&, const int&) = 0;
+	virtual void Pooling(Matrix<T>&, const int&, const int&);
 
 	// Операция свертки над матрицей значений
 	virtual void Svertka(const Filter<T>&, Matrix<T>&) = 0;
 
 	// Перегрузка операторов -------------------------------------------------
-	NeyronСnn& operator= (const NeyronСnn<T>& copy) = delete; // Запрет копирования
-	friend std::ostream& operator<<(std::ostream& out, const NeyronСnn<T>& mat) = delete; // Запрет вывода в поток
-	friend std::istream& operator>>(std::istream& out, NeyronСnn<T>& mat) = delete; // Запрет считывания из потока
-
+	Base_Cnn<T>& operator= (const Base_Cnn<T>& copy) = delete; // Запрет копирования
+	
 	// Деструктор ------------------------------------------------------------
 	~Base_Cnn();
+
+	// Класс исключения ------------------------------------------------------
+	class Base_CnnExeption : public std::runtime_error {
+	public:
+		Base_CnnExeption(std::string str) : std::runtime_error(str) {};
+		~Base_CnnExeption() {};
+	};
 };
 
 template<typename T>
@@ -43,14 +48,14 @@ template<typename T>
 void Base_Cnn<T>::Pooling(Matrix<T>& a, const int& n_, const int& m_)
 {
 	if ((n_ < 0) || (m_ < 0) || (n_ > a.getN()) || (m_ > a.getM())) {
-		throw NeyronСnn::NeyronСnnExeption("Неверный размер ядра!");
+		throw Base_Cnn<T>::Base_CnnExeption("Неверный размер ядра!");
 	}
 
 	Matrix<T> copy(a.getN() / n_, a.getM() / m_);
 
 	for (int i = 0; i < copy.getN(); i++) {
 		for (int j = 0; j < copy.getM(); j++) {
-			copy[i][j] = Matrix::Max(a.getPodmatrix(i*n_, j*m_, n_, m_));
+			copy[i][j] = a.getPodmatrix(i*n_, j*m_, n_, m_).Max();
 		}
 	}
 	a = copy;

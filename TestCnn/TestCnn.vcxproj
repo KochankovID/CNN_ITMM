@@ -80,9 +80,7 @@
       <AdditionalIncludeDirectories>C:\Users\Илья\Documents\CNN_ITMM\CNN;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <AdditionalUsingDirectories>C:\Users\Илья\Documents\CNN_ITMM\CNN;%(AdditionalUsingDirectories)</AdditionalUsingDirectories>
     </ClCompile>
-    <Link>
-      <AdditionalDependencies>TestSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
-    </Link>
+    <Link />
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -121,8 +119,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\CNN\Matrix.cpp" />
-    <ClCompile Include="..\CNN\NeyronCnn.cpp" />
     <ClCompile Include="..\CNN\Test.cpp" />
     <ClCompile Include="..\CNN\TestMatrix.cpp" />
     <ClCompile Include="..\CNN\TestNeyronCnn.cpp" />

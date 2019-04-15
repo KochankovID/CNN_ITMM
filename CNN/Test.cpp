@@ -1,7 +1,6 @@
 #include <fstream>
 #include <iostream>
 #include <string>
-#include "Matrix.h"
 #include "TestMatrix.h"
 #include "TestNeyronCnn.h"
 #include <Suite.h>

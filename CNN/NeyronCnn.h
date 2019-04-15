@@ -4,7 +4,7 @@
 
 
 template<typename T>
-class NeyronÑnn : Base_Cnn<T>
+class NeyronÑnn : public Base_Cnn<T>
 {
 public:
 	// Êîíñòğóêòîğû ----------------------------------------------------------
@@ -30,9 +30,7 @@ public:
 
 	// Ïåğåãğóçêà îïåğàòîğîâ -------------------------------------------------
 	NeyronÑnn& operator= (const NeyronÑnn<T>& copy) = delete; // Çàïğåò êîïèğîâàíèÿ
-	friend std::ostream& operator<<(std::ostream& out, const NeyronÑnn<T>& mat) = delete; // Çàïğåò âûâîäà â ïîòîê
-	friend std::istream& operator>>(std::istream& out, NeyronÑnn<T>& mat) = delete; // Çàïğåò ñ÷èòûâàíèÿ èç ïîòîêà
-
+	
 	// Äåñòğóêòîğ ------------------------------------------------------------
 	~NeyronÑnn();
 
@@ -49,12 +47,12 @@ private:
 
 
 template<typename T>
-NeyronÑnn<T>::NeyronÑnn() : Base_Cnn(), step(1)
+NeyronÑnn<T>::NeyronÑnn() : Base_Cnn<T>(), step(1)
 {
 }
 
 template<typename T>
-NeyronÑnn<T>::NeyronÑnn(const int& step_) : Base_Cnn(), step(step_)
+NeyronÑnn<T>::NeyronÑnn(const int& step_) : Base_Cnn<T>(), step(step_)
 {
 }
 

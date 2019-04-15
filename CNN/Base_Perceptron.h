@@ -21,9 +21,7 @@ class Base_Perceptron
 
 	// Перегрузка операторов -------------------------------------------------
 	NeyronPerceptron& operator= (const NeyronPerceptron& copy) = delete; // Запрет копирования
-	friend std::ostream& operator<<(std::ostream& out, const NeyronPerceptron& mat) = delete; // Запрет вывода в поток
-	friend std::istream& operator>>(std::istream& out, NeyronPerceptron& mat) = delete; // Запрет считывания из потока
-
+	
 	// Деструктор ------------------------------------------------------------
 	~Base_Perceptron();
 
