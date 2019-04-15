@@ -1,8 +1,9 @@
 #pragma once
-#include "Matrix.h"
-#include "Weights.h"
+#include "Base_Perceptron.h"
+#include "Func.h"
 
-class NeyronPerceptron
+template <typename T, typename Y>
+class NeyronPerceptron : Base_Perceptron<T, Y>
 {
 public:
 	// Конструкторы ----------------------------------------------------------
@@ -10,11 +11,8 @@ public:
 	NeyronPerceptron(const NeyronPerceptron& copy) = delete; // Запрет копирования
 
 	// Методы класса ---------------------------------------------------------
-	// Операция суммированию произведений входов на веса нейрона
-	double Summator(Matrix& a, const Weights& w);
-
 	// Функция активации нейрона
-	double FunkActiv(const double& x, const double& a, double(*func)(const double&, const double&));
+	Y FunkActiv(const T& e, Func<Y> f);
 
 	// Перегрузка операторов -------------------------------------------------
 	NeyronPerceptron& operator= (const NeyronPerceptron& copy) = delete; // Запрет копирования
@@ -32,13 +30,21 @@ public:
 	};
 };
 
+template <typename T, typename Y>
+NeyronPerceptron<T,Y>::NeyronPerceptron() : Base_Perceptron()
+{
+}
 
-// Заготовленный функции активации
-// Функция единичного скачка
-double SingHopFunc(const double& x, const double& b);
+template<typename T, typename Y>
+inline Y NeyronPerceptron<T, Y>::FunkActiv(const T & e, Func<Y> f)
+{
+	return Y();
+}
 
-// Сигмоидальная функция
-double Sigfunc(const double& x, const double& b);
+template <typename T, typename Y>
+NeyronPerceptron<T, Y>::~NeyronPerceptron()
+{
+}
 
-// Гиперболический гангенс
-double HyperTang(const double& x, const double&);
+
+

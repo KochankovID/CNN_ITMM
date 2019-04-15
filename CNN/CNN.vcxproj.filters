@@ -27,36 +27,40 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="NeyronCnn.cpp">
-      <Filter>Исходные файлы\CNN</Filter>
-    </ClCompile>
-    <ClCompile Include="Filter.cpp">
-      <Filter>Исходные файлы\Вспомогательные классы</Filter>
-    </ClCompile>
-    <ClCompile Include="Matrix.cpp">
+    <ClInclude Include="Matrix.h">
       <Filter>Исходные файлы\Матрица</Filter>
-    </ClCompile>
-    <ClCompile Include="NeyronPerceptron.cpp">
-      <Filter>Исходные файлы\Perceptron</Filter>
-    </ClCompile>
-    <ClCompile Include="Weights.cpp">
-      <Filter>Исходные файлы\Вспомогательные классы</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
+    </ClInclude>
     <ClInclude Include="NeyronCnn.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Исходные файлы\CNN</Filter>
     </ClInclude>
     <ClInclude Include="Filter.h">
-      <Filter>Файлы заголовков</Filter>
-    </ClInclude>
-    <ClInclude Include="Matrix.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Исходные файлы\Вспомогательные классы</Filter>
     </ClInclude>
     <ClInclude Include="NeyronPerceptron.h">
-      <Filter>Файлы заголовков</Filter>
+      <Filter>Исходные файлы\Perceptron</Filter>
     </ClInclude>
     <ClInclude Include="Weights.h">
+      <Filter>Исходные файлы\Вспомогательные классы</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_Cnn.h">
+      <Filter>Исходные файлы\CNN</Filter>
+    </ClInclude>
+    <ClInclude Include="Base_Perceptron.h">
+      <Filter>Исходные файлы\Perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="Func.h">
+      <Filter>Исходные файлы\Perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="Perceptrons.h">
+      <Filter>Исходные файлы\Perceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="CNNs.h">
+      <Filter>Исходные файлы\CNN</Filter>
+    </ClInclude>
+    <ClInclude Include="PerceptronLearning.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="PLearns.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

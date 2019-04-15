@@ -1,25 +1,20 @@
 #pragma once
-#include "Matrix.h"
+#include "Base_Cnn.h"
 #include <string>
-#include "Filter.h"
 
-class NeyronСnn
+
+template<typename T>
+class NeyronСnn : Base_Cnn<T>
 {
 public:
 	// Конструкторы ----------------------------------------------------------
 	NeyronСnn();
 	explicit NeyronСnn(const int& step_ );
-	NeyronСnn(const NeyronСnn& copy) = delete; // Запрет копирования
+	NeyronСnn(const NeyronСnn<T>& copy) = delete; // Запрет копирования
 
 	// Методы класса ---------------------------------------------------------
-	 // Добавление "полей" к матрице
-	void Padding(Matrix& a);
-
-	// Операция "Макс пулинга"
-	void Pooling(Matrix& a, const int& n_, const int& m_);
-
 	 // Операция свертки над матрицей значений
-	void Svertka(const Filter& F, Matrix& a);
+	void Svertka(const Filter<T>& F, Matrix<T>& a);
 
 	// Получение шага свертки
 	int GetStep() const { return step; }
@@ -34,9 +29,9 @@ public:
 	}
 
 	// Перегрузка операторов -------------------------------------------------
-	NeyronСnn& operator= (const NeyronСnn& copy) = delete; // Запрет копирования
-	friend std::ostream& operator<<(std::ostream& out, const NeyronСnn& mat) = delete; // Запрет вывода в поток
-	friend std::istream& operator>>(std::istream& out, NeyronСnn& mat) = delete; // Запрет считывания из потока
+	NeyronСnn& operator= (const NeyronСnn<T>& copy) = delete; // Запрет копирования
+	friend std::ostream& operator<<(std::ostream& out, const NeyronСnn<T>& mat) = delete; // Запрет вывода в поток
+	friend std::istream& operator>>(std::istream& out, NeyronСnn<T>& mat) = delete; // Запрет считывания из потока
 
 	// Деструктор ------------------------------------------------------------
 	~NeyronСnn();
@@ -51,3 +46,48 @@ private:
 	// Поля класса -----------------------------------------------------------
 	int step; // Шаг свертки
 };
+
+
+template<typename T>
+NeyronСnn<T>::NeyronСnn() : Base_Cnn(), step(1)
+{
+}
+
+template<typename T>
+NeyronСnn<T>::NeyronСnn(const int& step_) : Base_Cnn(), step(step_)
+{
+}
+
+
+template<typename T>
+void NeyronСnn<T>::Svertka(const Filter<T>& F, Matrix<T>& a)
+{
+
+	if ((step > a.getN()) || (step > a.getM())) {
+		throw NeyronСnnExeption("Задан невозможный шаг свертки!");
+	}
+
+	Matrix<T> rez((a.getN() - F.getN()) / step + 1, (a.getM() - F.getM()) / step + 1);
+
+	double sum;
+	Matrix<T> fokus;
+	for (int i = 0; i < rez.getN(); i++) {
+		for (int j = 0; j < rez.getM(); j++) {
+			sum = 0;
+			fokus = a.getPodmatrix(i*step, j*step, F.getN(), F.getM());
+			for (int ii = 0; ii < F.getN(); ii++) {
+				for (int jj = 0; jj < F.getM(); jj++) {
+					sum += fokus[ii][jj] * F[ii][jj];
+				}
+			}
+			rez[i][j] = sum;
+		}
+	}
+	a = rez;
+}
+
+
+template<typename T>
+NeyronСnn<T>::~NeyronСnn()
+{
+}

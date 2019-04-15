@@ -22,6 +22,9 @@
     <Filter Include="Исходные файлы\Tests\NeyronCnn">
       <UniqueIdentifier>{9b73eab6-b828-435f-9a2e-58d6db762b26}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Tests\Perseptron">
+      <UniqueIdentifier>{4a913997-fd17-4e34-a4d4-e4b5829a653e}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\CNN\TestMatrix.cpp">
@@ -38,9 +41,6 @@
     </ClCompile>
     <ClCompile Include="..\CNN\NeyronCnn.cpp">
       <Filter>Исходные файлы\Tests\NeyronCnn</Filter>
-    </ClCompile>
-    <ClCompile Include="..\CNN\Filter.cpp">
-      <Filter>Исходные файлы\Tests</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

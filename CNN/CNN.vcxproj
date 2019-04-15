@@ -123,18 +123,18 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Base_Cnn.h" />
+    <ClInclude Include="Base_Perceptron.h" />
+    <ClInclude Include="CNNs.h" />
+    <ClInclude Include="PerceptronLearning.h" />
+    <ClInclude Include="Perceptrons.h" />
     <ClInclude Include="Filter.h" />
+    <ClInclude Include="Func.h" />
     <ClInclude Include="Matrix.h" />
     <ClInclude Include="NeyronCnn.h" />
     <ClInclude Include="NeyronPerceptron.h" />
+    <ClInclude Include="PLearns.h" />
     <ClInclude Include="Weights.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="Filter.cpp" />
-    <ClCompile Include="Matrix.cpp" />
-    <ClCompile Include="NeyronCnn.cpp" />
-    <ClCompile Include="NeyronPerceptron.cpp" />
-    <ClCompile Include="Weights.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

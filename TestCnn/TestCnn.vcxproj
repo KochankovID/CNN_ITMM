@@ -121,7 +121,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\CNN\Filter.cpp" />
     <ClCompile Include="..\CNN\Matrix.cpp" />
     <ClCompile Include="..\CNN\NeyronCnn.cpp" />
     <ClCompile Include="..\CNN\Test.cpp" />
