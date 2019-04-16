@@ -22,18 +22,18 @@
     <Filter Include="Исходные файлы\SystemTest">
       <UniqueIdentifier>{0d8a4d5d-9da2-4473-b1e3-6e07aaf5d7dd}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Test Peceptron">
+      <UniqueIdentifier>{db8442d7-79c6-4cfd-a56b-4bb20230758e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Исходные файлы\Test Lerning Perceprton">
+      <UniqueIdentifier>{069b271a-6733-40e5-b800-72346cded3f5}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\CNN\Matrix.h">
-      <Filter>Исходные файлы\Test Matrix</Filter>
-    </ClInclude>
     <ClInclude Include="TestMatrix.h">
       <Filter>Исходные файлы\Test Matrix</Filter>
     </ClInclude>
     <ClInclude Include="TestNeyronCnn.h">
-      <Filter>Исходные файлы\Test Cnn</Filter>
-    </ClInclude>
-    <ClInclude Include="..\CNN\NeyronCnn.h">
       <Filter>Исходные файлы\Test Cnn</Filter>
     </ClInclude>
     <ClInclude Include="Suite.h">
@@ -41,6 +41,12 @@
     </ClInclude>
     <ClInclude Include="Test.h">
       <Filter>Исходные файлы\SystemTest</Filter>
+    </ClInclude>
+    <ClInclude Include="TestPeceptron.h">
+      <Filter>Исходные файлы\Test Peceptron</Filter>
+    </ClInclude>
+    <ClInclude Include="TestLearningPerceptron.h">
+      <Filter>Исходные файлы\Test Lerning Perceprton</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -52,6 +58,12 @@
     </ClCompile>
     <ClCompile Include="StartTest.cpp">
       <Filter>Исходные файлы</Filter>
+    </ClCompile>
+    <ClCompile Include="TestPeceptron.cpp">
+      <Filter>Исходные файлы\Test Peceptron</Filter>
+    </ClCompile>
+    <ClCompile Include="TestLearningPerceptron.cpp">
+      <Filter>Исходные файлы\Test Lerning Perceprton</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

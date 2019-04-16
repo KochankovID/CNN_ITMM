@@ -1,6 +1,5 @@
 #pragma once
 #include "Base_Perceptron.h"
-#include "Func.h"
 
 template <typename T, typename Y>
 class NeyronPerceptron : public Base_Perceptron<T, Y>
@@ -12,31 +11,24 @@ public:
 
 	// Методы класса ---------------------------------------------------------
 	// Функция активации нейрона
-	Y FunkActiv(const T& e, Func<Y> f);
+	Y FunkActiv(const T& e, Func<T,Y>& f);
 
 	// Перегрузка операторов -------------------------------------------------
 	NeyronPerceptron& operator= (const NeyronPerceptron& copy) = delete; // Запрет копирования
 	
 	// Деструктор ------------------------------------------------------------
 	~NeyronPerceptron();
-
-	// Класс исключения ------------------------------------------------------
-	class NeyronPerceptronExeption : public std::runtime_error {
-	public:
-		NeyronPerceptronExeption(std::string str) : std::runtime_error(str) {};
-		~NeyronPerceptronExeption() {};
-	};
 };
 
 template <typename T, typename Y>
-NeyronPerceptron<T,Y>::NeyronPerceptron() : Base_Perceptron()
+NeyronPerceptron<T,Y>::NeyronPerceptron() : Base_Perceptron<T,Y>()
 {
 }
 
 template<typename T, typename Y>
-inline Y NeyronPerceptron<T, Y>::FunkActiv(const T & e, Func<Y> f)
+inline Y NeyronPerceptron<T, Y>::FunkActiv(const T & e, Func<T,Y>& f)
 {
-	return Y();
+	return f(e);
 }
 
 template <typename T, typename Y>

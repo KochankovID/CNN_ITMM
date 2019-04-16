@@ -28,6 +28,9 @@
     <Filter Include="Исходные файлы\Perceptron\Styding">
       <UniqueIdentifier>{cf7ff16f-0b5e-4473-a207-679036b5a230}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\Функтор">
+      <UniqueIdentifier>{58f1e327-b5c4-4fcd-844f-826ece87af21}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeyronCnn.h">
@@ -48,9 +51,6 @@
     <ClInclude Include="Base_Perceptron.h">
       <Filter>Исходные файлы\Perceptron</Filter>
     </ClInclude>
-    <ClInclude Include="Func.h">
-      <Filter>Исходные файлы\Perceptron</Filter>
-    </ClInclude>
     <ClInclude Include="Perceptrons.h">
       <Filter>Исходные файлы\Perceptron</Filter>
     </ClInclude>
@@ -65,6 +65,12 @@
     </ClInclude>
     <ClInclude Include="Matrix.h">
       <Filter>Исходные файлы\Матрица</Filter>
+    </ClInclude>
+    <ClInclude Include="Func.h">
+      <Filter>Исходные файлы\Функтор</Filter>
+    </ClInclude>
+    <ClInclude Include="Functors.h">
+      <Filter>Исходные файлы\Функтор</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

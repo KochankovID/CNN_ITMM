@@ -103,6 +103,7 @@ void TestNeyronCnn::Visualisator()
 	file << endl;
 	file.close();
 	
+	file.close();
 }
 
 TestNeyronCnn::~TestNeyronCnn()

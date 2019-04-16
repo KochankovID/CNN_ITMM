@@ -76,7 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Илья\Documents\CNN_ITMM\CNN;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)\$(SolutionName);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>TestSystem.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -119,17 +119,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClInclude Include="..\CNN\Matrix.h" />
-    <ClInclude Include="..\CNN\NeyronCnn.h" />
     <ClInclude Include="Suite.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="TestLearningPerceptron.h" />
     <ClInclude Include="TestMatrix.h" />
     <ClInclude Include="TestNeyronCnn.h" />
+    <ClInclude Include="TestPeceptron.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StartTest.cpp" />
+    <ClCompile Include="TestLearningPerceptron.cpp" />
     <ClCompile Include="TestMatrix.cpp" />
     <ClCompile Include="TestNeyronCnn.cpp" />
+    <ClCompile Include="TestPeceptron.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CNN\CNN.vcxproj">

@@ -35,9 +35,9 @@ public:
 	~NeyronÑnn();
 
 	// Êëàññ èñêëş÷åíèÿ ------------------------------------------------------
-	class NeyronÑnnExeption : public std::runtime_error {
+	class NeyronÑnnExeption : public Base_Cnn<T>::Base_CnnExeption {
 	public:
-		NeyronÑnnExeption(std::string str) : std::runtime_error(str) {};
+		NeyronÑnnExeption(std::string str) : Base_Cnn<T>::Base_CnnExeption(str) {};
 		~NeyronÑnnExeption() {};
 	};
 private:

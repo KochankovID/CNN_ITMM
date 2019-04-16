@@ -24,7 +24,7 @@ public:
 	Base_Cnn<T>& operator= (const Base_Cnn<T>& copy) = delete; // Запрет копирования
 	
 	// Деструктор ------------------------------------------------------------
-	~Base_Cnn();
+	virtual ~Base_Cnn();
 
 	// Класс исключения ------------------------------------------------------
 	class Base_CnnExeption : public std::runtime_error {

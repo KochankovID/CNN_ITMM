@@ -50,7 +50,7 @@ public:
 
 
 	// Деструктор -----------------------------------
-	~Matrix();
+	virtual ~Matrix();
 
 	// Класс исключений ----------------------------
 	class MatrixExeption : public std::runtime_error

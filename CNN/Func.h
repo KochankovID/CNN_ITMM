@@ -1,8 +1,9 @@
 #pragma once
 
-template<typename Y>
+template<typename T, typename Y>
 class Func {
 public:
 	Func() {};
-	virtual Y operator()() = 0;
+	virtual Y operator()(const T&) = 0;
+	virtual ~Func() {};
 };

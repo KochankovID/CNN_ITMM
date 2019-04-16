@@ -3,6 +3,7 @@
 #include <string>
 #include "TestMatrix.h"
 #include "TestNeyronCnn.h"
+#include "TestPeceptron.h"
 #include "Suite.h"
 
 
@@ -12,6 +13,7 @@
 		TestSuite::Suite t("CNN TEST");
 		t.addTest(new TestMatrix());
 		t.addTest(new TestNeyronCnn());
+		t.addTest(new TestPeceptron());
 		t.run();
 		t.report();
 		t.free();

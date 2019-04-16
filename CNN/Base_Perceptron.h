@@ -1,29 +1,31 @@
 #pragma once
 #include "Matrix.h"
 #include "Weights.h"
+#include "Func.h"
 #include <vector>
 
 
 template <typename T, typename Y>
 class Base_Perceptron
 {
+public:
 	// Конструкторы ----------------------------------------------------------
 	Base_Perceptron();
 	Base_Perceptron(const Base_Perceptron& copy) = delete; // Запрет копирования
 
 	// Методы класса ---------------------------------------------------------
 	// Операция суммированию произведений входов на веса нейрона
-	virtual T Summator(Matrix<T>& a, const Weights<T>& w);
+	virtual T Summator(const Matrix<T>& a, const Weights<T>& w);
 	virtual T Summator(std::vector<T> a, const std::vector<T>& w);
 
 	// Функция активации нейрона
-	virtual Y FunkActiv(const T&, Func<Y>) = 0;
+	virtual Y FunkActiv(const T&, Func<T,Y>&) = 0;
 
 	// Перегрузка операторов -------------------------------------------------
-	NeyronPerceptron& operator= (const NeyronPerceptron& copy) = delete; // Запрет копирования
+	Base_Perceptron& operator= (const Base_Perceptron& copy) = delete; // Запрет копирования
 	
 	// Деструктор ------------------------------------------------------------
-	~Base_Perceptron();
+	virtual ~Base_Perceptron();
 
 	// Класс исключения ------------------------------------------------------
 	class NeyronPerceptronExeption : public std::runtime_error {
@@ -39,10 +41,10 @@ Base_Perceptron<T, Y>::Base_Perceptron()
 }
 
 template <typename T, typename Y>
-T Base_Perceptron<T, Y>::Summator(Matrix<T> & a, const Weights<T> & w)
+T Base_Perceptron<T, Y>::Summator(const Matrix<T> & a, const Weights<T> & w)
 {
 	if ((a.getN() != w.getN()) || (a.getM() != w.getM())) {
-		throw NeyronPerceptron::NeyronPerceptronExeption("Несовпадение размера матрицы весов и размера матрицы входных сигналов!");
+		throw Base_Perceptron<T, Y>::NeyronPerceptronExeption("Несовпадение размера матрицы весов и размера матрицы входных сигналов!");
 	}
 	T sum = 0;
 	for (int i = 0; i < a.getN(); i++) {
@@ -56,12 +58,12 @@ T Base_Perceptron<T, Y>::Summator(Matrix<T> & a, const Weights<T> & w)
 template <typename T, typename Y>
 inline T Base_Perceptron<T, Y>::Summator(std::vector<T> a, const std::vector<T>& w)
 {
-	if ((a.getN() != w.getN()) || (a.getM() != w.getM())) {
-		throw NeyronPerceptron::NeyronPerceptronExeption("Несовпадение размера матрицы весов и размера матрицы входных сигналов!");
+	if (a.size() != w.size()) {
+		throw Base_Perceptron<T,Y>::NeyronPerceptronExeption("Несовпадение размера матрицы весов и размера матрицы входных сигналов!");
 	}
 	T sum = 0;
 	for (int i = 0; i < a.size(); i++) {
-		T = a[i] * w[i];
+		sum += a[i] * w[i];
 	}
 	return sum;
 }
