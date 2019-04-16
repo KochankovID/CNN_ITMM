@@ -8,6 +8,7 @@ public:
 	// Конструкторы ---------------------------------
 	Matrix(); // Конструктор по умолчанию -----------
 	Matrix(T** arr_, const int& i, const int& j); // Конструктор инициализатор
+	Matrix(T* arr_, const int& i, const int& j); // Конструктор инициализатор
 	Matrix(const int& i, const int& j); // Конструктор инициализатор (создает матрицу заданного размера заполненную 0)
 	Matrix(const Matrix<T>& copy); // Конструктор копирования 
 
@@ -89,6 +90,20 @@ Matrix<T>::Matrix(T** arr_, const int& i, const int& j) : n(i), m(j)
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
 			arr[i][j] = arr_[i][j];
+		}
+	}
+}
+
+template<typename T>
+Matrix<T>::Matrix(T* arr_, const int& i, const int& j) : n(i), m(j)
+{
+	if ((n < 0) || (m < 0)) {
+		throw Matrix::MatrixExeption("Неверный размер матрицы!");
+	}
+	initMat();
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			arr[i][j] = arr_[i*m + j];
 		}
 	}
 }

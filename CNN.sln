@@ -7,6 +7,8 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NeyroSet", "CNN\CNN.vcxproj
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{AA18A21E-7DA6-41D1-B848-ADDED430A198}"
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "SimplePerceptron", "SimplePerceptron\SimplePerceptron.vcxproj", "{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|x64 = Debug|x64
@@ -31,6 +33,14 @@ Global
 		{AA18A21E-7DA6-41D1-B848-ADDED430A198}.Release|x64.Build.0 = Release|x64
 		{AA18A21E-7DA6-41D1-B848-ADDED430A198}.Release|x86.ActiveCfg = Release|Win32
 		{AA18A21E-7DA6-41D1-B848-ADDED430A198}.Release|x86.Build.0 = Release|Win32
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Debug|x64.ActiveCfg = Debug|x64
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Debug|x64.Build.0 = Debug|x64
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Debug|x86.ActiveCfg = Debug|Win32
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Debug|x86.Build.0 = Debug|Win32
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Release|x64.ActiveCfg = Release|x64
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Release|x64.Build.0 = Release|x64
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Release|x86.ActiveCfg = Release|Win32
+		{D9482C4B-F565-4D01-B09B-7E2FDFBCADA0}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

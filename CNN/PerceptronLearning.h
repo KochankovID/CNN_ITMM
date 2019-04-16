@@ -45,6 +45,9 @@ template<typename T, typename Y>
 inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & y, Weights<T> & w, const Matrix<T> in)
 {
 	T delta = a - y;
+	if (delta == 0) {
+		return;
+	}
 	for (int i = 0; i < w.getN(); i++) {
 		for (int j = 0; j < w.getM(); j++) {
 			w[i][j] = w[i][j] + E * delta*in[i][j];

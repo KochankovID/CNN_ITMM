@@ -32,6 +32,23 @@ void TestMatrix::testConstruktors()
 	test_(D[1][0] == 2);
 	test_(D[1][1] == 3);
 
+	// Конструктор инициализатор
+	double* ty;
+	ty = new double[4];
+	ty[0] = 0;
+	ty[1] = 1;
+	ty[2] = 2;
+	ty[3] = 3;
+
+	Matrix<double> DD(ty, 2, 2);
+	test_(DD.getN() == 2);
+	test_(DD.getM() == 2);
+
+	test_(DD[0][0] == 0);
+	test_(DD[0][1] == 1);
+	test_(DD[1][0] == 2);
+	test_(DD[1][1] == 3);
+
 	// Конструтор инициализатор пустой матрицы
 	Matrix<int> G(2, 3);
 	test_(G.getN() == 2);
