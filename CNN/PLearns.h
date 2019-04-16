@@ -1,6 +1,6 @@
 #pragma once
 #include "PerceptronLearning.h"
-#define DD_Leaning NeyronPerceptron<double, double>
-#define ID_Leaning NeyronPerceptron<int, double>
-#define DI_Leaning NeyronPerceptron<double, int>
-#define II_Leaning NeyronPerceptron<int, int>
+#define DD_Leaning PerceptronLearning<double, double>
+#define ID_Leaning PerceptronLearning<int, double>
+#define DI_Leaning PerceptronLearning<double, int>
+#define II_Leaning PerceptronLearning<int, int>

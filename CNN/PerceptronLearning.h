@@ -1,5 +1,6 @@
 #pragma once
 #include "Weights.h"
+#include "NeyronPerceptron.h"
 
 template<typename T, typename Y>
 class PerceptronLearning
@@ -8,11 +9,14 @@ public:
 	// Конструкторы ----------------------------------------------------------
 	PerceptronLearning(); // По умолчанию
 	PerceptronLearning(const double& E_); // Инициализатор
-	PerceptronLearning(const NeyronPerceptron& copy) = delete; // Запрет копирования
+	PerceptronLearning(const NeyronPerceptron<T,Y>& copy) = delete; // Запрет копирования
 
 	// Методы класса ---------------------------------------------------------
 	// Обучение однослойного перцептрона методом обратного распространения ошибки
 	void WTSimplePerceptron(const Y& a, const Y& y, Weights<T>& w, const Matrix<T> in);
+
+	// Метод получения доступа к кофиценту обучения
+	double& getE() { return E; };
 
 	// Перегрузка операторов -------------------------------------------------
 	PerceptronLearning& operator= (const PerceptronLearning& copy) = delete; // Запрет копирования
@@ -33,7 +37,7 @@ inline PerceptronLearning<T,Y>::PerceptronLearning() : E(1)
 }
 
 template<typename T, typename Y>
-inline PerceptronLearning<T, Y>::PerceptronLearning(const double & E_)
+inline PerceptronLearning<T, Y>::PerceptronLearning(const double & E_) : E(E_)
 {
 }
 
@@ -43,7 +47,7 @@ inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & 
 	T delta = a - y;
 	for (int i = 0; i < w.getN(); i++) {
 		for (int j = 0; j < w.getM(); j++) {
-			w[i] = w[i] + E * d*in[i];
+			w[i][j] = w[i][j] + E * delta*in[i][j];
 		}
 	}
 }
