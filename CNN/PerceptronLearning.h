@@ -1,6 +1,7 @@
 #pragma once
 #include "Weights.h"
 #include "NeyronPerceptron.h"
+#include <cstdlib>
 
 template<typename T, typename Y>
 class PerceptronLearning
@@ -14,6 +15,9 @@ public:
 	// Методы класса ---------------------------------------------------------
 	// Обучение однослойного перцептрона методом обратного распространения ошибки
 	void WTSimplePerceptron(const Y& a, const Y& y, Weights<T>& w, const Matrix<T> in);
+
+	// Тасование последовательности
+	void shuffle(int* arr, const int& lenth);
 
 	// Метод получения доступа к кофиценту обучения
 	double& getE() { return E; };
@@ -52,6 +56,20 @@ inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & 
 		for (int j = 0; j < w.getM(); j++) {
 			w[i][j] = w[i][j] + E * delta*in[i][j];
 		}
+	}
+}
+
+template<typename T, typename Y>
+inline void PerceptronLearning<T, Y>::shuffle(int * arr, const int & lenth)
+{
+	srand(time(0));
+	int j = 0;
+	int tmp = 0;
+	for (int i = 0; i < lenth; i++) {
+		j = ((double)rand()/INT_MAX*lenth);
+		tmp = arr[i];
+		arr[i] = arr[j];
+		arr[j] = tmp;
 	}
 }
 

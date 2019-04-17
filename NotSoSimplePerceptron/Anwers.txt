@@ -1,0 +1,288 @@
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
+-----------------------------
+Test network:
+Test 0 : recognized 0
+Test 1 : recognized 1
+Test 2 : recognized 2
+Test 2 : recognized 8
+Test 3 : recognized 3
+Test 4 : recognized 4
+Test 5 : recognized 5
+Test 5 : recognized 9
+Test 6 : recognized 2
+Test 6 : recognized 6
+Test 7 : recognized 7
+Test 8 : recognized 8
+Test 9 : recognized 9
+-----------------------------
