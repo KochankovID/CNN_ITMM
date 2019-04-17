@@ -23,8 +23,5 @@
     <Text Include="Weights.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-    <Text Include="Anwers.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
   </ItemGroup>
 </Project>

@@ -14,7 +14,7 @@ public:
 
 	// Методы класса ---------------------------------------------------------
 	// Обучение однослойного перцептрона методом обратного распространения ошибки
-	void WTSimplePerceptron(const Y& a, const Y& y, Weights<T>& w, const Matrix<T> in);
+	void WTSimplePerceptron(const Y& a, const Y& y, Weights<T>& w, const Matrix<T>& in);
 
 	// Тасование последовательности
 	void shuffle(int* arr, const int& lenth);
@@ -46,15 +46,17 @@ inline PerceptronLearning<T, Y>::PerceptronLearning(const double & E_) : E(E_)
 }
 
 template<typename T, typename Y>
-inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & y, Weights<T> & w, const Matrix<T> in)
+inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & y, Weights<T> & w, const Matrix<T>& in)
 {
 	T delta = a - y;
+	T ii = 0;
 	if (delta == 0) {
 		return;
 	}
 	for (int i = 0; i < w.getN(); i++) {
 		for (int j = 0; j < w.getM(); j++) {
-			w[i][j] = w[i][j] + E * delta*in[i][j];
+			ii = w[i][j] + E * delta*in[i][j];
+			w[i][j] = ii;
 		}
 	}
 }

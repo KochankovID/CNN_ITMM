@@ -30,76 +30,81 @@ int main()
 
 	// Создание обучателя сети
 	DD_Leaning Teacher;
-	Teacher.getE() = 0.5;
+	/*for(int i = 0 ; i < 7; i++)
+		Teacher.getE() -= 0.1;*/
+	Teacher.getE() = 1;
 
 	// Создание функтора
 	Sign F;
 
-	ofstream file1;
+	vector<Weights<double>> W(10);
+	for (int i = 0; i < 10; i++) {
+		W[i] = Weights<double>(5, 3);
+	}
 
-	file1.open("Anwers.txt");
+	int nums[10] = { 0,1,2,3,4,5,6,7,8,9 };
 #ifdef Teach
 
 	// Создание обучающей выборки
 	double Zero[15] = { 1, 1, 1,
-					 1, 0, 1,
-					 1, 0, 1,
-					 1, 0, 1,
-					 1, 1, 1 };
+					    1, 0, 1,
+					    1, 0, 1,
+					    1, 0, 1,
+					    1, 1, 1 };
 
 	double One[15] = {  0, 0, 1,
-					 0, 0, 1,
-					 0, 0, 1,
-					 0, 0, 1,
-					 0, 0, 1 };
+					    0, 0, 1,
+					    0, 0, 1,
+					    0, 0, 1,
+					    0, 0, 1 };
 
 	double Two[15] = { 1, 1, 1,
-					0, 0, 1,
-					1, 1, 1,
-					1, 0, 0,
-					1, 1, 1 };
+					   0, 0, 1,
+					   1, 1, 1,
+					   1, 0, 0,
+					   1, 1, 1 };
 
 	double Three[15] = { 1, 1, 1,
-					  0, 0, 1,
-					  1, 1, 1,
-					  0, 0, 1,
-					  1, 1, 1 };
+					     0, 0, 1,
+					     1, 1, 1,
+					     0, 0, 1,
+					     1, 1, 1 };
 
 	double Four[15] = { 1, 0, 1,
-					 1, 0, 1,
-					 1, 1, 1,
-					 0, 0, 1,
-					 0, 0, 1 };
+					    1, 0, 1,
+					    1, 1, 1,
+					    0, 0, 1,
+					    0, 0, 1 };
 
 	double Five[15] = { 1, 1, 1,
-					 1, 0, 0,
-					 1, 1, 1,
-					 0, 0, 1,
-					 1, 1, 1 };
+					    1, 0, 0,
+					    1, 1, 1,
+					    0, 0, 1,
+					    1, 1, 1 };
 
 	double Six[15] = { 1, 1, 1,
-					1, 0, 0,
-					1, 1, 1,
-					1, 0, 1,
-					1, 1, 1 };
+					   1, 0, 0,
+					   1, 1, 1,
+					   1, 0, 1,
+					   1, 1, 1 };
 
 	double Seven[15] = { 1, 1, 1,
-					  0, 0, 1,
-					  0, 0, 1,
-					  0, 0, 1,
-					  0, 0, 1 };
+					     0, 0, 1,
+					     0, 0, 1,
+					     0, 0, 1,
+					     0, 0, 1 };
 
 	double Eight[15] = { 1, 1, 1,
-					  1, 0, 1,
-					  1, 1, 1,
-					  1, 0, 1,
-					  1, 1, 1 };
+					     1, 0, 1,
+					     1, 1, 1,
+					     1, 0, 1,
+					     1, 1, 1 };
 
 	double Nine[15] = { 1, 1, 1,
-					 1, 0, 1,
-					 1, 1, 1,
-					 0, 0, 1,
-					 1, 1, 1 };
+					    1, 0, 1,
+					    1, 1, 1,
+					    0, 0, 1,
+					    1, 1, 1 };
 
 	vector<Matrix<double>> Nums(10);
 	Nums[0] = Matrix<double>(Zero, 5, 3);
@@ -115,33 +120,27 @@ int main()
 
 	// Обучение сети
 
-	int nums[10] = { 0,1,2,3,4,5,6,7,8,9 };
-	long int k = 0;
+
+	long int k = 167;
 	double summ; // Переменная суммы
 	double y; // Переменная выхода сети
-	while (k != 10000)
-	{
-		// Создание весов нейрона
-		vector<Weights<double>> W(10);
-		for (int i = 0; i < 10; i++) {
-			W[i] = Weights<double>(5, 3);
-		}
-		k += 500;
-		for (long int i = 0; i < k; i++) {
-			for (int j = 0; j < 10; j++) {
-				for (int l = 0; l < 10; l++) {
-					Teacher.shuffle(nums, 10);
-					summ = Neyron.Summator(Nums[nums[j]], W[l]);
-					y = Neyron.FunkActiv(summ, F);
-					if (nums[j] != l) {
-						Teacher.WTSimplePerceptron(-1, y, W[l], Nums[nums[j]]);
-					}
-					else {
-						Teacher.WTSimplePerceptron(1, y, W[l], Nums[nums[j]]);
-					}
+	// Создание весов нейрона
+
+	for (long int i = 0; i < k; i++) {
+		for (int j = 0; j < 10; j++) {
+			for (int l = 0; l < 10; l++) {
+				Teacher.shuffle(nums, 10);
+				summ = Neyron.Summator(Nums[nums[j]], W[l]);
+				y = Neyron.FunkActiv(summ, F);
+				if (nums[j] != l) {
+					Teacher.WTSimplePerceptron(-1, y, W[l], Nums[nums[j]]);
+				}
+				else {
+					Teacher.WTSimplePerceptron(1, y, W[l], Nums[nums[j]]);
 				}
 			}
 		}
+	}
 
 		// Сохраняем веса
 		ofstream file;
@@ -178,7 +177,7 @@ int main()
 							0, 0, 1,
 							1, 1, 1,
 							1, 0, 0,
-							1, 1, 0 };
+							1, 1, 1 };
 
 	double Three_three[15] = { 0, 1, 1,
 							   0, 0, 1,
@@ -192,16 +191,16 @@ int main()
 							 0, 0, 1,
 							 0, 0, 1 };
 
-	double Five_five[15] = { 0, 1, 1,
+	double Five_five[15] = { 1, 1, 1,
 							 1, 0, 0,
-							 1, 1, 1,
+							 1, 0, 1,
 							 0, 0, 1,
 							 0, 1, 1 };
 
 	double Six_six[15] = { 1, 1, 1,
 						   1, 0, 0,
 						   1, 1, 1,
-						   1, 0, 0,
+						   1, 0, 1,
 						   1, 0, 1 };
 
 	double Seven_seven[15] = { 1, 0, 1,
@@ -220,7 +219,7 @@ int main()
 							 1, 0, 1,
 							 1, 1, 1,
 							 0, 0, 1,
-							 1, 0, 1 };
+							 1, 1, 1 };
 
 	vector<Matrix<double>> Tests(10);
 	Tests[0] = Matrix<double>(Zero_zero, 5, 3);
@@ -249,18 +248,9 @@ int main()
 		W[i].Out();
 		cout << endl;
 	}
-	file1 << "-----------------------------" << endl;
-
-	file1 << "Test network:" << endl;
-	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			if (Neyron.FunkActiv(Neyron.Summator(Tests[i], W[j]), F) == 1)
-				file1 <<  "Test " << i << " : " << "recognized " << j << endl;
-		}
-	}
-	file1 << "-----------------------------" << endl;
-	}
-	file1.close();
+	system("pause");
 	return 0;
 
 }
+
+// отношение числа проходов к кофиценту скорости обучения равно 166,6666666666666
