@@ -15,6 +15,10 @@ public:
 	// Методы класса ---------------------------------------------------------
 	// Обучение однослойного перцептрона методом обратного распространения ошибки
 	void WTSimplePerceptron(const Y& a, const Y& y, Weights<T>& w, const Matrix<T>& in);
+	static void BackPropagation(Matrix<Weights<T>>& w, const Weights<T>& y);
+	void GradDes(Weights<T>& w, Matrix<T>& in, Func<T, Y>& F, const T& x);
+	static Y RMS_error(const Y* a, const Y* y, const int& lenth);
+	static Y PartDOutLay(const Y& a, const Y& y);
 
 	// Тасование последовательности
 	void shuffle(int* arr, const int& lenth);
@@ -30,6 +34,12 @@ public:
 	// Деструктор ------------------------------------------------------------
 	~PerceptronLearning();
 
+	// Класс исключения ------------------------------------------------------
+	class LearningExeption : public std::runtime_error {
+	public:
+		LearningExeption(std::string str) : std::runtime_error(str) {};
+		~LearningExeption() {};
+	};
 protected:
 	// Поля класса ----------------------------------
 	double E; // Кофицент обучения
@@ -48,6 +58,9 @@ inline PerceptronLearning<T, Y>::PerceptronLearning(const double & E_) : E(E_)
 template<typename T, typename Y>
 inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & y, Weights<T> & w, const Matrix<T>& in)
 {
+	if ((w.getN() != in.getN()) || (w.getM() != in.getM())) {
+		throw LearningExeption("Несовпадение размеров входной матрицы и матрицы весов!");
+	}
 	T delta = a - y;
 	T ii = 0;
 	if (delta == 0) {
@@ -59,7 +72,53 @@ inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & 
 			w[i][j] = ii;
 		}
 	}
+	w.GetWBias() += E * delta;
 }
+
+template<typename T, typename Y>
+inline void PerceptronLearning<T, Y>::BackPropagation(Matrix<Weights<T>>& w, const Weights<T>& y)
+{
+	for (int i = 0; i < y.getN(); i++) {
+		for (int j = 0; j < y.getM(); j++) {
+			w[i][j].GetD() += (y[i][j] * y.GetD());
+		}
+	}
+}
+
+template<typename T, typename Y>
+inline void PerceptronLearning<T, Y>::GradDes(Weights<T>& w, Matrix<T>& in, Func<T, Y>& F, const T& x)
+{
+	if ((w.getN() != in.getN()) || (w.getM() != in.getM())) {
+		throw LearningExeption("Несовпадение размеров входной матрицы и матрицы весов!");
+	}
+
+	for (int i = 0; i < w.getN(); i++) {
+		for (int j = 0; j < w.getM(); j++) {
+			w[i][j] += (w.GetD() * E * F(x) * in[i][j]);
+		}
+	}
+	w.GetWBias() = E * F(x) * w.GetD();
+}
+
+
+template<typename T, typename Y>
+inline Y PerceptronLearning<T, Y>::RMS_error(const Y * a, const Y * y, const int & lenth)
+{
+	Y err = 0;
+	for (int i = 0; i < lenth; i++) {
+		err += (a[i] - y[i])*(a[i] - y[i]);
+	}
+	err /= 2;
+	return err;
+}
+
+template<typename T, typename Y>
+inline Y PerceptronLearning<T, Y>::PartDOutLay(const Y & a, const Y & y)
+{
+	return 2 * (a - y);
+}
+
+
 
 template<typename T, typename Y>
 inline void PerceptronLearning<T, Y>::shuffle(int * arr, const int & lenth)

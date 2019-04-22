@@ -20,7 +20,13 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="Tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
     <Text Include="Weights.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="TeachChoose.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>

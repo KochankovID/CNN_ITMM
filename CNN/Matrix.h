@@ -117,7 +117,7 @@ Matrix<T>::Matrix(const int& i, const int& j) : n(i), m(j)
 	initMat();
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
-			arr[i][j] = 0;
+			arr[i][j] = T();
 		}
 	}
 }

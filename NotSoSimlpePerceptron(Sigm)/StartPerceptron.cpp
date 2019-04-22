@@ -7,21 +7,36 @@
 
 // Макрос режима работы программы (с обучением или без)
 #define Teach
+#define OUT (X) std::cout << X;
 
 // функтор
-class Sign : public DD_Func
+class Sigm : public DD_Func
 {
 public:
-	Sign() : DD_Func() {};
+	Sigm(const double& a_) : DD_Func(), a(a_) {};
+	double a;
 	double operator()(const double& x) {
-		if (x <= 0) {
-			return -1;
+		double f = 1;
+		const double e = 2.7182818284;
+		for (int i = 0; i < a*x; i++)
+		{
+			f *= 1 / e;
 		}
-		else {
-			return 1;
+		f++;
+		return 1 / f;
+	}
+	~Sigm() {};
+};
+
+// Поиск номера максимального элемента в массиве
+int max(const double* arr, const int& length) {
+	int m = 0;
+	for (int i = 1; i < length; i++) {
+		if (arr[i] > arr[m]) {
+			m = i;
 		}
 	}
-	~Sign() {};
+	return m;
 };
 
 using namespace std;
@@ -35,7 +50,7 @@ int main()
 	Teacher.getE() = 1;
 
 	// Создание функтора
-	Sign F;
+	Sigm F(5.7);
 
 	// Создание весов нейросети
 	vector<Weights<double>> W(10);
@@ -51,6 +66,9 @@ int main()
 	// Создание обучающей выборки
 	vector<Matrix<double>> Nums(10);
 
+	// Массив выходов сети
+	double Outs[10] = {0,1,2,0};
+
 	// Считываем матрицы обучающей выборки
 	ifstream TeachChoose;
 	TeachChoose.open("TeachChoose.txt");
@@ -63,31 +81,31 @@ int main()
 	// Обучение сети
 	long int k = 167; // Количество обучений нейросети
 	double summ; // Переменная суммы
-	double y; // Переменная выхода сети
+	int y; // Переменная выхода сети
 
 	for (long int i = 0; i < k; i++) {
 		Teacher.shuffle(nums, 10); // Тасование последовательности
 		for (int j = 0; j < 10; j++) {
 			for (int l = 0; l < 10; l++) {
 				summ = Neyron.Summator(Nums[nums[j]], W[l]); // Получение взвешенной суммы
-				y = Neyron.FunkActiv(summ, F); // Получение ответа нейрона
-				if (nums[j] != l) { // Если текущии веса не совпадают с поданной на вход цифрой то ожидаемый ответ сети -1
-					Teacher.WTSimplePerceptron(-1, y, W[l], Nums[nums[j]]);
+				y = Neyron.FunkActiv(summ, F);
+				if (nums[j] != l) {
+					Teacher.WTSimplePerceptron(0, y, W[l], Nums[nums[j]]);
 				}
-				else { // Если совпадают, то ожидаемый ответ сети 1
+				else {
 					Teacher.WTSimplePerceptron(1, y, W[l], Nums[nums[j]]);
 				}
 			}
 		}
 	}
 
-		// Сохраняем веса
-		ofstream fWeights;
-		fWeights.open("Weights.txt");
-		for (int i = 0; i < 10; i++) {
-			fWeights << W[i];
-		}
-		fWeights.close();
+	// Сохраняем веса
+	ofstream fWeights;
+	fWeights.open("Weights.txt");
+	for (int i = 0; i < 10; i++) {
+		fWeights << W[i];
+	}
+	fWeights.close();
 
 #else
 	// Считывание весов
@@ -113,9 +131,11 @@ int main()
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
-			if (Neyron.FunkActiv(Neyron.Summator(Tests[i], W[j]), F) == 1)
-				cout << "Test " << i << " : " << "recognized " << j << endl;
+			summ = Neyron.Summator(Tests[i], W[j]); // Получение взвешенной суммы
+			Outs[j] = Neyron.FunkActiv(summ, F);
 		}
+		y = max(Outs, 10);
+		cout << "Test " << i << " : " << "recognized " << y << endl;
 	}
 
 	// Вывод весов сети
@@ -130,5 +150,3 @@ int main()
 	return 0;
 
 }
-
-// отношение числа проходов к кофиценту скорости обучения равно 166,6666666666666

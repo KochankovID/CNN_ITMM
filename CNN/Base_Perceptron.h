@@ -1,5 +1,4 @@
 #pragma once
-#include "Matrix.h"
 #include "Weights.h"
 #include "Func.h"
 #include <vector>
@@ -52,6 +51,7 @@ T Base_Perceptron<T, Y>::Summator(const Matrix<T> & a, const Weights<T> & w)
 			sum += a[i][j] * w[i][j];
 		}
 	}
+	sum += w.GetWBias();
 	return sum;
 }
 

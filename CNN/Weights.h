@@ -9,35 +9,55 @@ class Weights : public Matrix<T>
 public:
 	// Конструкторы ----------------------------------------------------------
 	Weights(); // По умолчанию
-	Weights(const int& i_, const int& j_); // Инициализатор (нулевая матрица)
-	Weights(T** arr_, const int& i_, const int& j_); // Инициализатор
+	Weights(const int& i_, const int& j_, const int& wbisas_ = 0); // Инициализатор (нулевая матрица)
+	Weights(T** arr_, const int& i_, const int& j_, const int& wbisas_ = 0); // Инициализатор
 	Weights(const Weights<T>& copy); // Копирования 
 
 	// Методы класса ---------------------------------------------------------
 	// Вывод весов на консоль в красивом виде
 	void Out();
 
+	// Получение доступа к d
+	T& GetD() { return d; };
+	const T& GetD() const { return d; };
+
+	// Получение доступа к wbisas
+	T& GetWBias() { return wbias; };
+	const T& GetWBias() const { return wbias; };
+
+	// Перегрузки операторов ------------------------
+	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Weights<T1>& mat); // Оператор вывод матрицы в поток
+	template <typename T1> friend std::istream& operator>> (std::istream& in, Weights<T1>& mat); // Оператор чтение матрицы из потока
+
+
 	// Деструктор ------------------------------------------------------------
 	~Weights();
+private:
+	// Величина производной функции ошибки
+	T d;
+
+	// Вес нейрона сдвига
+	T wbias;
+
 };
 
 template<typename T>
-Weights<T>::Weights() : Matrix<T>()
+Weights<T>::Weights() : Matrix<T>(), d(0), wbias(0)
 {
 }
 
 template<typename T>
-Weights<T>::Weights(const int & i_, const int & j_) : Matrix<T>(i_, j_)
+Weights<T>::Weights(const int & i_, const int & j_, const int& wbisas_) : Matrix<T>(i_, j_), d(0), wbias(wbisas_)
 {
 }
 
 template<typename T>
-Weights<T>::Weights(T ** arr_, const int & i_, const int & j_) : Matrix<T>(arr_, i_, j_)
+Weights<T>::Weights(T ** arr_, const int & i_, const int & j_, const int& wbisas_) : Matrix<T>(arr_, i_, j_), d(0), wbias(0)
 {
 }
 
 template<typename T>
-Weights<T>::Weights(const Weights<T> & copy) : Matrix<T>(copy)
+Weights<T>::Weights(const Weights<T> & copy) : Matrix<T>(copy), d(copy.GetD()), wbias(copy.GetWBias())
 {
 }
 
@@ -49,6 +69,9 @@ inline void Weights<T>::Out()
 			std::cout << this->arr[i][j] << " ";
 		}
 		std::cout << std::endl;
+	}
+	if (wbias != 0) {
+		std::cout << wbias << std::endl;
 	}
 }
 
@@ -67,6 +90,9 @@ inline void Weights<int>::Out()
 		}
 		cout << std::endl;
 	}
+	if (wbias != 0) {
+		std::cout << std::setw(k) << wbias << std::endl;
+	}
 }
 
 inline void Weights<double>::Out()
@@ -84,9 +110,29 @@ inline void Weights<double>::Out()
 		}
 		cout << std::endl;
 	}
+	if (wbias != 0) {
+		std::cout << std::setw(k + 4) << wbias << std::endl;
+	}
 }
 
 template<typename T>
 Weights<T>::~Weights()
 {
+}
+
+template<typename T1>
+inline std::ostream & operator<<(std::ostream & out, const Weights<T1>& mat)
+{
+	out << (Matrix<T1>) mat;
+	out << mat.d << ' ' << mat.wbias << std::endl;
+	return out;
+}
+
+template<typename T1>
+inline std::istream & operator>>(std::istream & in, Weights<T1>& mat)
+{
+	in >> (Matrix<T1>) mat;
+	in >> mat.d;
+	in >> mat.wbias;
+	return in;
 }

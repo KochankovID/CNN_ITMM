@@ -119,6 +119,8 @@
     <ClCompile Include="StartPerceptron.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <Text Include="TeachChoose.txt" />
+    <Text Include="Tests.txt" />
     <Text Include="Weights.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
