@@ -27,7 +27,7 @@ public:
 	double operator()(const double& x) {
 		double f = 1;
 		f = Sigm::operator()(x)*(1 - Sigm::operator()(x));
-		return 1 / f;
+		return f;
 	}
 	~SigmD() {};
 };

@@ -97,7 +97,7 @@ inline void PerceptronLearning<T, Y>::GradDes(Weights<T>& w, Matrix<T>& in, Func
 			w[i][j] += (w.GetD() * E * F(x) * in[i][j]);
 		}
 	}
-	w.GetWBias() = E * F(x) * w.GetD();
+	w.GetWBias() += E * F(x) * w.GetD();
 }
 
 
@@ -115,7 +115,7 @@ inline Y PerceptronLearning<T, Y>::RMS_error(const Y * a, const Y * y, const int
 template<typename T, typename Y>
 inline Y PerceptronLearning<T, Y>::PartDOutLay(const Y & a, const Y & y)
 {
-	return 2 * (a - y);
+	return 2*(a - y);
 }
 
 

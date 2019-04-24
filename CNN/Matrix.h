@@ -34,6 +34,9 @@ public:
 	// Получение копии матрицы в виде массива
 	T** getCopy();
 
+	// Заполнение матрицы заданным значением
+	void Fill(const T& a);
+
 	// Получение подматрицы
 	Matrix<T> getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_);
 
@@ -192,6 +195,15 @@ T** Matrix<T>::getCopy()
 		}
 	}
 	return copy;
+}
+
+template<typename T>
+void Matrix<T>::Fill(const T& a) {
+	for (int i = 0; i < n; i++) {
+		for (int j = 0; j < m; j++) {
+			arr[i][j] = a;
+		}
+	}
 }
 
 template<typename T>

@@ -106,12 +106,12 @@ inline void Weights<double>::Out()
 	}
 	for (int i = 0; i < this->n; i++) {
 		for (int j = 0; j < this->m; j++) {
-			cout << std::setw(k+4) << std::setprecision(4)<< this->arr[i][j];
+			cout << std::setw(k+5) << std::setprecision(2)<< this->arr[i][j];
 		}
 		cout << std::endl;
 	}
 	if (wbias != 0) {
-		std::cout << std::setw(k + 4) << wbias << std::endl;
+		std::cout << std::setw(k + 5) << std::setprecision(4) << wbias << std::endl;
 	}
 }
 
@@ -131,7 +131,7 @@ inline std::ostream & operator<<(std::ostream & out, const Weights<T1>& mat)
 template<typename T1>
 inline std::istream & operator>>(std::istream & in, Weights<T1>& mat)
 {
-	in >> (Matrix<T1>) mat;
+	in >> ((Matrix<T1>&) mat);
 	in >> mat.d;
 	in >> mat.wbias;
 	return in;
