@@ -94,10 +94,10 @@ inline void PerceptronLearning<T, Y>::GradDes(Weights<T>& w, Matrix<T>& in, Func
 
 	for (int i = 0; i < w.getN(); i++) {
 		for (int j = 0; j < w.getM(); j++) {
-			w[i][j] -= (w.GetD() * E * F(x) * in[i][j]);
+			w[i][j] += (w.GetD() * E * F(x) * in[i][j]);
 		}
 	}
-	w.GetWBias() -= E * F(x) * w.GetD();
+	w.GetWBias() += E * F(x) * w.GetD();
 }
 
 
