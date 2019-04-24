@@ -84,11 +84,11 @@ int main()
 
 	// Создание обучателя сети
 	DD_Leaning Teacher;
-	Teacher.getE() = 0.2;
+	Teacher.getE() = 0.09;
 
 	// Создание функтора
-	Sigm F(1);
-	SigmD f(1);
+	Sigm F(2.6);
+	SigmD f(2.6);
 	Sign FF;
 	SignD ff;
 	srand(time(0));
@@ -108,6 +108,12 @@ int main()
 	for (int j = 0; j < W1.getN(); j++) {
 		for (int p = 0; p < W1.getM(); p++) {
 			W1[j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+		}
+	}
+	Weights<double> W2(1, 10);
+	for (int j = 0; j < W1.getN(); j++) {
+		for (int p = 0; p < W1.getM(); p++) {
+			W2[j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
 		}
 	}
 	//cout << W;
@@ -132,33 +138,47 @@ int main()
 	TeachChoose.close();
 
 	// Обучение сети
-	long int k = 20; // Количество обучений нейросети
+	long int k = 800; // Количество обучений нейросети
 	double summ; // Переменная суммы
 	double y; // Переменная выхода сети
+	double y1; // Переменная выхода сети
 
 	for (long int i = 0; i < k; i++) {
-		//Teacher.shuffle(nums, 10); // Тасование последовательности
+		Teacher.shuffle(nums, 10); // Тасование последовательности
 		cout << i << endl;
 		for (int j = 0; j < 10; j++) { // Цикл прохода по обучающей выборке
-			for (int u = 0; u < 5; u++) {
+			for (int u = 0; u < 3; u++) {
 				for (int l = 0; l < 10; l++) { // Цикл прохода по сети
 					summ = Neyron.Summator(Nums[NUMBER], W[0][l]); // Получение взвешенной суммы
 					m[0][l] = Neyron.FunkActiv(summ, F);
 				}
 				summ = Neyron.Summator(m, W1); // Получение взвешенной суммы
 				y = Neyron.FunkActiv(summ, F);
+				summ = Neyron.Summator(m, W2);
+				y1 = Neyron.FunkActiv(summ, F);
 				if (NUMBER == 4) {
 					W1.GetD() = Teacher.PartDOutLay(1, y);
+					W2.GetD() = Teacher.PartDOutLay(0, y1);
+				}
+				else if(NUMBER == 5){
+					W1.GetD() = Teacher.PartDOutLay(0, y);
+					W2.GetD() = Teacher.PartDOutLay(1, y1);
 				}
 				else {
 					W1.GetD() = Teacher.PartDOutLay(0, y);
+					W2.GetD() = Teacher.PartDOutLay(0, y1);
 				}
 				Teacher.BackPropagation(W, W1);
+				Teacher.BackPropagation(W, W2);
 				for (int l = 0; l < 10; l++) {
 					Teacher.GradDes(W[0][l], Nums[NUMBER], f, m[0][l]);
 				}
+
 				summ = Neyron.Summator(m, W1);
 				Teacher.GradDes(W1, m, f, summ);
+				summ = Neyron.Summator(m, W2);
+				Teacher.GradDes(W2, m, f, summ);
+
 				for (int l = 0; l < 10; l++) {
 					W[0][l].GetD() = 0;
 				}
@@ -189,21 +209,26 @@ int main()
 	// Считывание тестовой выборки из файла
 	ifstream Testsnums;
 	Testsnums.open("Tests.txt");
-	for (int i = 0; i < 15; i++) {
+	for (int i = 0; i < 14; i++) {
 		Testsnums >> Tests[i];
 	}
 
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test network:" << endl;
-	for (int j = 0; j < 15; j++) { // Цикл прохода по тестовой выборке
+	for (int j = 0; j < 14; j++) { // Цикл прохода по тестовой выборке
 		for (int l = 0; l < 10; l++) { // Цикл прохода по сети
 			summ = Neyron.Summator(Tests[j], W[0][l]); // Получение взвешенной суммы
 			m[0][l] = Neyron.FunkActiv(summ, F);
 		}
 		summ = Neyron.Summator(m, W1); // Получение взвешенной суммы
 		y = Neyron.FunkActiv(summ, F);
+		summ = Neyron.Summator(m, W2); // Получение взвешенной суммы
+		y1 = Neyron.FunkActiv(summ, F);
 		if (y > 0.9) {
-			cout << "Test " << j << " : " << "recognized " << y << ' ' << y << endl;
+			cout << "Test " << j << " : " << "recognized " << 4 << ' ' << y << endl;
+		}
+		if ((y1 > 0.9)) {
+			cout << "Test " << j << " : " << "recognized " << 5 << ' ' << y << endl;
 		}
 	}
 
@@ -215,11 +240,8 @@ int main()
 		cout << endl;
 	}
 	cout << endl << "Weights of network. Second layer: " << endl;
-	for (int i = 0; i < 10; i++) {
-		cout << "Weight " << i << "-th neyron's:" << endl;
-		W1.Out();
-		cout << endl;
-	}
+	W1.Out();
+	W2.Out();
 	system("pause");
 	return 0;
 
