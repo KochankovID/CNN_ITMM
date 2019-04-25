@@ -15,10 +15,22 @@ public:
 	// Методы класса ---------------------------------------------------------
 	// Обучение однослойного перцептрона методом обратного распространения ошибки
 	void WTSimplePerceptron(const Y& a, const Y& y, Weights<T>& w, const Matrix<T>& in);
+	
+	// Метод обратного распространения ошибки
 	static void BackPropagation(Matrix<Weights<T>>& w, const Weights<T>& y);
+
+	// Метод градиентного спуска
 	void GradDes(Weights<T>& w, Matrix<T>& in, Func<T, Y>& F, const T& x);
+
+	// Метод вычисления средней квадратичной ошибки
 	static Y RMS_error(const Y* a, const Y* y, const int& lenth);
+
+	// Метод вычисления ошибки выходного слоя
 	static Y PartDOutLay(const Y& a, const Y& y);
+
+	// Метод стягивания весов
+	void retract(Matrix<Weights<T>>& weights,const int& decs);
+	void retract(Weights<T>& weights, const int& decs);
 
 	// Тасование последовательности
 	void shuffle(int* arr, const int& lenth);
@@ -116,6 +128,35 @@ template<typename T, typename Y>
 inline Y PerceptronLearning<T, Y>::PartDOutLay(const Y & a, const Y & y)
 {
 	return 2*(a - y);
+}
+
+template<typename T, typename Y>
+inline void PerceptronLearning<T, Y>::retract(Matrix<Weights<T>>& weights, const int & decs)
+{
+	int d = 1;
+	for (int i = 0; i < decs; i++) {
+		d *= 0.1;
+	}
+	for (int i = 0; i < weights.getN(); i++) {
+		for (int j = 0; j < weights.getM(); j++) {
+			for (int k = 0; k < weights[i][j].getN(); k++) {
+				for (int y = 0; y < weights[i][j].getM(); y++) {
+					if (weights[i][j][k][y] > 0) {
+						weights[i][j][k][y] -= d;
+					}
+					else {
+						weights[i][j][k][y] += d;
+					}
+				}
+			}
+		}
+	}
+}
+
+template<typename T, typename Y>
+inline void PerceptronLearning<T, Y>::retract(Weights<T>& weights, const int & decs)
+{
+
 }
 
 
