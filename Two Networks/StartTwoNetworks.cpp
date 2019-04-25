@@ -58,8 +58,12 @@ int main()
 		W[i] = Weights<double>(5, 3);
 	}
 
+	// Создание весов второй нейросети
+	Weights<double> W1(1, 10);
+
+
 	double summ; // Переменная суммы
-	int y; // Переменная выхода сети
+	double y; // Переменная выхода сети
 	double Outs[10] = { 0,1,2,0 };// Массив выходов сети
 #ifdef Teach
 
@@ -97,6 +101,22 @@ int main()
 			}
 		}
 	}
+	Matrix<double> m(1, 10);
+	for (long int i = 0; i < k; i++) {
+		Teacher.shuffle(nums, 10); // Тасование последовательности
+		for (int j = 0; j < 10; j++) {
+			for (int l = 0; l < 10; l++) {
+				summ = Neyron.Summator(Nums[nums[j]], W[l]); // Получение взвешенной суммы
+				y = Neyron.FunkActiv(summ, F);
+				if (nums[j] != l) {
+					Teacher.WTSimplePerceptron(0, y, W[l], Nums[nums[j]]);
+				}
+				else {
+					Teacher.WTSimplePerceptron(1, y, W[l], Nums[nums[j]]);
+				}
+			}
+		}
+	}
 
 	// Сохраняем веса
 	ofstream fWeights;
@@ -117,29 +137,18 @@ int main()
 #endif // Teach
 
 	// Создание тестовой выборки
-	vector<Matrix<double>> Tests(20);
+	vector<Matrix<double>> Tests(10);
 
 	// Считывание тестовой выборки из файла
 	ifstream Testsnums;
 	Testsnums.open("Tests.txt");
-	for (int i = 0; i < 20; i++) {
+	for (int i = 0; i < 10; i++) {
 		Testsnums >> Tests[i];
 	}
 
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 10; j++) {
-			summ = Neyron.Summator(Tests[i], W[j]); // Получение взвешенной суммы
-			Outs[j] = Neyron.FunkActiv(summ, F);
-		}
-		y = max(Outs, 10);
-		cout << "Test " << i << " : " << "recognized " << y << endl;
-	}
-
-	// Вывод на экран реультатов тестирования сети
-	cout << "Test resilience:" << endl;
-	for (int i = 10; i < 20; i++) {
 		for (int j = 0; j < 10; j++) {
 			summ = Neyron.Summator(Tests[i], W[j]); // Получение взвешенной суммы
 			Outs[j] = Neyron.FunkActiv(summ, F);
@@ -158,5 +167,3 @@ int main()
 
 	system("pause");
 	return 0;
-
-}

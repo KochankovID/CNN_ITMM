@@ -102,9 +102,13 @@ int main()
 		Testsnums >> Tests[i];
 	}
 
-	// Вывод на экран реультатов тестирования сети
+	// Проверка работы сети
 	cout << "Test network:" << endl;
-	for (int i = 0; i < 5; i++) {
+	Neyron.FunkActiv(Neyron.Summator(Tests[0], Weight), F) == 1 ? cout << "Test " << 0 << " : " << "recognized 4" << endl : cout << "Test " << 0 << " : " << "doesn't recognized 4" << endl;
+
+	// Вывод на экран реультатов тестирования сети
+	cout << "Test resilience:" << endl;
+	for (int i = 1; i < 5; i++) {
 		Neyron.FunkActiv(Neyron.Summator(Tests[i], Weight), F) == 1 ? cout << "Test " << i << " : " << "recognized 4" << endl : cout << "Test " << i << " : " << "doesn't recognized 4" << endl;
 	}
 

@@ -126,10 +126,10 @@ void TestLearningPerceptron::testMetods()
 	SigmD F(0.5);
 
 	A.GradDes(IIu, III, F, 4);
-	test_(IIu[0][0] >= 1.5);
-	test_(IIu[0][1] >= 1.5);
-	test_(IIu[1][0] >= 4);
-	test_(IIu[1][1] >= 4);
+	test_(IIu[0][0] <= 1.5);
+	test_(IIu[0][1] <= 1.5);
+	test_(IIu[1][0] <= 4);
+	test_(IIu[1][1] <= 4);
 }
 
 void TestLearningPerceptron::testExeptions()

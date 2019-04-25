@@ -6,7 +6,7 @@
 #include <fstream>
 
 // Макрос режима работы программы (с обучением или без)
-#define Teach
+//#define Teach
 
 // функтор
 class Sign : public DD_Func
@@ -100,18 +100,27 @@ int main()
 #endif // Teach
 
 	// Создание тестовой выборки
-	vector<Matrix<double>> Tests(10);
+	vector<Matrix<double>> Tests(20);
 
 	// Считывание тестовой выборки из файла
 	ifstream Testsnums;
 	Testsnums.open("Tests.txt");
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < 20; i++) {
 		Testsnums >> Tests[i];
 	}
 
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) {
+		for (int j = 0; j < 10; j++) {
+			if (Neyron.FunkActiv(Neyron.Summator(Tests[i], W[j]), F) == 1)
+				cout << "Test " << i << " : " << "recognized " << j << endl;
+		}
+	}
+
+	// Вывод на экран реультатов тестирования сети
+	cout << "Test resilience:" << endl;
+	for (int i = 10; i < 20; i++) {
 		for (int j = 0; j < 10; j++) {
 			if (Neyron.FunkActiv(Neyron.Summator(Tests[i], W[j]), F) == 1)
 				cout << "Test " << i << " : " << "recognized " << j << endl;
