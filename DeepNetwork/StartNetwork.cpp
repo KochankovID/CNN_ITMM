@@ -52,6 +52,7 @@ public:
 };
 
 using namespace std;
+
 int main()
 {
 	// Создание перцептрона
@@ -68,8 +69,10 @@ int main()
 	// Установка зерна для выдачи рандомных значений
 	srand(time(0));
 
-	// Создание весов нейросети
+	// Количество нейронов первого слоя нейросети
 	const int w1_count = 100;
+
+	// Создание весов нейросети
 	Matrix<Weights<double>> W(1, w1_count);
 	for (int i = 0; i < w1_count; i++) {
 		W[0][i] = Weights<double>(5, 3);

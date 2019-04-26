@@ -15,18 +15,17 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="Tests.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
-    <Text Include="TeachChoose.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
     <Text Include="Weights.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="StartTwoNetworks.cpp">
+    <ClInclude Include="DeepNetworkLib.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="DeepNetworkLib.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
