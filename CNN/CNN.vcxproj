@@ -124,6 +124,7 @@
   <ItemGroup>
     <ClInclude Include="Base_Cnn.h" />
     <ClInclude Include="Base_Perceptron.h" />
+    <ClInclude Include="CNNLearning.h" />
     <ClInclude Include="CNNs.h" />
     <ClInclude Include="Functors.h" />
     <ClInclude Include="Matrix.h" />

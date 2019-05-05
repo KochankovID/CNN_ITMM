@@ -18,6 +18,7 @@ public:
 	
 	// Метод обратного распространения ошибки
 	static void BackPropagation(Matrix<Weights<T>>& w, const Weights<T>& y);
+	static void BackPropagation(Matrix<Weights<T>>& w, const Matrix<Weights<T>>& y);
 
 	// Метод градиентного спуска
 	void GradDes(Weights<T>& w, Matrix<T>& in, Func<T, Y>& F, const T& x);
@@ -98,6 +99,20 @@ inline void PerceptronLearning<T, Y>::BackPropagation(Matrix<Weights<T>>& w, con
 }
 
 template<typename T, typename Y>
+inline void PerceptronLearning<T, Y>::BackPropagation(Matrix<Weights<T>>& w, const Matrix<Weights<T>>& y)
+{
+	for (int o = 0; o < y.getN(); o++) {
+		for (int u = 0; u < y.getM(); u++) {
+			for (int i = 0; i < y[o][u].getN(); i++) {
+				for (int j = 0; j < y[o][u].getM(); j++) {
+					w[i][j].GetD() += (y[o][u][i][j] * y.GetD());
+				}
+			}
+		}
+	}
+}
+
+template<typename T, typename Y>
 inline void PerceptronLearning<T, Y>::GradDes(Weights<T>& w, Matrix<T>& in, Func<T, Y>& F, const T& x)
 {
 	if ((w.getN() != in.getN()) || (w.getM() != in.getM())) {
@@ -151,12 +166,6 @@ inline void PerceptronLearning<T, Y>::retract(Matrix<Weights<T>>& weights, const
 			}
 		}
 	}
-}
-
-template<typename T, typename Y>
-inline void PerceptronLearning<T, Y>::retract(Weights<T>& weights, const int & decs)
-{
-
 }
 
 

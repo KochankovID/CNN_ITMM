@@ -31,6 +31,9 @@
     <Filter Include="Исходные файлы\Функтор">
       <UniqueIdentifier>{58f1e327-b5c4-4fcd-844f-826ece87af21}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Исходные файлы\CNN\LernCnn">
+      <UniqueIdentifier>{f2daf03e-ee55-4a24-8981-dc8e1e93f582}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="NeyronCnn.h">
@@ -71,6 +74,9 @@
     </ClInclude>
     <ClInclude Include="Functors.h">
       <Filter>Исходные файлы\Функтор</Filter>
+    </ClInclude>
+    <ClInclude Include="CNNLearning.h">
+      <Filter>Исходные файлы\CNN\LernCnn</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
