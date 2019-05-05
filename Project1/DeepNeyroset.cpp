@@ -8,6 +8,12 @@ using namespace std;
 
 Deepnetwork::Deepnetwork() : F(3.4), f(3.4), W(1, w1_count), W1(1, 10), m(1, w1_count)
 {
+	for (int i = 0; i < w1_count; i++) {
+		W[0][i] = Weights<double>(5, 3);
+	}
+	for (int i = 0; i < 10; i++) {
+		W1[0][i] = Weights<double>(1, w1_count);
+	}
 	// —читывание весов
 	ifstream fWeights;
 	fWeights.open("Weights.txt");

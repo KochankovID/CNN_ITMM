@@ -26,7 +26,7 @@ NeyronPerceptron<T,Y>::NeyronPerceptron() : Base_Perceptron<T,Y>()
 }
 
 template<typename T, typename Y>
-inline Y NeyronPerceptron<T, Y>::FunkActiv(const T & e, Func<T,Y>& f)
+inline Y NeyronPerceptron<T, Y>::FunkActiv(const T & e, ::Func<T,Y>& f)
 {
 	return f(e);
 }
