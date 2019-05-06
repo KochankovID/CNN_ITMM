@@ -168,6 +168,25 @@ inline void PerceptronLearning<T, Y>::retract(Matrix<Weights<T>>& weights, const
 	}
 }
 
+template<typename T, typename Y>
+inline void PerceptronLearning<T, Y>::retract(Weights<T>& weights, const int & decs)
+{
+	int d = 1;
+	for (int i = 0; i < decs; i++) {
+		d *= 0.1;
+	}
+	for (int k = 0; k < weights.getN(); k++) {
+		for (int y = 0; y < weights.getM(); y++) {
+			if (weights[k][y] > 0) {
+				weights[k][y] -= d;
+			}
+			else {
+				weights[k][y] += d;
+			}
+		}
+	}
+}
+
 
 
 template<typename T, typename Y>

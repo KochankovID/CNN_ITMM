@@ -121,14 +121,18 @@
   <ItemGroup>
     <ClInclude Include="Suite.h" />
     <ClInclude Include="Test.h" />
+    <ClInclude Include="TestFilter.h" />
     <ClInclude Include="TestLearningPerceptron.h" />
+    <ClInclude Include="TestLerningCNN.h" />
     <ClInclude Include="TestMatrix.h" />
     <ClInclude Include="TestNeyronCnn.h" />
     <ClInclude Include="TestPeceptron.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="StartTest.cpp" />
+    <ClCompile Include="TestFilter.cpp" />
     <ClCompile Include="TestLearningPerceptron.cpp" />
+    <ClCompile Include="TestLerningCNN.cpp" />
     <ClCompile Include="TestMatrix.cpp" />
     <ClCompile Include="TestNeyronCnn.cpp" />
     <ClCompile Include="TestPeceptron.cpp" />
@@ -139,6 +143,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="FilterTest.txt" />
     <Text Include="MatrixTest.txt" />
     <Text Include="NeyronTest.txt" />
   </ItemGroup>

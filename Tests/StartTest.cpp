@@ -4,6 +4,7 @@
 #include "TestMatrix.h"
 #include "TestNeyronCnn.h"
 #include "TestPeceptron.h"
+#include "TestFilter.h"
 #include "TestLearningPerceptron.h"
 #include "Suite.h"
 
@@ -16,6 +17,7 @@ int main()
 	t.addTest(new TestNeyronCnn());
 	t.addTest(new TestPeceptron());
 	t.addTest(new TestLearningPerceptron());
+	t.addTest(new TestFilter());
 	t.run();
 	t.report();
 	t.free();

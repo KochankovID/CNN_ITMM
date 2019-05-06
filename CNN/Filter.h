@@ -41,10 +41,10 @@ Filter<T>::Filter(const Filter<T> & copy) : Matrix<T>(copy)
 template<typename T>
 inline Filter<T> Filter<T>::roate_180() const
 {
-	Filter<T> F(this->m, this->n);
-	for (int i = 0; i < this->m; i++) {
-		for (int j = 0; j < this->n; j++) {
-			F = arr[i][j];
+	Filter<T> F(this->n, this->m);
+	for (int i = this->n-1; i >= 0; i--) {
+		for (int j = this->m-1; j >= 0; j--) {
+			F[i][j] = this->arr[this->n-1 - i][this->m-1 - j];
 		}
 	}
 	return F;

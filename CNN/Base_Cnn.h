@@ -18,7 +18,7 @@ public:
 	virtual void Pooling(Matrix<T>&, const int&, const int&);
 
 	// Операция свертки над матрицей значений
-	virtual void Svertka(const Filter<T>&, Matrix<T>&) = 0;
+	virtual Matrix<T> Svertka(const Matrix<T>&, const Matrix<T>&) = 0;
 
 	// Перегрузка операторов -------------------------------------------------
 	Base_Cnn<T>& operator= (const Base_Cnn<T>& copy) = delete; // Запрет копирования

@@ -9,10 +9,20 @@ class CNNLearning
 {
 public:
 	// Конструкторы ----------------------------------------------------------
-	CNNLearning(NeyronСnn<T>& neyron_, const int& s_ = 1);
+	CNNLearning(NeyronСnn<T>& neyron_, const int& s_ = 1, const double& E_ = 1);
 
 	// Методы класса ---------------------------------------------------------
-	void ReversConvolution(Matrix<Weights<T>>& m, const Weights<T>& w, Filter<T> f);
+	// Метод обратного распространения ошибки
+	void ReversConvolution(Matrix<T>& Dnext, const Matrix<T>& D, const Filter<T>& f);
+
+	// Метод градиентного спуска
+	void GradDes(const Matrix<T>& X, const Matrix<T>& D, Filter<T>& F);
+
+	// Получение доступа к шагу свертки
+	int& GetStep() const { return step; }
+
+	// Метод получения доступа к кофиценту обучения
+	double& getE() { return E; };
 
 	// Класс исключения ------------------------------------------------------
 	class CNNLearningExeption : public std::runtime_error {
@@ -26,30 +36,61 @@ public:
 private:
 	NeyronСnn<T> neyron;
 	int s;
+	double E;
 };
 
 template<typename T>
-inline CNNLearning<T>::CNNLearning(NeyronСnn<T>& neyron_, const int& s_):neyron(neyron_), s(s_)
+inline CNNLearning<T>::CNNLearning(NeyronСnn<T>& neyron_, const int& s_, const double& E_):neyron(neyron_), s(s_), E(E_)
 {
 }
 
 template<typename T>
-inline void CNNLearning<T>::ReversConvolution(Matrix<Weights<T>>& m, const Weights<T>& w, Filter<T> f)
+inline void CNNLearning<T>::ReversConvolution(Matrix<T>& Dnext, const Matrix<T>& D, const Filter<T>& f)
 {
-	if ((w.getN() != m.getN()) || (w.getM() != m.getM())) {
-		throw CNNLearningExeption("Несовпадение размеров матрицы нейронов и матрицы весов!");
+	if (step < 1) {
+		throw NeyronСnnExeption("Задан невозможный шаг свертки!");
 	}
-	Weights<T> copy = w;
-	neyron.Padding(copy);
-	double sum;
-	Matrix<T> fokus;
-	for (int i = 0; i < m.getN()-w.getN(); i += s) {
-		for (int j = 0; j < m.getM() - w.getM(); j += s) {
-			sum = 0;
-			fokus = m.getPodmatrix(i, j, w.getN(), w.getM());
+	f = f.roate_180();
+	Matrix<T> O((D.getN() - 1) / s + f.getN(), (D.getM() - 1) / s + f.getM());
+	int stepJ = 0, stepI = 0;
+	int ii = 0, jj = 0;
+	for (int i = 0; i < O.getN(); i++) {
+		stepJ = 0;
+		if (stepI) {
+			for (int j = 0; j < O.getM(); j++) {
+					O[i][j] = D[ii][jj++];
+			}
+			stepI--;
+		}
+		else {
+			for (int j = 0; j < O.getM(); j++) {
+				if (stepJ) {
+					stepJ--;
+					O[i][j] = 0;
+				}
+				else {
+					O[i][j] = D[ii][jj++];
+					stepJ = s;
+				}
+			}
+			stepI = s;
+		}
+	}
+	neyron.Padding(O);
+	Dnext = neyron.Svertka(f, O);
+	f.roate_180();
+}
+
+template<typename T>
+void CNNLearning<T>::GradDes(const Matrix<T>& X, const Matrix<T>& D, Filter<T>& F) {
+	Matrix<T> Delta = neyron.Svertka(X, D);
+	for (int i = 0; i < Delta.getN(); i++) {
+		for (int j = 0; j < Delta.getM(); j++) {
+			F[i][j] += E * D[i][j];
 		}
 	}
 }
+
 
 template<typename T>
 inline CNNLearning<T>::~CNNLearning()

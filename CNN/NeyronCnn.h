@@ -14,19 +14,10 @@ public:
 
 	// Методы класса ---------------------------------------------------------
 	 // Операция свертки над матрицей значений
-	void Svertka(const Filter<T>& F, Matrix<T>& a);
+	Matrix<T> Svertka(const Matrix<T>& F, const Matrix<T>& a);
 
-	// Получение шага свертки
-	int GetStep() const { return step; }
-
-	// Установка шага свертки
-	void SetStep(const int& step_)
-	{
-		if (step_ < 0) {
-			throw NeyronСnnExeption("Задан невозможный шаг свертки!");
-		}
-		step = step_;
-	}
+	// Получение доступа к шагу свертки
+	int& GetStep() const { return step; }
 
 	// Перегрузка операторов -------------------------------------------------
 	NeyronСnn& operator= (const NeyronСnn<T>& copy) = delete; // Запрет копирования
@@ -58,10 +49,10 @@ NeyronСnn<T>::NeyronСnn(const int& step_) : Base_Cnn<T>(), step(step_)
 
 
 template<typename T>
-void NeyronСnn<T>::Svertka(const Filter<T>& F, Matrix<T>& a)
+Matrix<T> NeyronСnn<T>::Svertka(const Matrix<T>& F, const Matrix<T>& a)
 {
 
-	if ((step > a.getN()) || (step > a.getM())) {
+	if ((step > a.getN()) || (step > a.getM())||(step < 1) {
 		throw NeyronСnnExeption("Задан невозможный шаг свертки!");
 	}
 
@@ -81,7 +72,7 @@ void NeyronСnn<T>::Svertka(const Filter<T>& F, Matrix<T>& a)
 			rez[i][j] = sum;
 		}
 	}
-	a = rez;
+	return rez;
 }
 
 

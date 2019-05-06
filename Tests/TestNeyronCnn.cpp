@@ -15,7 +15,7 @@ void TestNeyronCnn::testMetods()
 	test_(((FF[0][0] == 0) || (FF[0][1] == 0) || (FF[0][2] == 0) || (FF[1][0] == 0) || (FF[1][2] == 0) || (FF[2][0] == 0) || (FF[2][1] == 0) || (FF[2][2] == 0) || (FF[1][1] != 0)));
 
 	Filter<double> y(2, 2);
-	B.Svertka(y,FF);
+	FF = B.Svertka(y,FF);
 
 	test_(FF.getN() == 2);
 	test_(FF.getM() == 2);
@@ -30,7 +30,7 @@ void TestNeyronCnn::testMetods()
 	A.SetStep(2);
 	test_(A.GetStep() == 2);
 	Filter<int> yy(2, 2);
-	A.Svertka(yy,T);
+	T = A.Svertka(yy,T);
 
 	test_(T.getN() == 1);
 	test_(T.getM() == 1);
