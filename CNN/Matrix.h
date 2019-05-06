@@ -38,7 +38,7 @@ public:
 	void Fill(const T& a);
 
 	// Получение подматрицы
-	Matrix<T> getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_);
+	Matrix<T> getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) const;
 
 	// Перегрузки операторов ------------------------
 	Matrix<T>& operator= (const Matrix<T>& copy); // Оператор присваивания
@@ -137,7 +137,7 @@ Matrix<T>::Matrix(const Matrix<T> & copy) : n(copy.n), m(copy.m)
 }
 
 template<typename T>
-Matrix<T> Matrix<T>::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) {
+Matrix<T> Matrix<T>::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) const {
 	if ((poz_n_ < 0) || (poz_m_ < 0)||(poz_n_ >= n)||(poz_m_ >= m)) {
 		throw Matrix::MatrixExeption("Неверная позиция верхнего левого элемента подматрицы!");
 	}

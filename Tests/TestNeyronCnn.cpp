@@ -27,7 +27,7 @@ void TestNeyronCnn::testMetods()
 	Matrix<int> T(1, 1);
 
 	A.Padding(T);
-	A.SetStep(2);
+	A.GetStep() = 2;
 	test_(A.GetStep() == 2);
 	Filter<int> yy(2, 2);
 	T = A.Svertka(yy,T);
@@ -52,15 +52,7 @@ void TestNeyronCnn::testMetods()
 
 void TestNeyronCnn::testExeptions()
 {
-	try {
-		A.SetStep(-4);
-		fail_("Не вызванно исключение  метода установки шага");
-	}
-	catch (std::runtime_error& e) {
-		succeed_();
-	}
-
-	A.SetStep(5);
+	A.GetStep() = 5;
 	Matrix<int> o(2, 2);
 	Filter<int> y(2, 2);
 
@@ -79,7 +71,7 @@ void TestNeyronCnn::Visualisator()
 
 	Matrix<int> M(6, 6);
 	int o = 0;
-	A.SetStep(1);
+	A.GetStep() = 1;
 	for (int i = 0; i < 6; i++) {
 		for (int j = 0; j < 6; j++) {
 			M[i][j] = o++;

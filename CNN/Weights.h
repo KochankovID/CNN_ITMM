@@ -26,6 +26,7 @@ public:
 	const T& GetWBias() const { return wbias; };
 
 	// Перегрузки операторов ------------------------
+	Weights<T>& operator= (const Weights<T>& copy); // Оператор присваивания
 	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Weights<T1>& mat); // Оператор вывод матрицы в поток
 	template <typename T1> friend std::istream& operator>> (std::istream& in, Weights<T1>& mat); // Оператор чтение матрицы из потока
 
@@ -113,6 +114,36 @@ inline void Weights<double>::Out()
 	if (wbias != 0) {
 		std::cout << std::setw(k + 5) << std::setprecision(4) << wbias << std::endl;
 	}
+}
+
+template<typename T>
+inline Weights<T>& Weights<T>::operator=(const Weights<T>& copy)
+{
+	if (this == &copy) {
+		return *this;
+	}
+	if ((copy.n > this->n) || (copy.m > this->m)) {
+		for (int i = 0; i < this->n; i++) {
+			this->arr[i].reset();
+		}
+		this->arr.reset();
+		this->n = copy.n;
+		this->m = copy.m;
+		this->initMat();
+	}
+	else {
+		this->n = copy.n;
+		this->m = copy.m;
+	}
+
+	for (int i = 0; i < this->n; i++) {
+		for (int j = 0; j < this->m; j++) {
+			this->arr[i][j] = copy.arr[i][j];
+		}
+	}
+	d = copy.d;
+	wbias = copy.wbias;
+	return *this;
 }
 
 template<typename T>

@@ -14,6 +14,9 @@ public:
 	// Методы класса ---------------------------------------------------------
 	Filter<T> roate_180() const;
 
+	// Перегрузки операторов ------------------------
+	Filter<T>& operator= (const Filter<T>& copy); // Оператор присваивания
+	
 	// Деструктор ------------------------------------------------------------
 	~Filter<T>();
 };
@@ -48,6 +51,34 @@ inline Filter<T> Filter<T>::roate_180() const
 		}
 	}
 	return F;
+}
+
+template<typename T>
+inline Filter<T>& Filter<T>::operator=(const Filter<T>& copy)
+{
+	if (this == &copy) {
+		return *this;
+	}
+	if ((copy.n > this->n) || (copy.m > this->m)) {
+		for (int i = 0; i < this->n; i++) {
+			this->arr[i].reset();
+		}
+		this->arr.reset();
+		this->n = copy.n;
+		this->m = copy.m;
+		this->initMat();
+	}
+	else {
+		this->n = copy.n;
+		this->m = copy.m;
+	}
+
+	for (int i = 0; i < this->n; i++) {
+		for (int j = 0; j < this->m; j++) {
+			this->arr[i][j] = copy.arr[i][j];
+		}
+	}
+	return *this;
 }
 
 template <typename T>

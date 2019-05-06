@@ -143,6 +143,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Text Include="CNNLearningTest.txt" />
     <Text Include="FilterTest.txt" />
     <Text Include="MatrixTest.txt" />
     <Text Include="NeyronTest.txt" />

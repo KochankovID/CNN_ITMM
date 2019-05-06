@@ -5,6 +5,7 @@
 #include "TestNeyronCnn.h"
 #include "TestPeceptron.h"
 #include "TestFilter.h"
+#include "TestLerningCNN.h"
 #include "TestLearningPerceptron.h"
 #include "Suite.h"
 
@@ -18,6 +19,7 @@ int main()
 	t.addTest(new TestPeceptron());
 	t.addTest(new TestLearningPerceptron());
 	t.addTest(new TestFilter());
+	t.addTest(new TestLerningCNN());
 	t.run();
 	t.report();
 	t.free();

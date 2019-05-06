@@ -17,7 +17,7 @@ public:
 	Matrix<T> Svertka(const Matrix<T>& F, const Matrix<T>& a);
 
 	// Получение доступа к шагу свертки
-	int& GetStep() const { return step; }
+	int& GetStep() { return step; }
 
 	// Перегрузка операторов -------------------------------------------------
 	NeyronСnn& operator= (const NeyronСnn<T>& copy) = delete; // Запрет копирования
@@ -52,7 +52,7 @@ template<typename T>
 Matrix<T> NeyronСnn<T>::Svertka(const Matrix<T>& F, const Matrix<T>& a)
 {
 
-	if ((step > a.getN()) || (step > a.getM())||(step < 1) {
+	if ((step > a.getN()) || (step > a.getM())||(step < 1)) {
 		throw NeyronСnnExeption("Задан невозможный шаг свертки!");
 	}
 
