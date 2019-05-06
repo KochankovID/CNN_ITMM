@@ -78,5 +78,8 @@
     <ClInclude Include="CNNLearning.h">
       <Filter>Исходные файлы\CNN\LernCnn</Filter>
     </ClInclude>
+    <ClInclude Include="CNNLearns.h">
+      <Filter>Исходные файлы\CNN\LernCnn</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

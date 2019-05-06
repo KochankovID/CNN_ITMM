@@ -9,7 +9,7 @@ class CNNLearning
 {
 public:
 	// Конструкторы ----------------------------------------------------------
-	CNNLearning(NeyronСnn<T>& neyron_, const int& s_ = 1, const double& E_ = 1);
+	CNNLearning(const int& s_ = 1, const double& E_ = 1);
 
 	// Методы класса ---------------------------------------------------------
 	// Метод обратного распространения ошибки
@@ -19,7 +19,7 @@ public:
 	void GradDes(const Matrix<T>& X, const Matrix<T>& D, Filter<T>& F);
 
 	// Получение доступа к шагу свертки
-	int& GetStep() const { return step; }
+	int& getStep() const { return step; }
 
 	// Метод получения доступа к кофиценту обучения
 	double& getE() { return E; };
@@ -40,7 +40,7 @@ private:
 };
 
 template<typename T>
-inline CNNLearning<T>::CNNLearning(NeyronСnn<T>& neyron_, const int& s_, const double& E_):neyron(neyron_), s(s_), E(E_)
+inline CNNLearning<T>::CNNLearning(const int& s_, const double& E_):neyron(), s(s_), E(E_)
 {
 }
 

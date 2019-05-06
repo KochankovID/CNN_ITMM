@@ -1,6 +1,6 @@
 #pragma once
 #include "Test.h"
-#include "PLearns.h"
+#include "CNNLearns.h"
 
 class TestLerningCNN : public TestSuite::Test
 {
@@ -19,5 +19,5 @@ public:
 
 	~TestLerningCNN();
 private:
-	DD_Leaning A;
+	D_CNNLeaning A;
 };
