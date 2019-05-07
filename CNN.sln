@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.28010.2016
+VisualStudioVersion = 15.0.27004.2006
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CNN", "CNN\CNN.vcxproj", "{165B9706-AFA6-4D4B-A1ED-17AB49CF9854}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "NeyroSet", "CNN\CNN.vcxproj", "{165B9706-AFA6-4D4B-A1ED-17AB49CF9854}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Tests", "Tests\Tests.vcxproj", "{AA18A21E-7DA6-41D1-B848-ADDED430A198}"
 EndProject
@@ -16,6 +16,8 @@ EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DeepNetwork", "DeepNetwork\DeepNetwork.vcxproj", "{2ABCC2F1-3EA3-40DD-9AE6-93C3BB7E72DD}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DrawNums", "Project1\Project1.vcxproj", "{9D583349-3E39-467E-A429-A3B8B6B90D2E}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CNN_Network", "CNN_Network\CNN_Network.vcxproj", "{513EB36D-8E3F-4324-B8DE-30D6247C7434}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -97,11 +99,21 @@ Global
 		{9D583349-3E39-467E-A429-A3B8B6B90D2E}.Release|x64.Build.0 = Release|x64
 		{9D583349-3E39-467E-A429-A3B8B6B90D2E}.Release|x86.ActiveCfg = Release|Win32
 		{9D583349-3E39-467E-A429-A3B8B6B90D2E}.Release|x86.Build.0 = Release|Win32
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Debug|Any CPU.ActiveCfg = Debug|Win32
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Debug|x64.ActiveCfg = Debug|x64
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Debug|x64.Build.0 = Debug|x64
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Debug|x86.ActiveCfg = Debug|Win32
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Debug|x86.Build.0 = Debug|Win32
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Release|Any CPU.ActiveCfg = Release|Win32
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Release|x64.ActiveCfg = Release|x64
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Release|x64.Build.0 = Release|x64
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Release|x86.ActiveCfg = Release|Win32
+		{513EB36D-8E3F-4324-B8DE-30D6247C7434}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
-		SolutionGuid = {1825A3A8-6F41-4DF3-AD92-9AC9E18ACE2F}
+		SolutionGuid = {2D0DD590-A948-4DD1-81A6-8B12A7A165CC}
 	EndGlobalSection
 EndGlobal

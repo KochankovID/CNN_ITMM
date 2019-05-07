@@ -66,6 +66,35 @@ void TestLerningCNN::testMetods()
 	test_(F[1][0] == 53);
 	test_(F[1][1] == 85);
 	out << F;
+
+	// Тест распространение ошибки на подвыборочном слое
+	Matrix<double> ppp(2, 2);
+	ppp[0][0] = 1;
+	ppp[0][1] = 2;
+	ppp[1][0] = 3;
+	ppp[1][1] = 4;
+
+	auto UUU = A.ReversPooling(ppp, 2, 2);
+
+	test_(UUU[0][0] == 1);
+	test_(UUU[0][1] == 1);
+	test_(UUU[0][2] == 2);
+	test_(UUU[0][3] == 2);
+	test_(UUU[1][0] == 1);
+	test_(UUU[1][1] == 1);
+	test_(UUU[1][2] == 2);
+	test_(UUU[1][3] == 2);
+	test_(UUU[2][0] == 3);
+	test_(UUU[2][1] == 3);
+	test_(UUU[2][2] == 4);
+	test_(UUU[2][3] == 4);
+	test_(UUU[3][0] == 3);
+	test_(UUU[3][1] == 3);
+	test_(UUU[3][2] == 4);
+	test_(UUU[3][3] == 4);
+
+	out << UUU;
+
 	out.close();
 }
 

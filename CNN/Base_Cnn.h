@@ -15,7 +15,7 @@ public:
 	virtual void Padding(Matrix<T>&);
 
 	// Операция "Макс пулинга"
-	virtual void Pooling(Matrix<T>&, const int&, const int&);
+	virtual Matrix<T> Pooling(const Matrix<T>&, const int&, const int&);
 
 	// Операция свертки над матрицей значений
 	virtual Matrix<T> Svertka(const Matrix<T>&, const Matrix<T>&) = 0;
@@ -45,7 +45,7 @@ Base_Cnn<T>::~Base_Cnn()
 }
 
 template<typename T>
-void Base_Cnn<T>::Pooling(Matrix<T>& a, const int& n_, const int& m_)
+Matrix<T> Base_Cnn<T>::Pooling(const Matrix<T>& a, const int& n_, const int& m_)
 {
 	if ((n_ < 0) || (m_ < 0) || (n_ > a.getN()) || (m_ > a.getM())) {
 		throw Base_Cnn<T>::Base_CnnExeption("Неверный размер ядра!");
@@ -58,7 +58,7 @@ void Base_Cnn<T>::Pooling(Matrix<T>& a, const int& n_, const int& m_)
 			copy[i][j] = a.getPodmatrix(i*n_, j*m_, n_, m_).Max();
 		}
 	}
-	a = copy;
+	return copy;
 }
 
 

@@ -42,7 +42,7 @@ void TestNeyronCnn::testMetods()
 			FFF[i][j] = std::_Max_value(i, j);
 		}
 	}
-	B.Pooling(FFF, 2,2);
+	FFF = B.Pooling(FFF, 2,2);
 	test_(FFF.getN() == 2);
 	test_(FFF.getM() == 2);
 

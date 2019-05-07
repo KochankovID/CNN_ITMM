@@ -24,6 +24,9 @@ public:
 	// Метод получения доступа к кофиценту обучения
 	double& getE() { return E; };
 
+	// Операция обратного распространение ошибки на слое "Макс пулинга"
+	Matrix<T> ReversPooling(const Matrix<T>& a, const int& n_, const int& m_);
+
 	// Класс исключения ------------------------------------------------------
 	class CNNLearningExeption : public std::runtime_error {
 	public:
@@ -48,7 +51,7 @@ template<typename T>
 inline Matrix<T> CNNLearning<T>::ReversConvolution(const Matrix<T>& D, const Filter<T>& f)
 {
 	if (s < 1) {
-		throw CNNLearning<T>::CNNLearningExeption("Задан невозможный шаг свертки!");
+			throw CNNLearning<T>::CNNLearningExeption("Задан невозможный шаг свертки!");
 	}
 	auto F = f.roate_180();
 	Matrix<T> O((D.getN() - 1) / s + f.getN(), (D.getM() - 1) / s + f.getM());
@@ -96,6 +99,27 @@ void CNNLearning<T>::GradDes(const Matrix<T>& X, const Matrix<T>& D, Filter<T>& 
 			F[i][j] += E * Delta[i][j];
 		}
 	}
+}
+
+template<typename T>
+inline Matrix<T> CNNLearning<T>::ReversPooling(const Matrix<T>& D, const int & n_, const int & m_)
+{
+	if ((n_ < 0) || (m_ < 0) || (n_ > D.getN()) || (m_ > D.getM())) {
+		throw Base_Cnn<T>::Base_CnnExeption("Неверный размер ядра!");
+	}
+
+	Matrix<T> copy(D.getN() * n_, D.getM() * m_);
+
+	for (int i = 0; i < D.getN(); i++) {
+		for (int j = 0; j < D.getM(); j++) {
+			for (int ii = i * n_; ii < i*n_ + n_; ii++) {
+				for (int jj = j * m_; jj < j*m_ + m_; jj++) {
+					copy[ii][jj] = D[i][j];
+				}
+			}
+		}
+	}
+	return copy;
 }
 
 
