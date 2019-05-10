@@ -19,7 +19,7 @@ int main()
 	for (int i = 0; i < 10; i++) {
 		ofstream out(to_string(i)+".txt");
 		string folder = "E:\\CNN_ITMM\\mnist_png\\training\\" + to_string(i) + "\\";
-		for (int j = 1; j < 11; j++) {
+		for (int j = 1; j < 1001; j++) {
 			file = " (" + to_string(j) + ").png";
 			path = folder + file;
 			image = imread(path, IMREAD_GRAYSCALE);

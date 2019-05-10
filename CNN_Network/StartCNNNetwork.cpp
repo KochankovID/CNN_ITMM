@@ -9,7 +9,7 @@
 
 using namespace std;
 // Макрос режима работы программы (с обучением или без)
-#define Teach
+//#define Teach
 #define OUT (X) std::cout << X;
 
 // Улучшение читабильности программы
@@ -26,7 +26,7 @@ public:
 		double f = 1;
 		const double e = 2.7182818284;
 		if (x >= 0) {
-			if (x > 7000) {
+			if (x > 10000) {
 				return 0.99999999;
 			}
 			for (int i = 0; i < a*x; i++)
@@ -35,7 +35,7 @@ public:
 			}
 		}
 		else {
-			if (x < -7000) {
+			if (x < -10000) {
 				return 0.00000001;
 			}
 			for (int i = 0; i < abs(a*x); i++)
@@ -103,7 +103,7 @@ int main()
 	const int neyron_width = 5;
 	const int neyron_height = 5;
 	const int neyron1_width = 1;
-	const int neyron2_height = 50; //50
+	const int neyron1_height = 50; //50
 
 	// Количество фильтров
 	const int f1_count = 5; //5
@@ -112,8 +112,7 @@ int main()
 
 	// Количество нейронов
 	const int w1_count = 50; //50
-	//const int w2_count = 100;
-	const int w3_count = 10;
+	const int w2_count = 10;
 
 	// Создание весов фильтров первого слоя
 	vector<Filter<double>> FILTERS(f1_count);
@@ -150,28 +149,25 @@ int main()
 	}
 
 	// Создания весов для второго слоя перцептрона
-	Matrix<Weights<double>> WEIGHTS2(1, w3_count);
-	for (int i = 0; i < w3_count; i++) {
-		WEIGHTS2[0][i] = Weights<double>(neyron1_width, neyron2_height);
-		for (int j = 0; j < WEIGHTS2[0][i].getN(); j++) {
-			for (int p = 0; p < WEIGHTS2[0][i].getM(); p++) {
-				WEIGHTS2[0][i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+	Matrix<Weights<double>> WEIGHTS1(1, w2_count);
+	for (int i = 0; i < w2_count; i++) {
+		WEIGHTS1[0][i] = Weights<double>(neyron1_width, neyron1_height);
+		for (int j = 0; j < WEIGHTS1[0][i].getN(); j++) {
+			for (int p = 0; p < WEIGHTS1[0][i].getM(); p++) {
+				WEIGHTS1[0][i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
 			}
 		}
-		WEIGHTS2[0][i].GetWBias() = (i % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+		WEIGHTS1[0][i].GetWBias() = (i % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
 	}
 
 	// Матрица выхода сети
 	Matrix<double> MATRIX_OUT(1, w1_count);
-	//Matrix<double> MATRIX_OUT1(1, w2_count);
-
 
 	double summ; // Переменная суммы
-	double y[w3_count]; // Переменная выхода сети
+	double y[w2_count]; // Переменная выхода сети
 
 	// Матрицы изображений
-
-	Matrix<double> IMAGE_1(28, 28);
+	Matrix<double> IMAGE_1(image_width, image_height);
 	vector< Matrix<double>> IMAGE_2(f1_count);
 	for (int i = 0; i < f1_count; i++) {
 		IMAGE_2[i] = Matrix<double>(24, 24);
@@ -235,10 +231,9 @@ int main()
 	}
 	input.close();
 	// Обучение сети
-	long int koll = 30; // Количество обучений нейросети
+	long int koll = 10; // Количество обучений нейросети
 
 	for (long int i = 1; i < koll; i++) {
-		//Teacher.shuffle(nums, 10); // Тасование последовательности
 		cout << i << endl;
 		for (int j = 0; j < 10; j++) { // Цикл прохода по обучающей выборке
 			cout << "	a)" << j << endl;
@@ -273,34 +268,22 @@ int main()
 						summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
 						MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 					}
-					//for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-					//	summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-					//	MATRIX_OUT1[0][l] = Neyron.FunkActiv(summ, F);
-					//}
-					for (int l = 0; l < w3_count; l++) { // Цикл прохода по сети
-						summ = Neyron.Summator(MATRIX_OUT/*1*/, WEIGHTS2[0][l]); // Получение взвешенной суммы
+					for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
+						summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
 						y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
 					}
 					// Обучение сети
-					for (int l = 0; l < w3_count; l++) { // Расчет ошибки для выходного слоя
+					for (int l = 0; l < w2_count; l++) { // Расчет ошибки для выходного слоя
 						if (l == NUMBER) { // Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
-							WEIGHTS2[0][l].GetD() = Teacher.PartDOutLay(1, y[l]); // Расчет ошибки
+							WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(1, y[l]); // Расчет ошибки
 						}
 						else {// Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
-							WEIGHTS2[0][l].GetD() = Teacher.PartDOutLay(0, y[l]); // Расчет ошибки
+							WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(0, y[l]); // Расчет ошибки
 						}
-						//if (NUMBER == 4) { // Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
-						//	WEIGHTS2[0][l].GetD() = Teacher.PartDOutLay(1, y[l]); // Расчет ошибки
-						//}
-						//else {
-						//	WEIGHTS2[0][l].GetD() = Teacher.PartDOutLay(0, y[l]);
-						//}
 					}
-					//for (int l = 0; l < w3_count; l++) { // Распространение ошибки на скрытые слои нейросети
-					//	Teacher.BackPropagation(WEIGHTS1, WEIGHTS2[0][l]);
-					//}
-					for (int l = 0; l < /*w2_count*/w3_count; l++) { // Распространение ошибки на скрытые слои нейросети
-						Teacher.BackPropagation(WEIGHTS, WEIGHTS2/*1*/[0][l]);
+					// Распространение ошибки на скрытые слои нейросети
+					for (int l = 0; l < w2_count; l++) {
+						Teacher.BackPropagation(WEIGHTS, WEIGHTS1[0][l]);
 					}
 					// Копирование ошибки на подвыборочный слой
 					for (int l = 0; l < f2_count; l++) {
@@ -339,44 +322,28 @@ int main()
 						Teacher.GradDes(WEIGHTS[0][l], IMAGE_5[l], f, MATRIX_OUT[0][l]);
 					}
 
-					//// Второй слой
-					//for (int l = 0; l < w2_count; l++) { // Примемение градиентного спуска по всем нейроннам первого слоя
-					//	Teacher.GradDes(WEIGHTS1[0][l], MATRIX_OUT, f, MATRIX_OUT1[0][l]);
-					//}
-
 					// Третий слой
-					for (int l = 0; l < w3_count; l++) { // Примемение градиентного спуска по всем нейроннам второго слоя
-						summ = Neyron.Summator(MATRIX_OUT, WEIGHTS2[0][l]);
-						Teacher.GradDes(WEIGHTS2[0][l], MATRIX_OUT, f, summ);
+					for (int l = 0; l < w2_count; l++) { // Примемение градиентного спуска по всем нейроннам второго слоя
+						summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]);
+						Teacher.GradDes(WEIGHTS1[0][l], MATRIX_OUT, f, summ);
 					}
 					// Обнуление ошибок
 					for (int l = 0; l < w1_count; l++) { // Обнуление ошибки нейронов 1 слоя
 						WEIGHTS[0][l].GetD() = 0;
 					}
-					//for (int l = 0; l < w2_count; l++) { // Обнуление ошибки нейронов 2 слоя
-					//	WEIGHTS1[0][l].GetD() = 0;
-					//}
-
 				}
 				Teacher.retract(WEIGHTS, 3);
-				/*Teacher.retract(WEIGHTS1, 3);*/
-				Teacher.retract(WEIGHTS2, 3);
+				Teacher.retract(WEIGHTS1, 3);
+
 				double a[10];
-				for (int i = 0; i < w3_count; i++) {
+				for (int i = 0; i < w2_count; i++) {
 					if (i == NUMBER)
 						a[i] = 1;
 					if (i != NUMBER)
 						a[i] = 0;
 				}
-				cout << Teacher.RMS_error(a, y, w3_count) << endl;
-				/*if (NUMBER == 4) {
-					a[0] = 1;
-					cout << Teacher.RMS_error(a, y, w3_count) << endl; 
-				}
-				else {
-					a[0] = 0;
-					cout << Teacher.RMS_error(a, y, w3_count) << endl;
-				}*/
+				cout << Teacher.RMS_error(a, y, w2_count) << endl;
+
 			}
 		}
 	}
@@ -391,8 +358,7 @@ int main()
 		fWeights << FILTERS1[i];
 	}
 	fWeights << WEIGHTS;
-	/*fWeights << WEIGHTS1;*/
-	fWeights << WEIGHTS2;
+	fWeights << WEIGHTS1;
 	fWeights.close();
 
 #else
@@ -406,11 +372,12 @@ int main()
 		 fWeights >> FILTERS1[i];
 	 }
 	 fWeights >> WEIGHTS;
-	 fWeights >> WEIGHTS2;
+	 fWeights >> WEIGHTS1;
 	 fWeights.close();
-	 string folder = "..\\Image_to_txt\\";
+	 string folder;
 	 string file;
 	 string path;
+
 #endif // Teach
 
 	 // Создание тестовой выборки
@@ -462,15 +429,11 @@ int main()
 				summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
 				MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 			}
-			//for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-			//	summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-			//	MATRIX_OUT1[0][l] = Neyron.FunkActiv(summ, F);
-			//}
-			for (int l = 0; l < w3_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(MATRIX_OUT, WEIGHTS2[0][l]); // Получение взвешенной суммы
+			for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
+				summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
 				y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
 			}
-			for (int l = 1; l < w3_count; l++) { // Получение результатов сети
+			for (int l = 1; l < w2_count; l++) { // Получение результатов сети
 				if (y[l] > y[max]) {
 					max = l;
 				}
@@ -480,13 +443,11 @@ int main()
 	}
 
 	// Считывание тестовой выборки
-	string folder;
-	string file = "Tests.txt";
-	string path;
-	ifstream input(file);
+	file = "Tests.txt";
+	ifstream inputtt(file);
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 1; j++) {
-			input >> Nums[i][j];
+			inputtt >> TestNums[i][j];
 		}
 	}
 
@@ -521,15 +482,11 @@ int main()
 			summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
 			MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 		}
-		//for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-		//	summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-		//	MATRIX_OUT1[0][l] = Neyron.FunkActiv(summ, F);
-		//}
-		for (int l = 0; l < w3_count; l++) { // Цикл прохода по сети
-			summ = Neyron.Summator(MATRIX_OUT, WEIGHTS2[0][l]); // Получение взвешенной суммы
+		for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
+			summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
 			y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
 		}
-		for (int l = 1; l < w3_count; l++) { // Получение результатов сети
+		for (int l = 1; l < w2_count; l++) { // Получение результатов сети
 			if (y[l] > y[max]) {
 				max = l;
 			}
