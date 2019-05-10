@@ -29,7 +29,7 @@ public:
 	static T Max(T** arr_, const int& n_, const int& m_);
 
 	// Поиск максимума в матрице
-	T Max();
+	T Max() const;
 
 	// Получение копии матрицы в виде массива
 	T** getCopy();
@@ -169,7 +169,7 @@ T Matrix<T>::Max(T** arr_, const int& n_, const int& m_) {
 }
 
 template<typename T>
-T Matrix<T>::Max() {
+T Matrix<T>::Max() const {
 	T max = arr[0][0];
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {

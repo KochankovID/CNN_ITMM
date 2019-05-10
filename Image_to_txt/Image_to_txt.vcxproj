@@ -20,8 +20,8 @@
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>15.0</VCProjectVersion>
-    <ProjectGuid>{513EB36D-8E3F-4324-B8DE-30D6247C7434}</ProjectGuid>
-    <RootNamespace>CNNNetwork</RootNamespace>
+    <ProjectGuid>{245D48DA-6B71-4E40-A1E9-DF2CFCFC2478}</ProjectGuid>
+    <RootNamespace>Imagetotxt</RootNamespace>
     <WindowsTargetPlatformVersion>10.0.17763.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
@@ -69,21 +69,18 @@
     <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <ExecutablePath>$(VC_ExecutablePath_x64);$(WindowsSDK_ExecutablePath);$(VS_ExecutablePath);$(MSBuild_ExecutablePath);$(FxCopDir);$(PATH);</ExecutablePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-  </PropertyGroup>
+  <PropertyGroup />
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)\$(SolutionName);$(OPENCV_INCLUDE);</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(OPENCV_INCLUDE);</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalLibraryDirectories>$(OPENCV_LIB);</AdditionalLibraryDirectories>
-      <AdditionalDependencies>opencv_world410d.lib;opencv_world410.lib;</AdditionalDependencies>
+      <AdditionalDependencies>opencv_world410d.lib;opencv_world410.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -123,32 +120,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="StartCNNNetwork.cpp" />
-  </ItemGroup>
-  <ItemGroup>
-    <Text Include="..\Image_to_txt\0.txt" />
-    <Text Include="..\Image_to_txt\0_tests.txt" />
-    <Text Include="..\Image_to_txt\1.txt" />
-    <Text Include="..\Image_to_txt\1_tests.txt" />
-    <Text Include="..\Image_to_txt\2.txt" />
-    <Text Include="..\Image_to_txt\2_tests.txt" />
-    <Text Include="..\Image_to_txt\3.txt" />
-    <Text Include="..\Image_to_txt\3_tests.txt" />
-    <Text Include="..\Image_to_txt\4.txt" />
-    <Text Include="..\Image_to_txt\4_tests.txt" />
-    <Text Include="..\Image_to_txt\5.txt" />
-    <Text Include="..\Image_to_txt\5_tests.txt" />
-    <Text Include="..\Image_to_txt\6.txt" />
-    <Text Include="..\Image_to_txt\6_tests.txt" />
-    <Text Include="..\Image_to_txt\7.txt" />
-    <Text Include="..\Image_to_txt\7_tests.txt" />
-    <Text Include="..\Image_to_txt\8.txt" />
-    <Text Include="..\Image_to_txt\8_tests.txt" />
-    <Text Include="..\Image_to_txt\9.txt" />
-    <Text Include="..\Image_to_txt\9_tests.txt" />
-    <Text Include="TeachChoose.txt" />
-    <Text Include="Tests.txt" />
-    <Text Include="Weights.txt" />
+    <ClCompile Include="Main.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

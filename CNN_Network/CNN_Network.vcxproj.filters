@@ -23,13 +23,71 @@
     <Text Include="Weights.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="1.png">
+    <Text Include="TeachChoose.txt">
       <Filter>Файлы ресурсов</Filter>
-    </Image>
-    <Image Include="..\..\Downloads\asd.jpg">
+    </Text>
+    <Text Include="Tests.txt">
       <Filter>Файлы ресурсов</Filter>
-    </Image>
+    </Text>
+    <Text Include="..\Image_to_txt\0.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\0_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\1.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\1_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\2.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\2_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\3.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\3_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\4.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\4_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\5.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\5_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\6.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\6_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\7.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\7_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\8.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\8_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\9.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
+    <Text Include="..\Image_to_txt\9_tests.txt">
+      <Filter>Файлы ресурсов</Filter>
+    </Text>
   </ItemGroup>
 </Project>

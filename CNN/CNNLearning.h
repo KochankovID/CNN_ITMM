@@ -84,7 +84,9 @@ inline Matrix<T> CNNLearning<T>::ReversConvolution(const Matrix<T>& D, const Fil
 	else {
 		O = D;
 	}
-	neyron.Padding(O);
+	for (int i = 0; i < f.getN()-1; i++) {
+		neyron.Padding(O);
+	}
 	return neyron.Svertka(F, O);
 }
 

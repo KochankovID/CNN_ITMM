@@ -12,7 +12,11 @@ public:
 	Filter(const Filter<T>& copy); // Копирования 
 
 	// Методы класса ---------------------------------------------------------
+	// Поворот фильтра на 180
 	Filter<T> roate_180() const;
+
+	// Вывод фильтра на консоль в красивом виде
+	void Out() const;
 
 	// Перегрузки операторов ------------------------
 	Filter<T>& operator= (const Filter<T>& copy); // Оператор присваивания
@@ -84,4 +88,49 @@ inline Filter<T>& Filter<T>::operator=(const Filter<T>& copy)
 template <typename T>
 Filter<T>::~Filter()
 {
+}
+
+template<typename T>
+inline void Filter<T>::Out() const
+{
+	for (int i = 0; i < this->n; i++) {
+		for (int j = 0; j < this->m; j++) {
+			std::cout << this->arr[i][j] << " ";
+		}
+		std::cout << std::endl;
+	}
+}
+
+inline void Filter<int>::Out() const
+{
+	using std::cout;
+	int max = this->Max();
+	int k = 2;
+	while (max > 0) {
+		k++;
+		max = max / 10;
+	}
+	for (int i = 0; i < this->n; i++) {
+		for (int j = 0; j < this->m; j++) {
+			cout << std::setw(k) << this->arr[i][j];
+		}
+		cout << std::endl;
+	}
+}
+
+inline void Filter<double>::Out() const
+{
+	using std::cout;
+	int max = (int)this->Max();
+	int k = 2;
+	while (max > 0) {
+		k++;
+		max = max / 10;
+	}
+	for (int i = 0; i < this->n; i++) {
+		for (int j = 0; j < this->m; j++) {
+			cout << std::setw(k + 5) << std::setprecision(2) << this->arr[i][j];
+		}
+		cout << std::endl;
+	}
 }
