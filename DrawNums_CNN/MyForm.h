@@ -201,25 +201,101 @@ namespace DrawNums {
 
 	private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
 		std::ofstream out("Image.txt");
-		out << 280 << ' ' << 280 << std::endl;
-		Bitmap o(recr->Image);
+		out << 28 << ' ' << 28 << std::endl;
+		Bitmap o(recr->Image, 280, 280);
+		double arr[15];
+		bool flag = true, flag1 = true;
+		int top_point = 0, down_point = 0, right_point = 0, left_point = 0;
 		for (int i = 0; i < o.Height; i++) {
 			for (int j = 0; j < o.Width; j++) {
-				if ((o.GetPixel(j, i).R <120)&& (o.GetPixel(j, i).G < 120) && (o.GetPixel(j, i).B < 120))
-				{
-					out << 1 << ' ';
+				if (o.GetPixel(j, i) == Color::FromArgb(0, 0, 0)) {
+					if (flag) {
+						flag = false;
+						top_point = i;
+						down_point = i;
+						right_point = j;
+						left_point = j;
+					}
+					if (i > down_point) {
+						down_point = i;
+					}
+					if (j < left_point) {
+						left_point = j;
+					}
+					if (j > right_point) {
+						right_point = j;
+					}
+
+				}
+			}
+		}
+
+		/*right_point += (right_point - left_point) * 0.2 * kof;
+		if (right_point > 280)
+			right_point = 280;*/
+		left_point -= (right_point - left_point) * 0.5;
+		if (left_point < 0)
+			left_point = 0;
+		top_point -= (down_point - top_point) * 0.3;
+		if (top_point < 0)
+			top_point = 0;
+		/*down_point += (down_point - top_point) * 0.1 * kof1;
+		if (down_point > 280)
+			down_point = 280;*/
+
+		if ((right_point - left_point) < 30) {
+			right_point += 30;
+			if (right_point > 280)
+				right_point = 280;
+			left_point -= 30;
+			if (left_point < 0)
+				left_point = 0;
+			top_point -= 10;
+			if (top_point < 0)
+				top_point = 0;
+			down_point += 10;
+			if (down_point > 280)
+				down_point = 280;
+		}
+
+		gg->DrawRectangle(Pens::Black, left_point, top_point, (right_point - left_point), (down_point - top_point));
+		recr->Refresh();
+
+		if (((right_point - left_point) < 28) || (down_point - top_point < 28)) {
+			textBox1->Text = "Число нераспознано";
+			return;
+		}
+
+		const double k = 0.2;
+		int yy = ((right_point - left_point) % 28) != 0 ? 1 : 0;
+		int oo = ((down_point - top_point) % 28) != 0 ? 1 : 0;
+		int t = round((right_point - left_point) / 28)+ yy;
+		int tt = round((down_point - top_point) / 28) + oo;
+		long int a4 = 0;
+
+		for (int i = 0; i < 28; i++)
+		{
+			for (int j = 0; j < 28; j++)
+			{
+				a4 = 0;
+				for (int ii = top_point + i * tt; ii < top_point + (i + 1) * tt; ii++) {
+					for (int jj = left_point + j * t; jj < left_point + (j + 1) * t; jj++) {
+						if (o.GetPixel(jj, ii) == Color::FromArgb(0, 0, 0)) {
+							a4++;
+						}
+					}
+				}
+				if (a4 > t*tt*k) {
+					out << std::setw(2) << 1 << ' ';
 				}
 				else {
-					out << -1 << ' ';
-				}	
+					out << std::setw(2) << -1 << ' ';
+				}
 			}
 			out << std::endl;
 		}
-		int j;
-		std::pair<int,int> a = N->Neyroset(j);
-		textBox1->Text = Convert::ToString(j);
-		gg->DrawRectangle(Pens::Black, a.second, a.first, 28, 28);
-		recr->Refresh();
+
+		textBox1->Text = Convert::ToString(N->Neyroset());
 	}
 	private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
 		gg->FillRectangle(SystemBrushes::Window, 0, 0, 280, 280);

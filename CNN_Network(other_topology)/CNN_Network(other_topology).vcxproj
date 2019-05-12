@@ -76,6 +76,7 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
+      <AdditionalIncludeDirectories>$(SolutionDir)\$(SolutionName);$(OPENCV_INCLUDE);</AdditionalIncludeDirectories>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -115,6 +116,32 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <Text Include="TeachChoose.txt" />
+    <Text Include="Tests.txt" />
+    <Text Include="Weights.txt" />
+    <Text Include="..\Image_to_txt\0.txt" />
+    <Text Include="..\Image_to_txt\0_tests.txt" />
+    <Text Include="..\Image_to_txt\1.txt" />
+    <Text Include="..\Image_to_txt\1_tests.txt" />
+    <Text Include="..\Image_to_txt\2.txt" />
+    <Text Include="..\Image_to_txt\2_tests.txt" />
+    <Text Include="..\Image_to_txt\3.txt" />
+    <Text Include="..\Image_to_txt\3_tests.txt" />
+    <Text Include="..\Image_to_txt\4.txt" />
+    <Text Include="..\Image_to_txt\4_tests.txt" />
+    <Text Include="..\Image_to_txt\5.txt" />
+    <Text Include="..\Image_to_txt\5_tests.txt" />
+    <Text Include="..\Image_to_txt\6.txt" />
+    <Text Include="..\Image_to_txt\6_tests.txt" />
+    <Text Include="..\Image_to_txt\7.txt" />
+    <Text Include="..\Image_to_txt\7_tests.txt" />
+    <Text Include="..\Image_to_txt\8.txt" />
+    <Text Include="..\Image_to_txt\8_tests.txt" />
+    <Text Include="..\Image_to_txt\9.txt" />
+    <Text Include="..\Image_to_txt\9_tests.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="StartCNNNetwork.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
