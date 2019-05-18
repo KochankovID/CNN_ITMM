@@ -56,7 +56,7 @@ class Deepnetwork {
 public:
 	Deepnetwork();
 
-	int Neyroset();
+	std::pair<int, int> Neyroset(int& rez);
 
 	~Deepnetwork();
 
@@ -65,8 +65,16 @@ private:
 	// Создание перцептрона
 	DD_Perceptron Neyron;
 
+	// Создание обучателя сети
+	DD_Leaning Teacher;
+
+
 	// Создание CNN
 	D_NeyronCnn NeyronCNN;
+
+	// Создание обучателя CNN сети
+	D_CNNLeaning TeacherCNN;
+
 
 	// Создание функтора
 	Sigm F;
