@@ -24,6 +24,9 @@ public:
 	// Метод получения доступа к кофиценту обучения
 	double& getE() { return E; };
 
+	// Операция обратного распространение ошибки c перцептрона на подвыборочный слой
+	void Revers_Perceptron_to_CNN(Matrix<T>& a, const Weights<T>& w);
+
 	// Операция обратного распространение ошибки на слое "Макс пулинга"
 	Matrix<T> ReversPooling(const Matrix<T>& a, const int& n_, const int& m_);
 
@@ -96,9 +99,27 @@ void CNNLearning<T>::GradDes(const Matrix<T>& X, const Matrix<T>& D, Filter<T>& 
 	if ((Delta.getN() != F.getN()) || (Delta.getM() != F.getM())) {
 		throw CNNLearning<T>::CNNLearningExeption("Задана неверная размерность! После свертки размеры матрицы фильтра и матрицы ошибки не совпадают!");
 	}
+	T delt;
 	for (int i = 0; i < Delta.getN(); i++) {
 		for (int j = 0; j < Delta.getM(); j++) {
-			F[i][j] += E * Delta[i][j];
+			delt = E * Delta[i][j];
+			if (delt > 1000) {
+				throw CNNLearning<T>::CNNLearningExeption("Слишком большая производная!");
+			}
+			F[i][j]-= delt;
+		}
+	}
+}
+
+template<typename T>
+inline void CNNLearning<T>::Revers_Perceptron_to_CNN(Matrix<T>& a, const Weights<T>& w)
+{
+	if ((a.getN() < 0) || (a.getM() < 0)||(a.getN() != w.getN()) || (a.getM() != w.getM())) {
+		throw Base_Cnn<T>::Base_CnnExeption("Неверный размер матрицы ошибки!");
+	}
+	for (int i = 0; i < w.getN(); i++) {
+		for (int j = 0; j < w.getM(); j++) {
+			a[i][j] += w.GetD() * w[i][j];
 		}
 	}
 }

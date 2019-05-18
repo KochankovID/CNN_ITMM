@@ -9,7 +9,7 @@
 
 using namespace std;
 // Макрос режима работы программы (с обучением или без)
-#define Teach
+//#define Teach
 #define OUT (X) std::cout << X;
 
 // Улучшение читабильности программы

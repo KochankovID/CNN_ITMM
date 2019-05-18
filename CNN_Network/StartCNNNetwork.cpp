@@ -9,8 +9,7 @@
 
 using namespace std;
 // Макрос режима работы программы (с обучением или без)
-//#define Teach
-#define OUT (X) std::cout << X;
+#define Teach
 
 // Улучшение читабильности программы
 #define NUMBER nums[j]
@@ -71,20 +70,20 @@ int main()
 
 	// Создание обучателя сети
 	DD_Leaning Teacher;
-	Teacher.getE() = 0.08;
+	Teacher.getE() = 0.04;
 
 	// Создание CNN
 	D_NeyronCnn NeyronCNN;
 
 	// Создание обучателя CNN сети
 	D_CNNLeaning TeacherCNN;
-	TeacherCNN.getE() = 0.0000009;
+	TeacherCNN.getE() = 0.0000000000000000009;
 
 	// Создание функтора
-	Sigm F(2);
+	Sigm F(0.5);
 
 	// Производная функтора
-	SigmD f(2);
+	SigmD f(0.5);
 
 	// Установка зерна для выдачи рандомных значений
 	srand(time(0));
@@ -100,24 +99,24 @@ int main()
 	const int filter1_height = 3;
 
 	// Размер матрицы нейронов 
-	const int neyron_width = 5;
+	const int neyron_width = 250;
 	const int neyron_height = 5;
-	const int neyron1_width = 1;
-	const int neyron1_height = 50; //50
+	const int neyron1_width = 100;
+	const int neyron1_height = 1; 
 
 	// Количество фильтров
-	const int f1_count = 5; //5
+	const int f1_count = 5;
 	const int k = 10;
 	const int f2_count = f1_count * k;
 
 	// Количество нейронов
-	const int w1_count = 50; //50
+	const int w1_count = 100;
 	const int w2_count = 10;
 
 	// Создание весов фильтров первого слоя
 	vector<Filter<double>> FILTERS(f1_count);
 	for (int i = 0; i < f1_count; i++) {
-		FILTERS[i] = Filter<double>(filter_width, filter_height);
+		FILTERS[i] = Filter<double>(filter_height, filter_width);
 		for (int j = 0; j < FILTERS[i].getN(); j++) {
 			for (int p = 0; p < FILTERS[i].getM(); p++) {
 				FILTERS[i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
@@ -128,7 +127,7 @@ int main()
 	// Создание весов фильтров второго слоя
 	vector<Filter<double>> FILTERS1(f2_count);
 	for (int i = 0; i < f2_count; i++) {
-		FILTERS1[i] = Filter<double>(filter1_width, filter1_height);
+		FILTERS1[i] = Filter<double>(filter1_height, filter1_width);
 		for (int j = 0; j < FILTERS1[i].getN(); j++) {
 			for (int p = 0; p < FILTERS1[i].getM(); p++) {
 				FILTERS1[i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
@@ -139,7 +138,7 @@ int main()
 	// Создание весов перового слоя перцептрона
 	Matrix<Weights<double>> WEIGHTS(1, w1_count);
 	for (int i = 0; i < w1_count; i++) {
-		WEIGHTS[0][i] = Weights<double>(neyron_width, neyron_height);
+		WEIGHTS[0][i] = Weights<double>(neyron_height, neyron_width);
 		for (int j = 0; j < WEIGHTS[0][i].getN(); j++) {
 			for (int p = 0; p < WEIGHTS[0][i].getM(); p++) {
 				WEIGHTS[0][i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
@@ -151,7 +150,7 @@ int main()
 	// Создания весов для второго слоя перцептрона
 	Matrix<Weights<double>> WEIGHTS1(1, w2_count);
 	for (int i = 0; i < w2_count; i++) {
-		WEIGHTS1[0][i] = Weights<double>(neyron1_width, neyron1_height);
+		WEIGHTS1[0][i] = Weights<double>(neyron1_height, neyron1_width);
 		for (int j = 0; j < WEIGHTS1[0][i].getN(); j++) {
 			for (int p = 0; p < WEIGHTS1[0][i].getM(); p++) {
 				WEIGHTS1[0][i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
@@ -162,12 +161,15 @@ int main()
 
 	// Матрица выхода сети
 	Matrix<double> MATRIX_OUT(1, w1_count);
+	
+	// Матрица выхода изображения
+	Matrix<double> IMAGE_OUT(neyron_height, neyron_width);
 
 	double summ; // Переменная суммы
 	double y[w2_count]; // Переменная выхода сети
 
 	// Матрицы изображений
-	Matrix<double> IMAGE_1(image_width, image_height);
+	Matrix<double> IMAGE_1(image_height, image_width);
 	vector< Matrix<double>> IMAGE_2(f1_count);
 	for (int i = 0; i < f1_count; i++) {
 		IMAGE_2[i] = Matrix<double>(24, 24);
@@ -209,8 +211,10 @@ int main()
 	for (int i = 0; i < f2_count; i++) {
 		IMAGE_5_D[i] = Matrix<double>(5, 5);
 	}
+	// Матрица ошибки выхода изображения
+	Matrix<double> IMAGE_OUT_D(neyron_height, neyron_width);
+	IMAGE_OUT.Fill(0);
 
-	
 	// Последовательность цифр, тасуемая для получения равномерной рандомизации
 	int nums[10] = { 0,1,2,3,4,5,6,7,8,9 };
 
@@ -219,131 +223,155 @@ int main()
 	for (int i = 0; i < 10; i++) {
 		Nums[i] = vector<Matrix<double>>(10);
 	}
+
+	// Массив, нужный для подсчета ошибки
+	double a[10];
+
 	// Считывание обучающей выборки
-	string folder;
-	string file = "TeachChoose.txt";
+	string folder = "..\\Image_to_txt\\";
+	string file;
 	string path;
-	ifstream input(file);
+	ifstream input;
 	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 1; j++) {
+		file = to_string(i) + ".txt";
+		path = folder + file;
+		input.open(path);
+		for (int j = 0; j < 10; j++) {
 			input >> Nums[i][j];
 		}
+		input.close();
 	}
-	input.close();
 	// Обучение сети
 	long int koll = 10; // Количество обучений нейросети
-
 	for (long int i = 1; i < koll; i++) {
 		cout << i << endl;
+		Teacher.shuffle(nums, 10); // Тасование последовательности
 		for (int j = 0; j < 10; j++) { // Цикл прохода по обучающей выборке
 			cout << "	a)" << j << endl;
 			for (int u = 0; u < 3; u++) {
-				cout <<"		b)"<< u << endl;
-				for (int ooo = 0; ooo < 1; ooo++) {
-					cout << "			c)" << ooo << endl;
-					// Работа сети
-					// Считывание картика поданной на вход сети
-					IMAGE_1 = Nums[NUMBER][ooo];
-					// Проход картинки через первый сверточный слой
-					for (int l = 0; l < f1_count; l++) {
-						IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
-					}
-					// Операция макспулинга
-					for (int l = 0; l < f1_count; l++) {
-						IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);
-					}
-					// Проход картинки через второй сверточный слой
-					for (int l = 0; l < f1_count; l++) {
-						for (int ll = 0; ll < k; ll++) {
-							IMAGE_4[l*k+ll] = NeyronCNN.Svertka(FILTERS1[l*k+ll], IMAGE_3[l]);
-						}
-					}
-					// Операция макспулинга
-					for (int l = 0; l < f2_count; l++) {
-						IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
-					}
-					// Проход по перцептрону
-					// Проход по первому слою
-					for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-						summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
-						MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
-					}
-					for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-						summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-						y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
-					}
-					// Обучение сети
-					for (int l = 0; l < w2_count; l++) { // Расчет ошибки для выходного слоя
-						if (l == NUMBER) { // Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
-							WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(1, y[l]); // Расчет ошибки
-						}
-						else {// Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
-							WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(0, y[l]); // Расчет ошибки
-						}
-					}
-					// Распространение ошибки на скрытые слои нейросети
-					for (int l = 0; l < w2_count; l++) {
-						Teacher.BackPropagation(WEIGHTS, WEIGHTS1[0][l]);
-					}
-					// Копирование ошибки на подвыборочный слой
-					for (int l = 0; l < f2_count; l++) {
-						IMAGE_5_D[l].Fill(WEIGHTS[0][l].GetD());
-					}
-					// Распространение ошибки на сверточный слой
-					for (int l = 0; l < f2_count; l++) {
-						IMAGE_4_D[l] = TeacherCNN.ReversPooling(IMAGE_5_D[l], 2, 2);
-					}
-					// Распространение ошибки на подвыборочный слой
-					for (int l = 0; l < f1_count; l++) {
-						IMAGE_3_D[l] = TeacherCNN.ReversConvolution(IMAGE_4_D[l*k], FILTERS1[l*k]);
-						for (int ll = 1; ll < k; ll++) {
-							IMAGE_3_D[l] = IMAGE_3_D[l] + TeacherCNN.ReversConvolution(IMAGE_4_D[l*k+ll], FILTERS1[l*k+ll]);
-						}
-					}
-					// Распространение ошибки на сверточный слой
-					for (int l = 0; l < f1_count; l++) {
-						IMAGE_2_D[l] = TeacherCNN.ReversPooling(IMAGE_3_D[l], 2, 2);
-					}
-					// Примемение градиентного спуска 
-
-					// Первый сверточный слой
-					for (int l = 0; l < f1_count; l++) {
-						TeacherCNN.GradDes(IMAGE_1, IMAGE_2_D[l], FILTERS[l]);
-					}
-					// Второй сверточный слой
-					for (int l = 0; l < f1_count; l++) {
-						for (int ll = 0; ll < k; ll++) {
-							TeacherCNN.GradDes(IMAGE_3[l], IMAGE_4_D[l*k+ll], FILTERS1[l*k + ll]);
-						}
-					}
-					// Перцептрон
-					// Первый слой
-					for (int l = 0; l < w1_count; l++) { // Примемение градиентного спуска по всем нейроннам первого слоя
-						Teacher.GradDes(WEIGHTS[0][l], IMAGE_5[l], f, MATRIX_OUT[0][l]);
-					}
-
-					// Третий слой
-					for (int l = 0; l < w2_count; l++) { // Примемение градиентного спуска по всем нейроннам второго слоя
-						summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]);
-						Teacher.GradDes(WEIGHTS1[0][l], MATRIX_OUT, f, summ);
-					}
-					// Обнуление ошибок
-					for (int l = 0; l < w1_count; l++) { // Обнуление ошибки нейронов 1 слоя
-						WEIGHTS[0][l].GetD() = 0;
+				cout << (NUMBER) << ": " << u << ") ";
+				// Работа сети
+				// Считывание картика поданной на вход сети
+				IMAGE_1 = Nums[NUMBER][i];
+				// Проход картинки через первый сверточный слой
+				for (int l = 0; l < f1_count; l++) {
+					IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
+				}
+				// Операция макспулинга
+				for (int l = 0; l < f1_count; l++) {
+					IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);
+				}
+				// Проход картинки через второй сверточный слой
+				for (int l = 0; l < f1_count; l++) {
+					for (int ll = 0; ll < k; ll++) {
+						IMAGE_4[l*k + ll] = NeyronCNN.Svertka(FILTERS1[l*k + ll], IMAGE_3[l]);
 					}
 				}
-				Teacher.retract(WEIGHTS, 3);
-				Teacher.retract(WEIGHTS1, 3);
-
-				double a[10];
+				// Операция макспулинга
+				for (int l = 0; l < f2_count; l++) {
+					IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
+				}
+				for (int l = 0; l < f2_count; l++) {
+					for (int li = 0; li < 5; li++) {
+						for (int lj = 0; lj < 5; lj++) {
+							IMAGE_OUT[li][l * 5 + lj] = IMAGE_5[l][li][lj];
+						}
+					}
+				}
+				// Проход по перцептрону
+				// Проход по первому слою
+				for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
+					summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
+					MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
+				}
+				for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
+					summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
+					y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
+				}
+				// Расчет ошибки
 				for (int i = 0; i < w2_count; i++) {
 					if (i == NUMBER)
 						a[i] = 1;
 					if (i != NUMBER)
 						a[i] = 0;
 				}
+				// Вывод ошибки на экран
 				cout << Teacher.RMS_error(a, y, w2_count) << endl;
+				// Если ошибка мала, пропускаем цикл обучения, что бы избежать переобучения сети
+				if (Teacher.RMS_error(a, y, w2_count) < 0.3) {
+					continue;
+				}
+				// Обучение сети
+				for (int l = 0; l < w2_count; l++) { // Расчет ошибки для выходного слоя
+					if (l == NUMBER) { // Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
+						WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(1, y[l]); // Расчет ошибки
+					}
+					else {// Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
+						WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(0, y[l]); // Расчет ошибки
+					}
+				}
+				// Распространение ошибки на скрытые слои перцептрона
+				for (int l = 0; l < w2_count; l++) {
+					Teacher.BackPropagation(WEIGHTS, WEIGHTS1[0][l]);
+				}
+				// Распространение ошибки на выход картинки
+				for (int l = 0; l < w2_count; l++) {
+					TeacherCNN.Revers_Perceptron_to_CNN(IMAGE_OUT_D, WEIGHTS[0][l]);
+				}
+				// Копирование ошибки на подвыборочный слой
+				for (int l = 0; l < f2_count; l++) {
+					for (int li = 0; li < 5; li++) {
+						for (int lj = 0; lj < 5; lj++) {
+							IMAGE_5_D[l][li][lj] = IMAGE_OUT_D[li][l * 5 + lj];
+						}
+					}
+				}
+				// Распространение ошибки на сверточный слой
+				for (int l = 0; l < f2_count; l++) {
+					IMAGE_4_D[l] = TeacherCNN.ReversPooling(IMAGE_5_D[l], 2, 2);
+				}
+				// Распространение ошибки на подвыборочный слой
+				for (int l = 0; l < f1_count; l++) {
+					IMAGE_3_D[l] = TeacherCNN.ReversConvolution(IMAGE_4_D[l*k], FILTERS1[l*k]);
+					for (int ll = 1; ll < k; ll++) {
+						IMAGE_3_D[l] = IMAGE_3_D[l] + TeacherCNN.ReversConvolution(IMAGE_4_D[l*k + ll], FILTERS1[l*k + ll]);
+					}
+				}
+				// Распространение ошибки на сверточный слой
+				for (int l = 0; l < f1_count; l++) {
+					IMAGE_2_D[l] = TeacherCNN.ReversPooling(IMAGE_3_D[l], 2, 2);
+				}
+				// Примемение градиентного спуска 
+				// Первый сверточный слой
+				for (int l = 0; l < f1_count; l++) {
+					TeacherCNN.GradDes(IMAGE_1, IMAGE_2_D[l], FILTERS[l]);
+				}
+				// Второй сверточный слой
+				for (int l = 0; l < f1_count; l++) {
+					for (int ll = 0; ll < k; ll++) {
+						TeacherCNN.GradDes(IMAGE_3[l], IMAGE_4_D[l*k + ll], FILTERS1[l*k + ll]);
+					}
+				}
+				// Перцептрон
+				// Первый слой
+				for (int l = 0; l < w1_count; l++) { // Примемение градиентного спуска по всем нейроннам первого слоя
+					Teacher.GradDes(WEIGHTS[0][l], IMAGE_OUT, f, MATRIX_OUT[0][l]);
+				}
 
+				// Третий слой
+				for (int l = 0; l < w2_count; l++) { // Примемение градиентного спуска по всем нейроннам второго слоя
+					summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]);
+					Teacher.GradDes(WEIGHTS1[0][l], MATRIX_OUT, f, summ);
+				}
+				// Обнуление ошибок
+				for (int l = 0; l < w1_count; l++) { // Обнуление ошибки нейронов 1 слоя
+					WEIGHTS[0][l].GetD() = 0;
+				}
+				IMAGE_OUT_D.Fill(0);
+				Teacher.retract(WEIGHTS, 5);
+				Teacher.retract(WEIGHTS1, 5);
+				Teacher.getE() -= Teacher.getE() * 0.005;
+				TeacherCNN.getE() -= TeacherCNN.getE() * 0.005;
 			}
 		}
 	}
@@ -423,10 +451,17 @@ int main()
 			for (int l = 0; l < f2_count; l++) {
 				IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 			}
+			for (int l = 0; l < f2_count; l++) {
+				for (int li = 0; li < 5; li++) {
+					for (int lj = 0; lj < 5; lj++) {
+						IMAGE_OUT[li][l * 5 + lj] = IMAGE_5[l][li][lj];
+					}
+				}
+			}
 			// Проход по перцептрону
 			// Проход по первому слою
 			for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
+				summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
 				MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 			}
 			for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
@@ -454,7 +489,6 @@ int main()
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) { // Цикл прохода по тестовой выборке
-		int max = 0;
 		// Работа сети
 		// Считывание картика поданной на вход сети
 		IMAGE_1 = TestNums[i][0];
@@ -476,10 +510,17 @@ int main()
 		for (int l = 0; l < f2_count; l++) {
 			IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 		}
+		for (int l = 0; l < f2_count; l++) {
+			for (int li = 0; li < 5; li++) {
+				for (int lj = 0; lj < 5; lj++) {
+					IMAGE_OUT[li][l * 5 + lj] = IMAGE_5[l][li][lj];
+				}
+			}
+		}
 		// Проход по перцептрону
 		// Проход по первому слою
 		for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-			summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
+			summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
 			MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 		}
 		for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
