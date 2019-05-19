@@ -63,6 +63,7 @@ inline Matrix<T> CNNLearning<T>::ReversConvolution(const Matrix<T>& D, const Fil
 		int ii = 0, jj = 0;
 		for (int i = 0; i < O.getN(); i++) {
 			stepJ = 0;
+			jj = 0;
 			if (stepI) {
 				for (int j = 0; j < O.getM(); j++) {
 					O[i][j] = 0;
@@ -82,6 +83,7 @@ inline Matrix<T> CNNLearning<T>::ReversConvolution(const Matrix<T>& D, const Fil
 				}
 				stepI = s;
 			}
+			ii++;
 		}
 	}
 	else {

@@ -26,9 +26,6 @@
     <Text Include="TeachChoose.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>
-    <Text Include="Tests.txt">
-      <Filter>Файлы ресурсов</Filter>
-    </Text>
     <Text Include="..\Image_to_txt\0.txt">
       <Filter>Файлы ресурсов</Filter>
     </Text>

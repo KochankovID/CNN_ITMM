@@ -6,6 +6,7 @@
 #include <vector>
 #include <iostream>
 #include <fstream>
+#include <thread>
 
 using namespace std;
 // Макрос режима работы программы (с обучением или без)
@@ -70,20 +71,20 @@ int main()
 
 	// Создание обучателя сети
 	DD_Leaning Teacher;
-	Teacher.getE() = 0.04;
+	Teacher.getE() = 0.02048;
 
 	// Создание CNN
 	D_NeyronCnn NeyronCNN;
 
 	// Создание обучателя CNN сети
 	D_CNNLeaning TeacherCNN;
-	TeacherCNN.getE() = 0.0000000000000000009;
+	TeacherCNN.getE() = 0.000000009;
 
 	// Создание функтора
-	Sigm F(0.5);
+	Sigm F(1.6);
 
 	// Производная функтора
-	SigmD f(0.5);
+	SigmD f(1.6);
 
 	// Установка зерна для выдачи рандомных значений
 	srand(time(0));
@@ -95,23 +96,26 @@ int main()
 	// Размер фильтров (ядер свертки)
 	const int filter_width = 5;
 	const int filter_height = 5;
-	const int filter1_width = 3;
-	const int filter1_height = 3;
+	const int filter1_width = 5;
+	const int filter1_height = 5;
 
 	// Размер матрицы нейронов 
-	const int neyron_width = 250;
-	const int neyron_height = 5;
-	const int neyron1_width = 100;
+	const int neyron_width = 36;
+	const int neyron_height = 4;
+	const int neyron1_width = 120;
 	const int neyron1_height = 1; 
 
 	// Количество фильтров
-	const int f1_count = 5;
-	const int k = 10;
+	const int f1_count = 3;
+	const int k = 3;
 	const int f2_count = f1_count * k;
 
 	// Количество нейронов
-	const int w1_count = 100;
+	const int w1_count = 120;
 	const int w2_count = 10;
+	
+	// Кофицент создания весов
+	const int wwww = 1;
 
 	// Создание весов фильтров первого слоя
 	vector<Filter<double>> FILTERS(f1_count);
@@ -119,7 +123,7 @@ int main()
 		FILTERS[i] = Filter<double>(filter_height, filter_width);
 		for (int j = 0; j < FILTERS[i].getN(); j++) {
 			for (int p = 0; p < FILTERS[i].getM(); p++) {
-				FILTERS[i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+				FILTERS[i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX*wwww)) : -((double)rand() / (RAND_MAX * wwww)));
 			}
 		}
 	}
@@ -130,7 +134,7 @@ int main()
 		FILTERS1[i] = Filter<double>(filter1_height, filter1_width);
 		for (int j = 0; j < FILTERS1[i].getN(); j++) {
 			for (int p = 0; p < FILTERS1[i].getM(); p++) {
-				FILTERS1[i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+				FILTERS1[i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
 			}
 		}
 	}
@@ -141,22 +145,21 @@ int main()
 		WEIGHTS[0][i] = Weights<double>(neyron_height, neyron_width);
 		for (int j = 0; j < WEIGHTS[0][i].getN(); j++) {
 			for (int p = 0; p < WEIGHTS[0][i].getM(); p++) {
-				WEIGHTS[0][i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+				WEIGHTS[0][i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
 			}
 		}
-		WEIGHTS[0][i].GetWBias() = (i % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+		WEIGHTS[0][i].GetWBias() = (i % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
 	}
-
 	// Создания весов для второго слоя перцептрона
 	Matrix<Weights<double>> WEIGHTS1(1, w2_count);
 	for (int i = 0; i < w2_count; i++) {
 		WEIGHTS1[0][i] = Weights<double>(neyron1_height, neyron1_width);
 		for (int j = 0; j < WEIGHTS1[0][i].getN(); j++) {
 			for (int p = 0; p < WEIGHTS1[0][i].getM(); p++) {
-				WEIGHTS1[0][i][j][p] = (p % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+				WEIGHTS1[0][i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
 			}
 		}
-		WEIGHTS1[0][i].GetWBias() = (i % 2 ? ((double)rand() / RAND_MAX) : -((double)rand() / RAND_MAX));
+		WEIGHTS1[0][i].GetWBias() = (i % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
 	}
 
 	// Матрица выхода сети
@@ -182,12 +185,12 @@ int main()
 
 	vector< Matrix<double>> IMAGE_4(f2_count);
 	for (int i = 0; i < f2_count; i++) {
-		IMAGE_4[i] = Matrix<double>(10, 10);
+		IMAGE_4[i] = Matrix<double>(8, 8);
 	}
 
 	vector< Matrix<double>> IMAGE_5(f2_count);
 	for (int i = 0; i < f2_count; i++) {
-		IMAGE_5[i] = Matrix<double>(5, 5);
+		IMAGE_5[i] = Matrix<double>(4, 4);
 	}
 
 #ifdef Teach
@@ -204,12 +207,12 @@ int main()
 
 	vector< Matrix<double>> IMAGE_4_D(f2_count);
 	for (int i = 0; i < f2_count; i++) {
-		IMAGE_4_D[i] = Matrix<double>(10, 10);
+		IMAGE_4_D[i] = Matrix<double>(8, 8);
 	}
 
 	vector< Matrix<double>> IMAGE_5_D(f2_count);
 	for (int i = 0; i < f2_count; i++) {
-		IMAGE_5_D[i] = Matrix<double>(5, 5);
+		IMAGE_5_D[i] = Matrix<double>(4, 4);
 	}
 	// Матрица ошибки выхода изображения
 	Matrix<double> IMAGE_OUT_D(neyron_height, neyron_width);
@@ -218,11 +221,26 @@ int main()
 	// Последовательность цифр, тасуемая для получения равномерной рандомизации
 	int nums[10] = { 0,1,2,3,4,5,6,7,8,9 };
 
+	long int koll = 100; // Количество обучений нейросети
+
 	// Создание обучающей выборки
 	vector<vector<Matrix<double>>> Nums(10);
 	for (int i = 0; i < 10; i++) {
-		Nums[i] = vector<Matrix<double>>(10);
+		Nums[i] = vector<Matrix<double>>(koll);
 	}
+
+	//Считывание весов
+	//ifstream fWeightss;
+	//fWeightss.open("Weights.txt");
+	//for (int i = 0; i < f1_count; i++) {
+	//	fWeightss >> FILTERS[i];
+	//}
+	//for (int i = 0; i < f2_count; i++) {
+	//	fWeightss >> FILTERS1[i];
+	//}
+	//fWeightss >> WEIGHTS;
+	//fWeightss >> WEIGHTS1;
+	//fWeightss.close();
 
 	// Массив, нужный для подсчета ошибки
 	double a[10];
@@ -236,23 +254,24 @@ int main()
 		file = to_string(i) + ".txt";
 		path = folder + file;
 		input.open(path);
-		for (int j = 0; j < 10; j++) {
+		for (int j = 0; j < koll; j++) {
 			input >> Nums[i][j];
 		}
 		input.close();
 	}
+	int max = 0;
 	// Обучение сети
-	long int koll = 10; // Количество обучений нейросети
-	for (long int i = 1; i < koll; i++) {
+	for (long int i = 0; i < koll; i++) {
 		cout << i << endl;
-		Teacher.shuffle(nums, 10); // Тасование последовательности
+		//Teacher.shuffle(nums, 10); // Тасование последовательности
 		for (int j = 0; j < 10; j++) { // Цикл прохода по обучающей выборке
 			cout << "	a)" << j << endl;
-			for (int u = 0; u < 3; u++) {
+			for (int u = 0; u < 2; u++) {
 				cout << (NUMBER) << ": " << u << ") ";
+				max = 0;
 				// Работа сети
 				// Считывание картика поданной на вход сети
-				IMAGE_1 = Nums[NUMBER][i];
+				IMAGE_1 = Nums[NUMBER][(i%2) == 0 ? i:i-i%2];
 				// Проход картинки через первый сверточный слой
 				for (int l = 0; l < f1_count; l++) {
 					IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
@@ -272,9 +291,9 @@ int main()
 					IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 				}
 				for (int l = 0; l < f2_count; l++) {
-					for (int li = 0; li < 5; li++) {
-						for (int lj = 0; lj < 5; lj++) {
-							IMAGE_OUT[li][l * 5 + lj] = IMAGE_5[l][li][lj];
+					for (int li = 0; li < 4; li++) {
+						for (int lj = 0; lj < 4; lj++) {
+							IMAGE_OUT[li][l * 4 + lj] = IMAGE_5[l][li][lj];
 						}
 					}
 				}
@@ -288,6 +307,12 @@ int main()
 					summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
 					y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
 				}
+				for (int l = 1; l < w2_count; l++) { // Получение результатов сети
+					if (y[l] > y[max]) {
+						max = l;
+					}
+				}
+				cout << max << ' ';
 				// Расчет ошибки
 				for (int i = 0; i < w2_count; i++) {
 					if (i == NUMBER)
@@ -298,7 +323,7 @@ int main()
 				// Вывод ошибки на экран
 				cout << Teacher.RMS_error(a, y, w2_count) << endl;
 				// Если ошибка мала, пропускаем цикл обучения, что бы избежать переобучения сети
-				if (Teacher.RMS_error(a, y, w2_count) < 0.3) {
+				if (Teacher.RMS_error(a, y, w2_count) < 0.2) {
 					continue;
 				}
 				// Обучение сети
@@ -320,9 +345,9 @@ int main()
 				}
 				// Копирование ошибки на подвыборочный слой
 				for (int l = 0; l < f2_count; l++) {
-					for (int li = 0; li < 5; li++) {
-						for (int lj = 0; lj < 5; lj++) {
-							IMAGE_5_D[l][li][lj] = IMAGE_OUT_D[li][l * 5 + lj];
+					for (int li = 0; li < 4; li++) {
+						for (int lj = 0; lj < 4; lj++) {
+							IMAGE_5_D[l][li][lj] = IMAGE_OUT_D[li][l * 4 + lj];
 						}
 					}
 				}
@@ -368,10 +393,8 @@ int main()
 					WEIGHTS[0][l].GetD() = 0;
 				}
 				IMAGE_OUT_D.Fill(0);
-				Teacher.retract(WEIGHTS, 5);
-				Teacher.retract(WEIGHTS1, 5);
-				Teacher.getE() -= Teacher.getE() * 0.005;
-				TeacherCNN.getE() -= TeacherCNN.getE() * 0.005;
+				Teacher.getE() -= Teacher.getE() * 0.00001;
+				TeacherCNN.getE() -= TeacherCNN.getE() * 0.00001;
 			}
 		}
 	}
@@ -424,7 +447,6 @@ int main()
 		 }
 		 inputt.close();
 	 }
-	 int max = 0;
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) { // Цикл прохода по тестовой выборке
@@ -452,9 +474,9 @@ int main()
 				IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 			}
 			for (int l = 0; l < f2_count; l++) {
-				for (int li = 0; li < 5; li++) {
-					for (int lj = 0; lj < 5; lj++) {
-						IMAGE_OUT[li][l * 5 + lj] = IMAGE_5[l][li][lj];
+				for (int li = 0; li < 4; li++) {
+					for (int lj = 0; lj < 4; lj++) {
+						IMAGE_OUT[li][l * 4 + lj] = IMAGE_5[l][li][lj];
 					}
 				}
 			}
@@ -478,17 +500,22 @@ int main()
 	}
 
 	// Считывание тестовой выборки
-	file = "Tests.txt";
-	ifstream inputtt(file);
+	// Считывание тестовой выборки
+	folder = "..\\Image_to_txt\\";
 	for (int i = 0; i < 10; i++) {
-		for (int j = 0; j < 1; j++) {
-			inputtt >> TestNums[i][j];
+		file = to_string(i) + "_tests.txt";
+		path = folder + file;
+		ifstream inputt(path);
+		for (int j = 0; j < 10; j++) {
+			inputt >> TestNums[i][j];
 		}
+		inputt.close();
 	}
 
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) { // Цикл прохода по тестовой выборке
+		max = 0;
 		// Работа сети
 		// Считывание картика поданной на вход сети
 		IMAGE_1 = TestNums[i][0];
@@ -511,9 +538,9 @@ int main()
 			IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 		}
 		for (int l = 0; l < f2_count; l++) {
-			for (int li = 0; li < 5; li++) {
-				for (int lj = 0; lj < 5; lj++) {
-					IMAGE_OUT[li][l * 5 + lj] = IMAGE_5[l][li][lj];
+			for (int li = 0; li < 4; li++) {
+				for (int lj = 0; lj < 4; lj++) {
+					IMAGE_OUT[li][l * 4 + lj] = IMAGE_5[l][li][lj];
 				}
 			}
 		}
