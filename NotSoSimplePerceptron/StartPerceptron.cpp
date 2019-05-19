@@ -123,7 +123,7 @@ int main()
 	for (int i = 10; i < 20; i++) {
 		for (int j = 0; j < 10; j++) {
 			if (Neyron.FunkActiv(Neyron.Summator(Tests[i], W[j]), F) == 1)
-				cout << "Test " << i << " : " << "recognized " << j << endl;
+				cout << "Test " << i-10 << " : " << "recognized " << j << endl;
 		}
 	}
 

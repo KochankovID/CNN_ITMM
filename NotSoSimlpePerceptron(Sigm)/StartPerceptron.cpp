@@ -145,7 +145,7 @@ int main()
 			Outs[j] = Neyron.FunkActiv(summ, F);
 		}
 		y = max(Outs, 10);
-		cout << "Test " << i << " : " << "recognized " << y << endl;
+		cout << "Test " << i-10 << " : " << "recognized " << y << endl;
 	}
 
 	// Вывод весов сети

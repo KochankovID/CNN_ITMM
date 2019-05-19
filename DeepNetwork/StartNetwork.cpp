@@ -6,7 +6,7 @@
 #include <fstream>
 
 // Макрос режима работы программы (с обучением или без)
-#define Teach
+//#define Teach
 #define OUT (X) std::cout << X;
 #define NUMBER nums[j]
 
