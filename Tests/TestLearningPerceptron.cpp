@@ -93,7 +93,7 @@ void TestLearningPerceptron::testMetods()
 	test_(A.RMS_error(yr, yyr, 3) == 0.5);
 
 	// Тест вычисления частной производной квадратичной ошибки
-	test_(A.PartDOutLay(yr[2], yyr[2]) == -2);
+	test_(A.PartDOutLay(yr[2], yyr[2]) == 2);
 
 	// Тест обратного распространения ошибки
 	Matrix<double> UUU(2, 2);

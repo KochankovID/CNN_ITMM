@@ -1,4 +1,4 @@
-#include "DeepNetworkLib.h"
+#include "DeepNeyroset.h"
 #include "Perceptrons.h"
 #include <vector>
 #include <iostream>
