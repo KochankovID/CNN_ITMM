@@ -5,10 +5,12 @@
 #include <iostream>
 #include <fstream>
 
-// Макрос режима работы программы (с обучением или без)
-//#define Teach
+#define Teach
 
-// функтор
+// Макрос режима работы программы (с обучением или без)
+#define Teach
+
+// Функтор
 class Sign : public II_Func
 {
 public:
@@ -67,9 +69,11 @@ int main()
 			summ = Neyron.Summator(Nums[nums[j]], Weight); // Получение взвешенной суммы
 			y = Neyron.FunkActiv(summ, F); // Получение ответа нейрона
 			if (nums[j] != 4) {
+				// Если текущая цифра не 4, то ожидаемый ответ -1
 				Teacher.WTSimplePerceptron(-1, y, Weight, Nums[nums[j]]);
 			}
 			else {
+				// Если текущая цифра 4, то ожидаемый ответ 1
 				Teacher.WTSimplePerceptron(1, y, Weight, Nums[nums[j]]);
 			}
 		}
@@ -100,14 +104,15 @@ int main()
 		Testsnums >> Tests[i];
 	}
 
-	// Проверка работы сети
+	// Проверка работы сети на обучающей выборке
 	cout << "Test network:" << endl;
-	for (int i = 4; i < 14; i++) {
-		Neyron.FunkActiv(Neyron.Summator(Tests[i], Weight), F) == 1 ? cout << "Test " << i-4 << " : " << "recognized 4" << endl : cout << "Test " << i-4 << " : " << "doesn't recognized 4" << endl;
-	}
-	// Вывод на экран реультатов тестирования сети
+	// Вывод результатов на экран
+	Neyron.FunkActiv(Neyron.Summator(Tests[0], Weight), F) == 1 ? cout << "Test " << 0 << " : " << "recognized 4" << endl : cout << "Test " << 0 << " : " << "doesn't recognized 4" << endl;
+
+	// Вывод на экран реультатов тестирования сети на тестовой выборке
 	cout << "Test resilience:" << endl;
-	for (int i = 0; i < 4; i++) {
+	for (int i = 1; i < 5; i++) {
+		// Вывод результатов на экран
 		Neyron.FunkActiv(Neyron.Summator(Tests[i], Weight), F) == 1 ? cout << "Test " << i << " : " << "recognized 4" << endl : cout << "Test " << i << " : " << "doesn't recognized 4" << endl;
 	}
 

@@ -1,62 +1,62 @@
-#pragma once
+п»ї#pragma once
 #include <string>
 
 template <typename T>
 class Matrix
 {
 public:
-	// Конструкторы ---------------------------------
-	Matrix(); // Конструктор по умолчанию -----------
-	Matrix(T** arr_, const int& i, const int& j); // Конструктор инициализатор
-	Matrix(T* arr_, const int& i, const int& j); // Конструктор инициализатор
-	Matrix(const int& i, const int& j); // Конструктор инициализатор (создает матрицу заданного размера заполненную 0)
-	Matrix(const Matrix<T>& copy); // Конструктор копирования 
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ---------------------------------
+	Matrix(); // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РїРѕ СѓРјРѕР»С‡Р°РЅРёСЋ -----------
+	Matrix(T** arr_, const int& i, const int& j); // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ
+	Matrix(T* arr_, const int& i, const int& j); // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ
+	Matrix(const int& i, const int& j); // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РёРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ (СЃРѕР·РґР°РµС‚ РјР°С‚СЂРёС†Сѓ Р·Р°РґР°РЅРЅРѕРіРѕ СЂР°Р·РјРµСЂР° Р·Р°РїРѕР»РЅРµРЅРЅСѓСЋ 0)
+	Matrix(const Matrix<T>& copy); // РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂ РєРѕРїРёСЂРѕРІР°РЅРёСЏ 
 
-	// Методы класса --------------------------------
-	// Получение количества строк
+	// РњРµС‚РѕРґС‹ РєР»Р°СЃСЃР° --------------------------------
+	// РџРѕР»СѓС‡РµРЅРёРµ РєРѕР»РёС‡РµСЃС‚РІР° СЃС‚СЂРѕРє
 	int getN() const
 	{
 		return n;
 	}
 
-	// Получение колисчества столбцов
+	// РџРѕР»СѓС‡РµРЅРёРµ РєРѕР»РёСЃС‡РµСЃС‚РІР° СЃС‚РѕР»Р±С†РѕРІ
 	int getM() const
 	{
 		return m;
 	}
 
-	// Поиск максимума в массиве того же типа
+	// РџРѕРёСЃРє РјР°РєСЃРёРјСѓРјР° РІ РјР°СЃСЃРёРІРµ С‚РѕРіРѕ Р¶Рµ С‚РёРїР°
 	static T Max(T** arr_, const int& n_, const int& m_);
 
-	// Поиск максимума в матрице
+	// РџРѕРёСЃРє РјР°РєСЃРёРјСѓРјР° РІ РјР°С‚СЂРёС†Рµ
 	T Max() const;
 
-	// Получение копии матрицы в виде массива
+	// РџРѕР»СѓС‡РµРЅРёРµ РєРѕРїРёРё РјР°С‚СЂРёС†С‹ РІ РІРёРґРµ РјР°СЃСЃРёРІР°
 	T** getCopy();
 
-	// Заполнение матрицы заданным значением
+	// Р—Р°РїРѕР»РЅРµРЅРёРµ РјР°С‚СЂРёС†С‹ Р·Р°РґР°РЅРЅС‹Рј Р·РЅР°С‡РµРЅРёРµРј
 	void Fill(const T& a);
 
-	// Получение подматрицы
+	// РџРѕР»СѓС‡РµРЅРёРµ РїРѕРґРјР°С‚СЂРёС†С‹
 	Matrix<T> getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) const;
 
-	// Перегрузки операторов ------------------------
-	Matrix<T>& operator= (const Matrix<T>& copy); // Оператор присваивания
-	Matrix<T> operator+ (const Matrix<T>& mat) const; // Оператор суммы
-	Matrix<T> operator* (const Matrix<T>& mat) const; // Оператор произведения
-	Matrix<T> operator* (const int k) const; // Оператор произведения на число
-	template <typename T1> friend Matrix<T1> operator* (const int k, const Matrix<T1>& mat); // Оператор произведения на число
-	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Matrix<T1>& mat); // Оператор вывод матрицы в поток
-	template <typename T1> friend std::istream& operator>> (std::istream& out, Matrix<T1>& mat); // Оператор чтение матрицы из потока
-	std::shared_ptr<T[]> operator[] (int index); // Оператор индексации
-	const std::shared_ptr<T[]> operator[] (int index) const; // Оператор индексации константы
-	bool operator==(const Matrix<T>& mat) const; // Оператор сравнения матриц
+	// РџРµСЂРµРіСЂСѓР·РєРё РѕРїРµСЂР°С‚РѕСЂРѕРІ ------------------------
+	Matrix<T>& operator= (const Matrix<T>& copy); // РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+	Matrix<T> operator+ (const Matrix<T>& mat) const; // РћРїРµСЂР°С‚РѕСЂ СЃСѓРјРјС‹
+	Matrix<T> operator* (const Matrix<T>& mat) const; // РћРїРµСЂР°С‚РѕСЂ РїСЂРѕРёР·РІРµРґРµРЅРёСЏ
+	Matrix<T> operator* (const int k) const; // РћРїРµСЂР°С‚РѕСЂ РїСЂРѕРёР·РІРµРґРµРЅРёСЏ РЅР° С‡РёСЃР»Рѕ
+	template <typename T1> friend Matrix<T1> operator* (const int k, const Matrix<T1>& mat); // РћРїРµСЂР°С‚РѕСЂ РїСЂРѕРёР·РІРµРґРµРЅРёСЏ РЅР° С‡РёСЃР»Рѕ
+	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Matrix<T1>& mat); // РћРїРµСЂР°С‚РѕСЂ РІС‹РІРѕРґ РјР°С‚СЂРёС†С‹ РІ РїРѕС‚РѕРє
+	template <typename T1> friend std::istream& operator>> (std::istream& out, Matrix<T1>& mat); // РћРїРµСЂР°С‚РѕСЂ С‡С‚РµРЅРёРµ РјР°С‚СЂРёС†С‹ РёР· РїРѕС‚РѕРєР°
+	std::shared_ptr<T[]> operator[] (int index); // РћРїРµСЂР°С‚РѕСЂ РёРЅРґРµРєСЃР°С†РёРё
+	const std::shared_ptr<T[]> operator[] (int index) const; // РћРїРµСЂР°С‚РѕСЂ РёРЅРґРµРєСЃР°С†РёРё РєРѕРЅСЃС‚Р°РЅС‚С‹
+	bool operator==(const Matrix<T>& mat) const; // РћРїРµСЂР°С‚РѕСЂ СЃСЂР°РІРЅРµРЅРёСЏ РјР°С‚СЂРёС†
 
 
-	// Деструктор -----------------------------------
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ -----------------------------------
 	virtual ~Matrix();
 
-	// Класс исключений ----------------------------
+	// РљР»Р°СЃСЃ РёСЃРєР»СЋС‡РµРЅРёР№ ----------------------------
 	class MatrixExeption : public std::runtime_error
 	{
 	public:
@@ -65,18 +65,18 @@ public:
 	};
 protected:
 
-	// Поля класса ----------------------------------
-	int n, // Количество строк в матрице
-		m; // Количество столбцов с матрице
-	std::shared_ptr < std::shared_ptr<T []>[] > arr; // Матрица
+	// РџРѕР»СЏ РєР»Р°СЃСЃР° ----------------------------------
+	int n, // РљРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚СЂРѕРє РІ РјР°С‚СЂРёС†Рµ
+		m; // РљРѕР»РёС‡РµСЃС‚РІРѕ СЃС‚РѕР»Р±С†РѕРІ СЃ РјР°С‚СЂРёС†Рµ
+	std::shared_ptr < std::shared_ptr<T []>[] > arr; // РњР°С‚СЂРёС†Р°
 
-	// Скрытые матоды класса ------------------------
-	void initMat(); // Выделение памяти для матрицы
-	void isInRange(int index) const; // Проверяет, находится ли индекс в допустимых границах
+	// РЎРєСЂС‹С‚С‹Рµ РјР°С‚РѕРґС‹ РєР»Р°СЃСЃР° ------------------------
+	void initMat(); // Р’С‹РґРµР»РµРЅРёРµ РїР°РјСЏС‚Рё РґР»СЏ РјР°С‚СЂРёС†С‹
+	void isInRange(int index) const; // РџСЂРѕРІРµСЂСЏРµС‚, РЅР°С…РѕРґРёС‚СЃСЏ Р»Рё РёРЅРґРµРєСЃ РІ РґРѕРїСѓСЃС‚РёРјС‹С… РіСЂР°РЅРёС†Р°С…
 };
 
 
-// Реализация ---------------------------------------
+// Р РµР°Р»РёР·Р°С†РёСЏ ---------------------------------------
 template<typename T>
 Matrix<T>::Matrix() : n(0), m(0)
 {
@@ -87,7 +87,7 @@ template<typename T>
 Matrix<T>::Matrix(T** arr_, const int& i, const int& j) : n(i), m(j)
 {
 	if ((n < 0) || (m < 0)) {
-		throw Matrix::MatrixExeption("Неверный размер матрицы!");
+		throw Matrix::MatrixExeption("РќРµРІРµСЂРЅС‹Р№ СЂР°Р·РјРµСЂ РјР°С‚СЂРёС†С‹!");
 	}
 	initMat();
 	for (int i = 0; i < n; i++) {
@@ -101,7 +101,7 @@ template<typename T>
 Matrix<T>::Matrix(T* arr_, const int& i, const int& j) : n(i), m(j)
 {
 	if ((n < 0) || (m < 0)) {
-		throw Matrix::MatrixExeption("Неверный размер матрицы!");
+		throw Matrix::MatrixExeption("РќРµРІРµСЂРЅС‹Р№ СЂР°Р·РјРµСЂ РјР°С‚СЂРёС†С‹!");
 	}
 	initMat();
 	for (int i = 0; i < n; i++) {
@@ -115,7 +115,7 @@ template<typename T>
 Matrix<T>::Matrix(const int& i, const int& j) : n(i), m(j)
 {
 	if ((n < 0) || (m < 0)) {
-		throw Matrix::MatrixExeption("Неверный размер матрицы!");
+		throw Matrix::MatrixExeption("РќРµРІРµСЂРЅС‹Р№ СЂР°Р·РјРµСЂ РјР°С‚СЂРёС†С‹!");
 	}
 	initMat();
 	for (int i = 0; i < n; i++) {
@@ -139,10 +139,10 @@ Matrix<T>::Matrix(const Matrix<T> & copy) : n(copy.n), m(copy.m)
 template<typename T>
 Matrix<T> Matrix<T>::getPodmatrix(const int& poz_n_, const int& poz_m_, const int& n_, const int& m_) const {
 	if ((poz_n_ < 0) || (poz_m_ < 0)||(poz_n_ >= n)||(poz_m_ >= m)) {
-		throw Matrix::MatrixExeption("Неверная позиция верхнего левого элемента подматрицы!");
+		throw Matrix::MatrixExeption("РќРµРІРµСЂРЅР°СЏ РїРѕР·РёС†РёСЏ РІРµСЂС…РЅРµРіРѕ Р»РµРІРѕРіРѕ СЌР»РµРјРµРЅС‚Р° РїРѕРґРјР°С‚СЂРёС†С‹!");
 	}
 	if (((poz_n_ + n_) > n) || ((poz_m_ + m_) > m)) {
-		throw Matrix::MatrixExeption("Подматрица выходит за границы матрицы!");
+		throw Matrix::MatrixExeption("РџРѕРґРјР°С‚СЂРёС†Р° РІС‹С…РѕРґРёС‚ Р·Р° РіСЂР°РЅРёС†С‹ РјР°С‚СЂРёС†С‹!");
 	}
 
 	Matrix<T> rez(n_, m_);
@@ -239,7 +239,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> & mat) const
 {
 	Matrix<T> tmp(*this);
 	if ((n != mat.n) || (m != mat.m)) {
-		throw MatrixExeption("Невозможно выполнить сложение матриц разного размера");
+		throw MatrixExeption("РќРµРІРѕР·РјРѕР¶РЅРѕ РІС‹РїРѕР»РЅРёС‚СЊ СЃР»РѕР¶РµРЅРёРµ РјР°С‚СЂРёС† СЂР°Р·РЅРѕРіРѕ СЂР°Р·РјРµСЂР°");
 	}
 	for (int i = 0; i < n; i++) {
 		for (int j = 0; j < m; j++) {
@@ -253,7 +253,7 @@ template<typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> & mat) const
 {
 	if (m != mat.n) {
-		throw MatrixExeption("Невозможно выполнить умножение матриц с несовпадающим количеством столбцов в первой и строк во второй");
+		throw MatrixExeption("РќРµРІРѕР·РјРѕР¶РЅРѕ РІС‹РїРѕР»РЅРёС‚СЊ СѓРјРЅРѕР¶РµРЅРёРµ РјР°С‚СЂРёС† СЃ РЅРµСЃРѕРІРїР°РґР°СЋС‰РёРј РєРѕР»РёС‡РµСЃС‚РІРѕРј СЃС‚РѕР»Р±С†РѕРІ РІ РїРµСЂРІРѕР№ Рё СЃС‚СЂРѕРє РІРѕ РІС‚РѕСЂРѕР№");
 	}
 	Matrix<T> tmp(n, mat.m);
 	for (int i = 0; i < n; i++) {
@@ -332,7 +332,7 @@ template<typename T>
 void Matrix<T>::isInRange(int index) const
 {
 	if ((index > n) || (index < 0)) {
-		throw MatrixExeption("Индекс выходит за размер матрицы!");
+		throw MatrixExeption("РРЅРґРµРєСЃ РІС‹С…РѕРґРёС‚ Р·Р° СЂР°Р·РјРµСЂ РјР°С‚СЂРёС†С‹!");
 	}
 }
 
@@ -351,7 +351,7 @@ Matrix<T> operator*(const int k, const Matrix<T> & mat)
 template<typename T>
 std::ostream& operator<<(std::ostream& out, const Matrix<T> & mat)
 {
-	out << mat.n << ' ' << mat.m << std::endl; // Для совместимости с вводом из файла
+	out << mat.n << ' ' << mat.m << std::endl; // Р”Р»СЏ СЃРѕРІРјРµСЃС‚РёРјРѕСЃС‚Рё СЃ РІРІРѕРґРѕРј РёР· С„Р°Р№Р»Р°
 
 	for (int i = 0; i < mat.n; i++) {
 		for (int j = 0; j < mat.m; j++) {
@@ -368,7 +368,7 @@ std::istream& operator>>(std::istream & in, Matrix<T> & mat)
 	in >> mat.n;
 	in >> mat.m;
 	if ((mat.n < 0) || (mat.m < 0)) {
-		throw Matrix<T>::MatrixExeption("Неверный размер матрицы!");
+		throw Matrix<T>::MatrixExeption("РќРµРІРµСЂРЅС‹Р№ СЂР°Р·РјРµСЂ РјР°С‚СЂРёС†С‹!");
 	}
 	mat.initMat();
 	for (int i = 0; i < mat.n; i++) {

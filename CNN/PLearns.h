@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "PerceptronLearning.h"
 #define DD_Leaning PerceptronLearning<double, double>
 #define ID_Leaning PerceptronLearning<int, double>

@@ -82,4 +82,7 @@
       <Filter>Исходные файлы\CNN\LernCnn</Filter>
     </ClInclude>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="ClassDiagram.cd" />
+  </ItemGroup>
 </Project>

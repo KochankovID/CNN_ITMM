@@ -1,59 +1,59 @@
-#pragma once
+п»ї#pragma once
 #include "Base_Cnn.h"
 #include <string>
 
 
 template<typename T>
-class NeyronСnn : public Base_Cnn<T>
+class NeyronРЎnn : public Base_Cnn<T>
 {
 public:
-	// Конструкторы ----------------------------------------------------------
-	NeyronСnn();
-	explicit NeyronСnn(const int& step_ );
-	NeyronСnn(const NeyronСnn<T>& copy) = delete; // Запрет копирования
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ----------------------------------------------------------
+	NeyronРЎnn();
+	explicit NeyronРЎnn(const int& step_ );
+	NeyronРЎnn(const NeyronРЎnn<T>& copy) = delete; // Р—Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 
-	// Методы класса ---------------------------------------------------------
-	 // Операция свертки над матрицей значений
+	// РњРµС‚РѕРґС‹ РєР»Р°СЃСЃР° ---------------------------------------------------------
+	 // РћРїРµСЂР°С†РёСЏ СЃРІРµСЂС‚РєРё РЅР°Рґ РјР°С‚СЂРёС†РµР№ Р·РЅР°С‡РµРЅРёР№
 	Matrix<T> Svertka(const Matrix<T>& F, const Matrix<T>& a);
 
-	// Получение доступа к шагу свертки
+	// РџРѕР»СѓС‡РµРЅРёРµ РґРѕСЃС‚СѓРїР° Рє С€Р°РіСѓ СЃРІРµСЂС‚РєРё
 	int& GetStep() { return step; }
 
-	// Перегрузка операторов -------------------------------------------------
-	NeyronСnn& operator= (const NeyronСnn<T>& copy) = delete; // Запрет копирования
+	// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂРѕРІ -------------------------------------------------
+	NeyronРЎnn& operator= (const NeyronРЎnn<T>& copy) = delete; // Р—Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 	
-	// Деструктор ------------------------------------------------------------
-	~NeyronСnn();
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ ------------------------------------------------------------
+	~NeyronРЎnn();
 
-	// Класс исключения ------------------------------------------------------
-	class NeyronСnnExeption : public Base_Cnn<T>::Base_CnnExeption {
+	// РљР»Р°СЃСЃ РёСЃРєР»СЋС‡РµРЅРёСЏ ------------------------------------------------------
+	class NeyronРЎnnExeption : public Base_Cnn<T>::Base_CnnExeption {
 	public:
-		NeyronСnnExeption(std::string str) : Base_Cnn<T>::Base_CnnExeption(str) {};
-		~NeyronСnnExeption() {};
+		NeyronРЎnnExeption(std::string str) : Base_Cnn<T>::Base_CnnExeption(str) {};
+		~NeyronРЎnnExeption() {};
 	};
 private:
-	// Поля класса -----------------------------------------------------------
-	int step; // Шаг свертки
+	// РџРѕР»СЏ РєР»Р°СЃСЃР° -----------------------------------------------------------
+	int step; // РЁР°Рі СЃРІРµСЂС‚РєРё
 };
 
 
 template<typename T>
-NeyronСnn<T>::NeyronСnn() : Base_Cnn<T>(), step(1)
+NeyronРЎnn<T>::NeyronРЎnn() : Base_Cnn<T>(), step(1)
 {
 }
 
 template<typename T>
-NeyronСnn<T>::NeyronСnn(const int& step_) : Base_Cnn<T>(), step(step_)
+NeyronРЎnn<T>::NeyronРЎnn(const int& step_) : Base_Cnn<T>(), step(step_)
 {
 }
 
 
 template<typename T>
-Matrix<T> NeyronСnn<T>::Svertka(const Matrix<T>& F, const Matrix<T>& a)
+Matrix<T> NeyronРЎnn<T>::Svertka(const Matrix<T>& F, const Matrix<T>& a)
 {
 
 	if ((step > a.getN()) || (step > a.getM())||(step < 1)) {
-		throw NeyronСnnExeption("Задан невозможный шаг свертки!");
+		throw NeyronРЎnnExeption("Р—Р°РґР°РЅ РЅРµРІРѕР·РјРѕР¶РЅС‹Р№ С€Р°Рі СЃРІРµСЂС‚РєРё!");
 	}
 
 	Matrix<T> rez((a.getN() - F.getN()) / step + 1, (a.getM() - F.getM()) / step + 1);
@@ -77,6 +77,6 @@ Matrix<T> NeyronСnn<T>::Svertka(const Matrix<T>& F, const Matrix<T>& a)
 
 
 template<typename T>
-NeyronСnn<T>::~NeyronСnn()
+NeyronРЎnn<T>::~NeyronРЎnn()
 {
 }

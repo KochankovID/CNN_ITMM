@@ -7,9 +7,8 @@
 
 // Макрос режима работы программы (с обучением или без)
 #define Teach
-#define OUT (X) std::cout << X;
 
-// функтор
+// Сигмоида
 class Sigm : public DD_Func
 {
 public:
@@ -40,6 +39,7 @@ int max(const double* arr, const int& length) {
 };
 
 using namespace std;
+
 int main()
 {
 	// Создание перцептрона
@@ -84,14 +84,16 @@ int main()
 
 	for (long int i = 0; i < k; i++) {
 		Teacher.shuffle(nums, 10); // Тасование последовательности
-		for (int j = 0; j < 10; j++) {
-			for (int l = 0; l < 10; l++) {
+		for (int j = 0; j < 10; j++) { // Проход по обучающей выборке
+			for (int l = 0; l < 10; l++) { // Проход по всем нейронам сети
 				summ = Neyron.Summator(Nums[nums[j]], W[l]); // Получение взвешенной суммы
-				y = Neyron.FunkActiv(summ, F);
+				y = Neyron.FunkActiv(summ, F); // Получение ответа нейрона
 				if (nums[j] != l) {
+					// Если номер текущего нейрона не совпадает с текущей цифрой, то ожидаемый ответ 0
 					Teacher.WTSimplePerceptron(0, y, W[l], Nums[nums[j]]);
 				}
 				else {
+					// Если номер текущего нейрона совпадает с текущей цифрой, то ожидаемый ответ 1
 					Teacher.WTSimplePerceptron(1, y, W[l], Nums[nums[j]]);
 				}
 			}
@@ -126,7 +128,7 @@ int main()
 		Testsnums >> Tests[i];
 	}
 
-	// Вывод на экран реультатов тестирования сети
+	// Вывод на экран реультатов тестирования сети на обучающей выборке
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -134,10 +136,11 @@ int main()
 			Outs[j] = Neyron.FunkActiv(summ, F);
 		}
 		y = max(Outs, 10);
+		// Вывод результатов на экран
 		cout << "Test " << i << " : " << "recognized " << y << endl;
 	}
 
-	// Вывод на экран реультатов тестирования сети
+	// Вывод на экран реультатов тестирования сети на тестовой выборке
 	cout << "Test resilience:" << endl;
 	for (int i = 10; i < 20; i++) {
 		for (int j = 0; j < 10; j++) {
@@ -145,10 +148,11 @@ int main()
 			Outs[j] = Neyron.FunkActiv(summ, F);
 		}
 		y = max(Outs, 10);
-		cout << "Test " << i-10 << " : " << "recognized " << y << endl;
+		// Вывод результатов на экран
+		cout << "Test " << i << " : " << "recognized " << y << endl;
 	}
 
-	// Вывод весов сети
+	// Вывод весов сети на экран
 	cout << endl << "Weights of network: " << endl;
 	for (int i = 0; i < 10; i++) {
 		cout << "Weight " << i << "-th neyron's:" << endl;

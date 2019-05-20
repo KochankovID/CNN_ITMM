@@ -191,7 +191,7 @@ namespace DrawNums {
 	}
 	private: System::Void button2_Click(System::Object^  sender, System::Windows::Forms::MouseEventArgs^  e) {
 		if (flag) {
-			gg->FillEllipse(System::Drawing::Brushes::Black, e->X, e->Y,5,5);
+			gg->FillEllipse(System::Drawing::Brushes::Black, e->X, e->Y,25,25);
 			recr->Refresh();
 		}
 	}
@@ -201,25 +201,32 @@ namespace DrawNums {
 
 	private: System::Void button4_Click(System::Object^  sender, System::EventArgs^  e) {
 		std::ofstream out("Image.txt");
-		out << 280 << ' ' << 280 << std::endl;
-		Bitmap o(recr->Image);
-		for (int i = 0; i < o.Height; i++) {
-			for (int j = 0; j < o.Width; j++) {
-				if ((o.GetPixel(j, i).R <120)&& (o.GetPixel(j, i).G < 120) && (o.GetPixel(j, i).B < 120))
-				{
-					out << 1 << ' ';
+		out << 28 << ' ' << 28 << std::endl;
+		Bitmap o(recr->Image, 280, 280);
+		int a4;
+		for (int i = 0; i < 28; i++)
+		{
+			for (int j = 0; j < 28; j++)
+			{
+				a4 = 0;
+				for (int ii = i * 10; ii < (i + 1) * 10; ii++) {
+					for (int jj = j*10; jj < (j + 1) * 10; jj++) {
+						if (o.GetPixel(jj, ii) == Color::FromArgb(0, 0, 0)) {
+							a4++;
+						}
+					}
+				}
+				if (a4 > 10) {
+					out << std::setw(2) << 1 << ' ';
 				}
 				else {
-					out << -1 << ' ';
-				}	
+					out << std::setw(2) << -1 << ' ';
+				}
 			}
 			out << std::endl;
 		}
-		int j;
-		std::pair<int,int> a = N->Neyroset(j);
-		textBox1->Text = Convert::ToString(j);
-		gg->DrawRectangle(Pens::Black, a.second, a.first, 28, 28);
-		recr->Refresh();
+
+		textBox1->Text = Convert::ToString(N->Neyroset());
 	}
 	private: System::Void button5_Click(System::Object^  sender, System::EventArgs^  e) {
 		gg->FillRectangle(SystemBrushes::Window, 0, 0, 280, 280);
