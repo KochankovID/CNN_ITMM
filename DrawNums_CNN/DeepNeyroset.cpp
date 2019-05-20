@@ -6,9 +6,9 @@
 
 using namespace std;
 
-Deepnetwork::Deepnetwork() : F(2), f(2), FILTERS(f1_count), FILTERS1(f2_count), WEIGHTS(1, w1_count), WEIGHTS1(1, w2_count), 
+Deepnetwork::Deepnetwork() : F(0.8), f(0.8), FILTERS(f1_count), FILTERS1(f2_count), WEIGHTS(1, w1_count), WEIGHTS1(1, w2_count),
 	MATRIX_OUT(1, w1_count), IMAGE_1(image_width, image_height), IMAGE_2(f1_count), IMAGE_3(f1_count), IMAGE_4(f2_count),
-	IMAGE_5(f2_count), IMAGE_2_D(f1_count), IMAGE_3_D(f1_count), IMAGE_4_D(f2_count), IMAGE_5_D(f2_count)
+	IMAGE_5(f2_count), IMAGE_2_D(f1_count), IMAGE_3_D(f1_count), IMAGE_4_D(f2_count), IMAGE_5_D(f2_count), IMAGE_OUT(neyron_height, neyron_width)
 {
 	srand(time(0));
 
@@ -100,9 +100,6 @@ int Deepnetwork::Neyroset()
 	// Считывание тестовой выборки
 	inputt >> TestNums;
 	inputt.close();
-	// Работа сети
-	// Считывание картика поданной на вход сети
-	// Проход картинки через первый сверточный слой
 	int max = 0;
 	// Работа сети
 	// Считывание картика поданной на вход сети
@@ -125,10 +122,17 @@ int Deepnetwork::Neyroset()
 	for (int l = 0; l < f2_count; l++) {
 		IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 	}
+	for (int l = 0; l < f2_count; l++) {
+		for (int li = 0; li < 4; li++) {
+			for (int lj = 0; lj < 4; lj++) {
+				IMAGE_OUT[li][l * 4 + lj] = IMAGE_5[l][li][lj];
+			}
+		}
+	}
 	// Проход по перцептрону
 	// Проход по первому слою
 	for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-		summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
+		summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
 		MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 	}
 	for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети

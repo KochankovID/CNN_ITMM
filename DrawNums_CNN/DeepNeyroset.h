@@ -86,18 +86,18 @@ private:
 	static const int filter1_height = 3;
 
 	// Размер матрицы нейронов 
-	static const int neyron_width = 5;
-	static const int neyron_height = 5;
+	static const int neyron_width = 100;
+	static const int neyron_height = 4;
 	static const int neyron1_width = 1;
 	static const int neyron1_height = 50;
 
 	// Количество фильтров
 	static const int f1_count = 5; 
-	static const int k = 10;
+	static const int k = 5;
 	static const int f2_count = f1_count * k;
 
 	// Количество нейронов
-	static const int w1_count = 50;
+	static const int w1_count = 120;
 	static const int w2_count = 10;
 
 	// Матрица выхода сети
@@ -117,6 +117,10 @@ private:
 
 	// Создания весов для второго слоя перцептрона
 	Matrix<Weights<double>> WEIGHTS1;
+
+
+	// Матрица выхода сети
+	Matrix<double> IMAGE_OUT;
 
 	// Матрицы изображений
 	Matrix<double> IMAGE_1;

@@ -11,7 +11,7 @@
 
 using namespace std;
 // Макрос режима работы программы (с обучением или без)
-#define Teach
+//#define Teach
 
 void threadFunctionSvertka(NeyronСnn<double>& CNN, const Matrix<double>& F, const Matrix<double>& a, Matrix<double>& out)
 {
@@ -253,7 +253,7 @@ int main()
 	// Последовательность цифр, тасуемая для получения равномерной рандомизации
 	int nums[10] = { 0,1,2,3,4,5,6,7,8,9 };
 
-	long int koll = 100; // Количество обучений нейросети
+	long int koll = 1000; // Количество обучений нейросети
 
 	// Создание обучающей выборки
 	vector<vector<Matrix<double>>> Nums(10);
@@ -540,7 +540,7 @@ int main()
 		 file = to_string(i) + ".txt";
 		 path = folder + file;
 		 ifstream inputt(path);
-		 for (int j = 0; j < 1; j++) {
+		 for (int j = 0; j < 30; j++) {
 			 inputt >> TestNums[i][j];
 		 }
 		 inputt.close();
@@ -549,7 +549,7 @@ int main()
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test network:" << endl;
 	for (int i = 0; i < 10; i++) { // Цикл прохода по тестовой выборке
-		for (int j = 0; j < 1; j++) {
+		for (int j = 0; j < 30; j++) {
 			int max = 0;
 			// Работа сети
 			// Считывание картика поданной на вход сети
@@ -608,7 +608,7 @@ int main()
 		file = to_string(i) + "_tests.txt";
 		path = folder + file;
 		ifstream inputt(path);
-		for (int j = 0; j < 30; j++) {
+		for (int j = 0; j < 40; j++) {
 			inputt >> TestNums[i][j];
 		}
 		inputt.close();
@@ -618,7 +618,7 @@ int main()
 	// Вывод на экран реультатов тестирования сети
 	cout << "Test resilience:" << endl;
 	for (int i = 0; i < 10; i++) { // Цикл прохода по тестовой выборке
-		for (int j = 0; j < 30; j++) {
+		for (int j = 0; j < 40; j++) {
 			max = 0;
 			// Работа сети
 			// Считывание картика поданной на вход сети
