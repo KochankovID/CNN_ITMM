@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "Func.h"
 #define DD_Func Func <double, double>
 #define ID_Func Func <int, double>

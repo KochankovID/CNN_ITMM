@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "Weights.h"
 #include "Filter.h"
 #include "NeyronCnn.h"
@@ -8,39 +8,39 @@ template<typename T>
 class CNNLearning
 {
 public:
-	// Конструкторы ----------------------------------------------------------
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ----------------------------------------------------------
 	CNNLearning(const int& s_ = 1, const double& E_ = 1);
 
-	// Методы класса ---------------------------------------------------------
-	// Метод обратного распространения ошибки
+	// РњРµС‚РѕРґС‹ РєР»Р°СЃСЃР° ---------------------------------------------------------
+	// РњРµС‚РѕРґ РѕР±СЂР°С‚РЅРѕРіРѕ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ РѕС€РёР±РєРё
 	Matrix<T> ReversConvolution(const Matrix<T>& D, const Filter<T>& f);
 
-	// Метод градиентного спуска
+	// РњРµС‚РѕРґ РіСЂР°РґРёРµРЅС‚РЅРѕРіРѕ СЃРїСѓСЃРєР°
 	void GradDes(const Matrix<T>& X, const Matrix<T>& D, Filter<T>& F);
 
-	// Получение доступа к шагу свертки
+	// РџРѕР»СѓС‡РµРЅРёРµ РґРѕСЃС‚СѓРїР° Рє С€Р°РіСѓ СЃРІРµСЂС‚РєРё
 	int& getStep() { return s; }
 
-	// Метод получения доступа к кофиценту обучения
+	// РњРµС‚РѕРґ РїРѕР»СѓС‡РµРЅРёСЏ РґРѕСЃС‚СѓРїР° Рє РєРѕС„РёС†РµРЅС‚Сѓ РѕР±СѓС‡РµРЅРёСЏ
 	double& getE() { return E; };
 
-	// Операция обратного распространение ошибки c перцептрона на подвыборочный слой
+	// РћРїРµСЂР°С†РёСЏ РѕР±СЂР°С‚РЅРѕРіРѕ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ РѕС€РёР±РєРё c РїРµСЂС†РµРїС‚СЂРѕРЅР° РЅР° РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅС‹Р№ СЃР»РѕР№
 	void Revers_Perceptron_to_CNN(Matrix<T>& a, const Weights<T>& w);
 
-	// Операция обратного распространение ошибки на слое "Макс пулинга"
+	// РћРїРµСЂР°С†РёСЏ РѕР±СЂР°С‚РЅРѕРіРѕ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ РѕС€РёР±РєРё РЅР° СЃР»РѕРµ "РњР°РєСЃ РїСѓР»РёРЅРіР°"
 	Matrix<T> ReversPooling(const Matrix<T>& a, const int& n_, const int& m_);
 
-	// Класс исключения ------------------------------------------------------
+	// РљР»Р°СЃСЃ РёСЃРєР»СЋС‡РµРЅРёСЏ ------------------------------------------------------
 	class CNNLearningExeption : public std::runtime_error {
 	public:
 		CNNLearningExeption(std::string str) : std::runtime_error(str) {};
 		~CNNLearningExeption() {};
 	};
 
-	// Деструктор ------------------------------------------------------------
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ ------------------------------------------------------------
 	~CNNLearning();
 private:
-	NeyronСnn<T> neyron;
+	NeyronРЎnn<T> neyron;
 	int s;
 	double E;
 };
@@ -54,7 +54,7 @@ template<typename T>
 inline Matrix<T> CNNLearning<T>::ReversConvolution(const Matrix<T>& D, const Filter<T>& f)
 {
 	if (s < 1) {
-			throw CNNLearning<T>::CNNLearningExeption("Задан невозможный шаг свертки!");
+			throw CNNLearning<T>::CNNLearningExeption("Р—Р°РґР°РЅ РЅРµРІРѕР·РјРѕР¶РЅС‹Р№ С€Р°Рі СЃРІРµСЂС‚РєРё!");
 	}
 	auto F = f.roate_180();
 	Matrix<T> O((D.getN() - 1) / s + f.getN(), (D.getM() - 1) / s + f.getM());
@@ -99,14 +99,14 @@ template<typename T>
 void CNNLearning<T>::GradDes(const Matrix<T>& X, const Matrix<T>& D, Filter<T>& F) {
 	Matrix<T> Delta = neyron.Svertka(D, X);
 	if ((Delta.getN() != F.getN()) || (Delta.getM() != F.getM())) {
-		throw CNNLearning<T>::CNNLearningExeption("Задана неверная размерность! После свертки размеры матрицы фильтра и матрицы ошибки не совпадают!");
+		throw CNNLearning<T>::CNNLearningExeption("Р—Р°РґР°РЅР° РЅРµРІРµСЂРЅР°СЏ СЂР°Р·РјРµСЂРЅРѕСЃС‚СЊ! РџРѕСЃР»Рµ СЃРІРµСЂС‚РєРё СЂР°Р·РјРµСЂС‹ РјР°С‚СЂРёС†С‹ С„РёР»СЊС‚СЂР° Рё РјР°С‚СЂРёС†С‹ РѕС€РёР±РєРё РЅРµ СЃРѕРІРїР°РґР°СЋС‚!");
 	}
 	T delt;
 	for (int i = 0; i < Delta.getN(); i++) {
 		for (int j = 0; j < Delta.getM(); j++) {
 			delt = E * Delta[i][j];
 			if (delt > 1000) {
-				throw CNNLearning<T>::CNNLearningExeption("Слишком большая производная!");
+				throw CNNLearning<T>::CNNLearningExeption("РЎР»РёС€РєРѕРј Р±РѕР»СЊС€Р°СЏ РїСЂРѕРёР·РІРѕРґРЅР°СЏ!");
 			}
 			F[i][j]-= delt;
 		}
@@ -117,7 +117,7 @@ template<typename T>
 inline void CNNLearning<T>::Revers_Perceptron_to_CNN(Matrix<T>& a, const Weights<T>& w)
 {
 	if ((a.getN() < 0) || (a.getM() < 0)||(a.getN() != w.getN()) || (a.getM() != w.getM())) {
-		throw Base_Cnn<T>::Base_CnnExeption("Неверный размер матрицы ошибки!");
+		throw Base_Cnn<T>::Base_CnnExeption("РќРµРІРµСЂРЅС‹Р№ СЂР°Р·РјРµСЂ РјР°С‚СЂРёС†С‹ РѕС€РёР±РєРё!");
 	}
 	for (int i = 0; i < w.getN(); i++) {
 		for (int j = 0; j < w.getM(); j++) {
@@ -130,7 +130,7 @@ template<typename T>
 inline Matrix<T> CNNLearning<T>::ReversPooling(const Matrix<T>& D, const int & n_, const int & m_)
 {
 	if ((n_ < 0) || (m_ < 0) || (n_ > D.getN()) || (m_ > D.getM())) {
-		throw Base_Cnn<T>::Base_CnnExeption("Неверный размер ядра!");
+		throw Base_Cnn<T>::Base_CnnExeption("РќРµРІРµСЂРЅС‹Р№ СЂР°Р·РјРµСЂ СЏРґСЂР°!");
 	}
 
 	Matrix<T> copy(D.getN() * n_, D.getM() * m_);

@@ -146,7 +146,6 @@
     <Text Include="..\Image_to_txt\8_tests.txt" />
     <Text Include="..\Image_to_txt\9.txt" />
     <Text Include="..\Image_to_txt\9_tests.txt" />
-    <Text Include="TeachChoose.txt" />
     <Text Include="Weights.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

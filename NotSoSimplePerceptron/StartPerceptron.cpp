@@ -6,9 +6,9 @@
 #include <fstream>
 
 // Макрос режима работы программы (с обучением или без)
-//#define Teach
+#define Teach
 
-// функтор
+// Функтор
 class Sign : public DD_Func
 {
 public:
@@ -114,6 +114,7 @@ int main()
 	for (int i = 0; i < 10; i++) {
 		for (int j = 0; j < 10; j++) {
 			if (Neyron.FunkActiv(Neyron.Summator(Tests[i], W[j]), F) == 1)
+				// Вывод результатов на экран
 				cout << "Test " << i << " : " << "recognized " << j << endl;
 		}
 	}
@@ -123,6 +124,7 @@ int main()
 	for (int i = 10; i < 20; i++) {
 		for (int j = 0; j < 10; j++) {
 			if (Neyron.FunkActiv(Neyron.Summator(Tests[i], W[j]), F) == 1)
+				// Вывод результатов на экран
 				cout << "Test " << i << " : " << "recognized " << j << endl;
 		}
 	}

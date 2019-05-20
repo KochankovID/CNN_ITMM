@@ -216,7 +216,7 @@ namespace DrawNums {
 						}
 					}
 				}
-				if (a4 > 30) {
+				if (a4 > 10) {
 					out << std::setw(2) << 1 << ' ';
 				}
 				else {

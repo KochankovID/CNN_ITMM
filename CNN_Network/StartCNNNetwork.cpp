@@ -1,53 +1,21 @@
-//: Нейросеть распознающая все цифры
+п»ї//: РќРµР№СЂРѕСЃРµС‚СЊ СЂР°СЃРїРѕР·РЅР°СЋС‰Р°СЏ РІСЃРµ С†РёС„СЂС‹
 #include <Windows.h>
 #include "Perceptrons.h"
 #include "CNNs.h"
 #include <vector>
 #include <iostream>
 #include <fstream>
-#include <thread>
-
-#pragma omp parallel for
 
 using namespace std;
-// Макрос режима работы программы (с обучением или без)
-//#define Teach
+// РњР°РєСЂРѕСЃ СЂРµР¶РёРјР° СЂР°Р±РѕС‚С‹ РїСЂРѕРіСЂР°РјРјС‹ (СЃ РѕР±СѓС‡РµРЅРёРµРј РёР»Рё Р±РµР·)
 
-void threadFunctionSvertka(NeyronСnn<double>& CNN, const Matrix<double>& F, const Matrix<double>& a, Matrix<double>& out)
-{
-	out = CNN.Svertka(F, a);
-}
+#define Teach
 
-void threadFunctionMaxpooling(NeyronСnn<double>& CNN, const Matrix<double>& a, Matrix<double>& out)
-{
-	out = CNN.Pooling(a,2,2);
-}
-
-void threadFunctionBackPropagetion(PerceptronLearning <double, double>& P, Matrix<Weights<double>>& w, const Weights<double>& y)
-{
-	P.BackPropagation(w,y);
-}
-
-void threadFunctionReversPooling(CNNLearning <double>& CNN, const Matrix<double>& D, Matrix<double>& out)
-{
-	out = CNN.ReversPooling(D, 2, 2);
-}
-
-void threadFunctionGradCNN(CNNLearning <double>& CNN, const Matrix<double>& X, const Matrix<double>& D, Filter<double>& F)
-{
-	CNN.GradDes(X, D, F);
-}
-
-void threadFunctionGradPer(PerceptronLearning <double, double>& P, Weights<double>& w, Matrix<double>& in, Func<double, double>& F, const double& x)
-{
-	P.GradDes(w, in, F, x);
-}
-
-// Улучшение читабильности программы
+// РЈР»СѓС‡С€РµРЅРёРµ С‡РёС‚Р°Р±РёР»СЊРЅРѕСЃС‚Рё РїСЂРѕРіСЂР°РјРјС‹
 #define NUMBER nums[j]
 
-// функтор
-// Сигмоида
+// С„СѓРЅРєС‚РѕСЂ
+// РЎРёРіРјРѕРёРґР°
 class Sigm : public DD_Func
 {
 public:
@@ -80,7 +48,7 @@ public:
 	~Sigm() {};
 };
 
-// Производная сигмоиды
+// РџСЂРѕРёР·РІРѕРґРЅР°СЏ СЃРёРіРјРѕРёРґС‹
 class SigmD : public Sigm
 {
 public:
@@ -97,187 +65,173 @@ using namespace std;
 
 int main()
 {
-	// Создание перцептрона
+	// РЎРѕР·РґР°РЅРёРµ РїРµСЂС†РµРїС‚СЂРѕРЅР°
 	DD_Perceptron Neyron;
 
-	// Создание обучателя сети
+	// РЎРѕР·РґР°РЅРёРµ РѕР±СѓС‡Р°С‚РµР»СЏ СЃРµС‚Рё
 	DD_Leaning Teacher;
-	Teacher.getE() = 0.00256;
+	Teacher.getE() = 0.00064;
 
-	// Создание CNN
+	// РЎРѕР·РґР°РЅРёРµ CNN
 	D_NeyronCnn NeyronCNN;
 
-	// Создание обучателя CNN сети
+	// РЎРѕР·РґР°РЅРёРµ РѕР±СѓС‡Р°С‚РµР»СЏ CNN СЃРµС‚Рё
 	D_CNNLeaning TeacherCNN;
 	TeacherCNN.getE() = 0.0000006;
 
-	// Создание функтора
+	// РЎРѕР·РґР°РЅРёРµ С„СѓРЅРєС‚РѕСЂР°
 	Sigm F(0.8);
 
-	// Производная функтора
+	// РџСЂРѕРёР·РІРѕРґРЅР°СЏ С„СѓРЅРєС‚РѕСЂР°
 	SigmD f(0.8);
 
-	// Установка зерна для выдачи рандомных значений
+	// РЈСЃС‚Р°РЅРѕРІРєР° Р·РµСЂРЅР° РґР»СЏ РІС‹РґР°С‡Рё СЂР°РЅРґРѕРјРЅС‹С… Р·РЅР°С‡РµРЅРёР№
 	srand(time(0));
 
-	// Размер входной матрицы
+	// Р Р°Р·РјРµСЂ РІС…РѕРґРЅРѕР№ РјР°С‚СЂРёС†С‹
 	const int image_width = 28;
 	const int image_height = 28;
 
-	// Размер фильтров (ядер свертки)
+	// Р Р°Р·РјРµСЂ С„РёР»СЊС‚СЂРѕРІ (СЏРґРµСЂ СЃРІРµСЂС‚РєРё)
 	const int filter_width = 5;
 	const int filter_height = 5;
 	const int filter1_width = 5;
 	const int filter1_height = 5;
 
-	// Размер матрицы нейронов 
+	// Р Р°Р·РјРµСЂ РјР°С‚СЂРёС†С‹ РЅРµР№СЂРѕРЅРѕРІ 
 	const int neyron_width = 100;
 	const int neyron_height = 4;
 	const int neyron1_width = 120;
 	const int neyron1_height = 1; 
 
-	// Количество фильтров
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ С„РёР»СЊС‚СЂРѕРІ
 	const int f1_count = 5;
 	const int k = 5;
 	const int f2_count = f1_count * k;
 
-	// Количество нейронов
+	// РљРѕР»РёС‡РµСЃС‚РІРѕ РЅРµР№СЂРѕРЅРѕРІ
 	const int w1_count = 120;
 	const int w2_count = 10;
 	
-	// Кофицент создания весов
-	const int wwww = 1;
+	// РљРѕС„РёС†РµРЅС‚ СЃРѕР·РґР°РЅРёСЏ РІРµСЃРѕРІ
+	const int decade = 1;
 
-	// Создание весов фильтров первого слоя
+	// РЎРѕР·РґР°РЅРёРµ РІРµСЃРѕРІ С„РёР»СЊС‚СЂРѕРІ РїРµСЂРІРѕРіРѕ СЃР»РѕСЏ
 	vector<Filter<double>> FILTERS(f1_count);
 	for (int i = 0; i < f1_count; i++) {
 		FILTERS[i] = Filter<double>(filter_height, filter_width);
 		for (int j = 0; j < FILTERS[i].getN(); j++) {
 			for (int p = 0; p < FILTERS[i].getM(); p++) {
-				FILTERS[i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX*wwww)) : -((double)rand() / (RAND_MAX * wwww)));
+				FILTERS[i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX*decade)) : -((double)rand() / (RAND_MAX * decade)));
 			}
 		}
 	}
 
-	// Создание весов фильтров второго слоя
+	// РЎРѕР·РґР°РЅРёРµ РІРµСЃРѕРІ С„РёР»СЊС‚СЂРѕРІ РІС‚РѕСЂРѕРіРѕ СЃР»РѕСЏ
 	vector<Filter<double>> FILTERS1(f2_count);
 	for (int i = 0; i < f2_count; i++) {
 		FILTERS1[i] = Filter<double>(filter1_height, filter1_width);
 		for (int j = 0; j < FILTERS1[i].getN(); j++) {
 			for (int p = 0; p < FILTERS1[i].getM(); p++) {
-				FILTERS1[i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
+				FILTERS1[i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * decade)) : -((double)rand() / (RAND_MAX * decade)));
 			}
 		}
 	}
 
-	// Создание весов перового слоя перцептрона
+	// РЎРѕР·РґР°РЅРёРµ РІРµСЃРѕРІ РїРµСЂРѕРІРѕРіРѕ СЃР»РѕСЏ РїРµСЂС†РµРїС‚СЂРѕРЅР°
 	Matrix<Weights<double>> WEIGHTS(1, w1_count);
 	for (int i = 0; i < w1_count; i++) {
 		WEIGHTS[0][i] = Weights<double>(neyron_height, neyron_width);
 		for (int j = 0; j < WEIGHTS[0][i].getN(); j++) {
 			for (int p = 0; p < WEIGHTS[0][i].getM(); p++) {
-				WEIGHTS[0][i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
+				WEIGHTS[0][i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * decade)) : -((double)rand() / (RAND_MAX * decade)));
 			}
 		}
-		WEIGHTS[0][i].GetWBias() = (i % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
+		WEIGHTS[0][i].GetWBias() = (i % 2 ? ((double)rand() / (RAND_MAX * decade)) : -((double)rand() / (RAND_MAX * decade)));
 	}
-	// Создания весов для второго слоя перцептрона
+
+	// РЎРѕР·РґР°РЅРёСЏ РІРµСЃРѕРІ РґР»СЏ РІС‚РѕСЂРѕРіРѕ СЃР»РѕСЏ РїРµСЂС†РµРїС‚СЂРѕРЅР°
 	Matrix<Weights<double>> WEIGHTS1(1, w2_count);
 	for (int i = 0; i < w2_count; i++) {
 		WEIGHTS1[0][i] = Weights<double>(neyron1_height, neyron1_width);
 		for (int j = 0; j < WEIGHTS1[0][i].getN(); j++) {
 			for (int p = 0; p < WEIGHTS1[0][i].getM(); p++) {
-				WEIGHTS1[0][i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
+				WEIGHTS1[0][i][j][p] = (p % 2 ? ((double)rand() / (RAND_MAX * decade)) : -((double)rand() / (RAND_MAX * decade)));
 			}
 		}
-		WEIGHTS1[0][i].GetWBias() = (i % 2 ? ((double)rand() / (RAND_MAX * wwww)) : -((double)rand() / (RAND_MAX * wwww)));
+		WEIGHTS1[0][i].GetWBias() = (i % 2 ? ((double)rand() / (RAND_MAX * decade)) : -((double)rand() / (RAND_MAX * decade)));
 	}
 
-	// Матрица выхода сети
+	// РњР°С‚СЂРёС†Р° РІС‹С…РѕРґР° СЃРµС‚Рё
 	Matrix<double> MATRIX_OUT(1, w1_count);
-	
-	// Матрица выхода изображения
+
+	double summ; // РџРµСЂРµРјРµРЅРЅР°СЏ СЃСѓРјРјС‹
+	double y[w2_count]; // РџРµСЂРµРјРµРЅРЅР°СЏ РІС‹С…РѕРґР° СЃРµС‚Рё
+
+	// РњР°С‚СЂРёС†С‹ РёР·РѕР±СЂР°Р¶РµРЅРёР№
+	// РњР°С‚СЂРёС†Р° РІС…РѕРґРЅРѕРіРѕ РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
+	Matrix<double> IMAGE_1(image_height, image_width);
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РёР·РѕР±СЂР°Р¶РµРЅРёР№ РїРѕСЃР»Рµ РїРµСЂРІРѕРіРѕ СЃРІРµСЂС‚РѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
+	vector< Matrix<double>> IMAGE_2(f1_count);
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РёР·РѕР±СЂР°Р¶РµРЅРёР№ РїРѕСЃР»Рµ РїРµСЂРІРѕРіРѕ РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
+	vector< Matrix<double>> IMAGE_3(f1_count);
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РёР·РѕР±СЂР°Р¶РµРЅРёР№ РїРѕСЃР»Рµ РІС‚РѕСЂРѕРіРѕ СЃРІРµСЂС‚РѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
+	vector< Matrix<double>> IMAGE_4(f2_count);
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РёР·РѕР±СЂР°Р¶РµРЅРёР№ РїРѕСЃР»Рµ РІС‚РѕСЂРѕРіРѕ РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
+	vector< Matrix<double>> IMAGE_5(f2_count);
+
+	// Р’РµРєС‚РѕСЂ, РїРµСЂРµРґР°СЋС‰РёР№СЃСЏ РІ РїРµСЂС†РµРїС‚СЂРѕРЅ (СЃРѕСЃС‚РѕРёС‚ РёР· РІСЃРµС… РєР°СЂС‚ РїРѕСЃР»РµРґРЅРµРіРѕ РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅРѕРіРѕ СЃР»РѕСЏ)
 	Matrix<double> IMAGE_OUT(neyron_height, neyron_width);
 
-	double summ; // Переменная суммы
-	double y[w2_count]; // Переменная выхода сети
-
-	// Матрицы изображений
-	Matrix<double> IMAGE_1(image_height, image_width);
-	vector< Matrix<double>> IMAGE_2(f1_count);
-	for (int i = 0; i < f1_count; i++) {
-		IMAGE_2[i] = Matrix<double>(24, 24);
-	}
-
-	vector< Matrix<double>> IMAGE_3(f1_count);
-	for (int i = 0; i < f1_count; i++) {
-		IMAGE_3[i] = Matrix<double>(12, 12);
-	}
-
-	vector< Matrix<double>> IMAGE_4(f2_count);
-	for (int i = 0; i < f2_count; i++) {
-		IMAGE_4[i] = Matrix<double>(8, 8);
-	}
-
-	vector< Matrix<double>> IMAGE_5(f2_count);
-	for (int i = 0; i < f2_count; i++) {
-		IMAGE_5[i] = Matrix<double>(4, 4);
-	}
-	// Пересенная максимума
+	// РџРµСЂРµРјРµРЅРЅР°СЏ РјР°РєСЃРёРјСѓРјР°
 	int max = 0;
+
 #ifdef Teach
-	// Матрицы ошибок сверточной сети
+
+	// РњР°С‚СЂРёС†С‹ РѕС€РёР±РѕРє СЃРІРµСЂС‚РѕС‡РЅРѕР№ СЃРµС‚Рё
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РѕС€РёР±РѕРє РїРµСЂРІРѕРіРѕ СЃРІРµСЂС‚РѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
 	vector< Matrix<double>> IMAGE_2_D(f1_count);
-	for (int i = 0; i < f1_count; i++) {
-		IMAGE_2_D[i] = Matrix<double>(24, 24);
-	}
-
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РѕС€РёР±РѕРє РїРµСЂРІРѕРіРѕ РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
 	vector< Matrix<double>> IMAGE_3_D(f1_count);
-	for (int i = 0; i < f1_count; i++) {
-		IMAGE_3_D[i] = Matrix<double>(12, 12);
-	}
-
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РѕС€РёР±РѕРє РІС‚РѕСЂРѕРіРѕ СЃРІРµСЂС‚РѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
 	vector< Matrix<double>> IMAGE_4_D(f2_count);
-	for (int i = 0; i < f2_count; i++) {
-		IMAGE_4_D[i] = Matrix<double>(8, 8);
-	}
-
+	// Р’РµРєС‚РѕСЂ РјР°С‚СЂРёС† РѕС€РёР±РѕРє РІС‚РѕСЂРѕРіРѕ РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅРѕРіРѕ СЃР»РѕСЏ
 	vector< Matrix<double>> IMAGE_5_D(f2_count);
-	for (int i = 0; i < f2_count; i++) {
-		IMAGE_5_D[i] = Matrix<double>(4, 4);
-	}
-	// Матрица ошибки выхода изображения
+
+	// РњР°С‚СЂРёС†Р° РѕС€РёР±РєРё РІС‹С…РѕРґР° РёР·РѕР±СЂР°Р¶РµРЅРёСЏ
 	Matrix<double> IMAGE_OUT_D(neyron_height, neyron_width);
 	IMAGE_OUT.Fill(0);
 
-	// Последовательность цифр, тасуемая для получения равномерной рандомизации
+	// РџРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚СЊ С†РёС„СЂ, С‚Р°СЃСѓРµРјР°СЏ РґР»СЏ РїРѕР»СѓС‡РµРЅРёСЏ СЂР°РІРЅРѕРјРµСЂРЅРѕР№ СЂР°РЅРґРѕРјРёР·Р°С†РёРё
+	// РњРѕР¶РµС‚ РєР°Рє РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ РёР»Рё РЅРµ РёСЃРїРѕР»СЊР·РѕРІР°С‚СЊСЃСЏ
 	int nums[10] = { 0,1,2,3,4,5,6,7,8,9 };
 
-	long int koll = 1000; // Количество обучений нейросети
+	long int koll = 1000; // РљРѕР»РёС‡РµСЃС‚РІРѕ РѕР±СѓС‡РµРЅРёР№ РЅРµР№СЂРѕСЃРµС‚Рё (РїРѕ СЃРѕРІРјРµСЃС‚РёС‚РµР»СЊСЃС‚РІСѓ РєРѕР»РёС‡РµСЃС‚РІРѕ СЂР°Р·РЅС‹С… С€СЂРёС„С‚РѕРІ)
 
-	// Создание обучающей выборки
+	// РЎРѕР·РґР°РЅРёРµ РѕР±СѓС‡Р°СЋС‰РµР№ РІС‹Р±РѕСЂРєРё
 	vector<vector<Matrix<double>>> Nums(10);
 	for (int i = 0; i < 10; i++) {
 		Nums[i] = vector<Matrix<double>>(koll);
 	}
 
-	//Считывание весов
-	ifstream fWeightss;
-	fWeightss.open("Weights.txt");
-	for (int i = 0; i < f1_count; i++) {
-		fWeightss >> FILTERS[i];
-	}
-	for (int i = 0; i < f2_count; i++) {
-		fWeightss >> FILTERS1[i];
-	}
-	fWeightss >> WEIGHTS;
-	fWeightss >> WEIGHTS1;
-	fWeightss.close();
+	// РЎС‡РёС‚С‹РІР°РЅРёРµ РІРµСЃРѕРІ
+	// РћРїС†РёРѕРЅР°Р»СЊРЅРѕ, РёСЃРїРѕР»СЊР·СѓРµС‚СЃСЏ РґР»СЏ РѕР±СѓС‡РµРЅРёСЏ
+	//ifstream fWeightss;
+	//fWeightss.open("Weights.txt");
+	//for (int i = 0; i < f1_count; i++) {
+	//	fWeightss >> FILTERS[i];
+	//}
+	//for (int i = 0; i < f2_count; i++) {
+	//	fWeightss >> FILTERS1[i];
+	//}
+	//fWeightss >> WEIGHTS;
+	//fWeightss >> WEIGHTS1;
+	//fWeightss.close();
 
-	// Массив, нужный для подсчета ошибки
+	// РњР°СЃСЃРёРІ, РЅСѓР¶РЅС‹Р№ РґР»СЏ РїРѕРґСЃС‡РµС‚Р° РѕС€РёР±РєРё
 	double a[10];
 
-	// Считывание обучающей выборки
+	// РЎС‡РёС‚С‹РІР°РЅРёРµ РѕР±СѓС‡Р°СЋС‰РµР№ РІС‹Р±РѕСЂРєРё
 	string folder = "..\\Image_to_txt\\";
 	string file;
 	string path;
@@ -291,61 +245,34 @@ int main()
 		}
 		input.close();
 	}
-	// Обучение сети
-	for (long int i = 0; i < koll; i++) {
-		cout << i << endl;
-		//Teacher.shuffle(nums, 10); // Тасование последовательности
-		for (int j = 0; j < 10; j++) { // Цикл прохода по обучающей выборке
-			cout << "	a)" << j << endl;
-			for (int u = 0; u < 3; u++) {
-				cout << (NUMBER) << ": " << u << ") ";
-				max = 0;
-				// Работа сети
-				// Считывание картика поданной на вход сети
-				IMAGE_1 = Nums[NUMBER][i];
 
-				vector<std::thread> threads_first_svertka;
-				threads_first_svertka.reserve(f1_count);
-				// Проход картинки через первый сверточный слой
+	// РћР±СѓС‡РµРЅРёРµ СЃРµС‚Рё
+	for (long int i = 0; i < koll; i++) {
+		//Teacher.shuffle(nums, 10); // РўР°СЃРѕРІР°РЅРёРµ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
+		for (int j = 0; j < 10; j++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ РѕР±СѓС‡Р°СЋС‰РµР№ РІС‹Р±РѕСЂРєРµ
+			for (int u = 0; u < 3; u++) { // РљРѕР»РёС‡РµСЃС‚РІРѕ РїСЂРѕС…РѕРґРѕРІ РїРѕ РѕРґРЅРѕР№ С†РёС„СЂРµ
+				// Р Р°Р±РѕС‚Р° СЃРµС‚Рё
+				// РћР±РЅСѓР»РµРЅРёРµ РїРµСЂРµРјРµРЅРЅРѕР№ РјР°РєСЃРёРјСѓРјР°
+				max = 0;
+				// РЎС‡РёС‚С‹РІР°РЅРёРµ РєР°СЂС‚РёРєР° РїРѕРґР°РЅРЅРѕР№ РЅР° РІС…РѕРґ СЃРµС‚Рё
+				IMAGE_1 = Nums[NUMBER][i];
+				// РџСЂРѕС…РѕРґ РєР°СЂС‚РёРЅРєРё С‡РµСЂРµР· РїРµСЂРІС‹Р№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f1_count; l++) {
-					threads_first_svertka.emplace_back(threadFunctionSvertka, std::ref(NeyronCNN), std::ref(FILTERS[l]), std::ref(IMAGE_1), std::ref(IMAGE_2[l]));
-					/*IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);*/
+					IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
 				}
+				// РћРїРµСЂР°С†РёСЏ РјР°РєСЃРїСѓР»РёРЅРіР°
 				for (int l = 0; l < f1_count; l++) {
-					threads_first_svertka[l].join();
+					IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);
 				}
-				vector<std::thread> threads_first_maxpooling;
-				threads_first_maxpooling.reserve(f1_count);
-				// Операция макспулинга
-				for (int l = 0; l < f1_count; l++) {
-					threads_first_maxpooling.emplace_back(threadFunctionMaxpooling, std::ref(NeyronCNN), std::ref(IMAGE_2[l]), std::ref(IMAGE_3[l]));
-					/*IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);*/
-				}
-				for (int l = 0; l < f1_count; l++) {
-					threads_first_maxpooling[l].join();
-				}
-				// Проход картинки через второй сверточный слой
-				vector<std::thread> threads_second_svertka;
-				threads_second_svertka.reserve(f2_count);
+				// РџСЂРѕС…РѕРґ РєР°СЂС‚РёРЅРєРё С‡РµСЂРµР· РІС‚РѕСЂРѕР№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f1_count; l++) {
 					for (int ll = 0; ll < k; ll++) {
-						threads_second_svertka.emplace_back(threadFunctionSvertka, std::ref(NeyronCNN), std::ref(FILTERS1[l*k + ll]), std::ref(IMAGE_3[l]), std::ref(IMAGE_4[l*k + ll]));
-						/*IMAGE_4[l*k + ll] = NeyronCNN.Svertka(FILTERS1[l*k + ll], IMAGE_3[l]);*/
+						IMAGE_4[l*k + ll] = NeyronCNN.Svertka(FILTERS1[l*k + ll], IMAGE_3[l]);
 					}
 				}
+				// РћРїРµСЂР°С†РёСЏ РјР°РєСЃРїСѓР»РёРЅРіР°
 				for (int l = 0; l < f2_count; l++) {
-					threads_second_svertka[l].join();
-				}
-				// Операция макспулинга
-				vector<std::thread> threads_second_maxpooling;
-				threads_second_maxpooling.reserve(f2_count);
-
-				for (int l = 0; l < f2_count; l++) {
-					threads_second_maxpooling.emplace_back(threadFunctionMaxpooling, std::ref(NeyronCNN), std::ref(IMAGE_4[l]), std::ref(IMAGE_5[l]));
-					/*IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);*/
-				}
-				for (int l = 0; l < f2_count; l++) {
-					threads_second_maxpooling[l].join();
+					IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 				}
 				for (int l = 0; l < f2_count; l++) {
 					for (int li = 0; li < 4; li++) {
@@ -354,59 +281,54 @@ int main()
 						}
 					}
 				}
-				// Проход по перцептрону
-				// Проход по первому слою
-				for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-					summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
+				// РџСЂРѕС…РѕРґ РїРѕ РїРµСЂС†РµРїС‚СЂРѕРЅСѓ
+				// РџСЂРѕС…РѕРґ РїРѕ РїРµСЂРІРѕРјСѓ СЃР»РѕСЋ
+				for (int l = 0; l < w1_count; l++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ СЃРµС‚Рё
+					summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // РџРѕР»СѓС‡РµРЅРёРµ РІР·РІРµС€РµРЅРЅРѕР№ СЃСѓРјРјС‹
 					MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 				}
-				for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-					summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-					y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
+				for (int l = 0; l < w2_count; l++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ СЃРµС‚Рё
+					summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // РџРѕР»СѓС‡РµРЅРёРµ РІР·РІРµС€РµРЅРЅРѕР№ СЃСѓРјРјС‹
+					y[l] = Neyron.FunkActiv(summ, F); // Р—Р°РїРёСЃСЊ РІС‹С…РѕРґР° l-С‚РѕРіРѕ РЅРµР№СЂРѕРЅР° РІ РјР°СЃСЃРёРІ РІС‹С…РѕРґРѕРІ СЃРµС‚Рё
 				}
-				for (int l = 1; l < w2_count; l++) { // Получение результатов сети
+				for (int l = 1; l < w2_count; l++) { // РџРѕР»СѓС‡РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ СЃРµС‚Рё
 					if (y[l] > y[max]) {
 						max = l;
 					}
 				}
+				// Р’С‹РІРѕРґ СЂР°СЃРїРѕР·РЅР°РЅРЅРѕР№ С†РёС„СЂС‹ РЅР° СЌРєСЂР°РЅ РґР»СЏ РІРёР·СѓР°Р»РёР·Р°С†РёРё РїСЂРѕС†РµСЃСЃР° РѕР±СѓС‡РµРЅРёСЏ
 				cout << max << ' ';
-				// Расчет ошибки
+				// Р Р°СЃС‡РµС‚ РѕС€РёР±РєРё
 				for (int i = 0; i < w2_count; i++) {
 					if (i == NUMBER)
 						a[i] = 1;
 					if (i != NUMBER)
 						a[i] = 0;
 				}
-				// Вывод ошибки на экран
+				// Р’С‹РІРѕРґ РѕС€РёР±РєРё РЅР° СЌРєСЂР°РЅ
 				cout << Teacher.RMS_error(a, y, w2_count) << endl;
-				// Если ошибка мала, пропускаем цикл обучения, что бы избежать переобучения сети
+				// Р•СЃР»Рё РѕС€РёР±РєР° РјР°Р»Р°, РїСЂРѕРїСѓСЃРєР°РµРј С†РёРєР» РѕР±СѓС‡РµРЅРёСЏ, С‡С‚Рѕ Р±С‹ РёР·Р±РµР¶Р°С‚СЊ РїРµСЂРµРѕР±СѓС‡РµРЅРёСЏ СЃРµС‚Рё
 				if (Teacher.RMS_error(a, y, w2_count) < 0.3) {
 					continue;
 				}
-				// Обучение сети
-				for (int l = 0; l < w2_count; l++) { // Расчет ошибки для выходного слоя
-					if (l == NUMBER) { // Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
-						WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(1, y[l]); // Расчет ошибки
+				// РћР±СѓС‡РµРЅРёРµ СЃРµС‚Рё
+				for (int l = 0; l < w2_count; l++) { // Р Р°СЃС‡РµС‚ РѕС€РёР±РєРё РґР»СЏ РІС‹С…РѕРґРЅРѕРіРѕ СЃР»РѕСЏ
+					if (l == NUMBER) { // Р•СЃР»Рё РЅРѕРјРµСЂ РЅРµР№СЂРѕРЅР° СЃРѕРІРїР°РґР°РµС‚ СЃ РїРѕРґР°РЅРЅРѕР№ РЅР° РІС…РѕРґ С†РёС„СЂРѕР№, С‚Рѕ РѕР¶РёРґР°РµРјРјС‹Р№ РѕС‚РІРµС‚ 1
+						WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(1, y[l]); // Р Р°СЃС‡РµС‚ РѕС€РёР±РєРё
 					}
-					else {// Если номер нейрона совпадает с поданной на вход цифрой, то ожидаеммый ответ 1
-						WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(0, y[l]); // Расчет ошибки
+					else {// Р•СЃР»Рё РЅРѕРјРµСЂ РЅРµР№СЂРѕРЅР° СЃРѕРІРїР°РґР°РµС‚ СЃ РїРѕРґР°РЅРЅРѕР№ РЅР° РІС…РѕРґ С†РёС„СЂРѕР№, С‚Рѕ РѕР¶РёРґР°РµРјРјС‹Р№ РѕС‚РІРµС‚ 1
+						WEIGHTS1[0][l].GetD() = Teacher.PartDOutLay(0, y[l]); // Р Р°СЃС‡РµС‚ РѕС€РёР±РєРё
 					}
 				}
-				// Распространение ошибки на скрытые слои перцептрона
-				vector<std::thread> threads_first_backpropog;
-				threads_first_backpropog.reserve(w2_count);
+				// Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ РѕС€РёР±РєРё РЅР° СЃРєСЂС‹С‚С‹Рµ СЃР»РѕРё РїРµСЂС†РµРїС‚СЂРѕРЅР°
 				for (int l = 0; l < w2_count; l++) {
-					threads_first_backpropog.emplace_back(threadFunctionBackPropagetion, std::ref(Teacher), std::ref(WEIGHTS), std::ref(WEIGHTS1[0][l]));
-					/*Teacher.BackPropagation(WEIGHTS, WEIGHTS1[0][l]);*/
+					Teacher.BackPropagation(WEIGHTS, WEIGHTS1[0][l]);
 				}
-				for (int l = 0; l < w2_count; l++) {
-					threads_first_backpropog[l].join();
-				}
-				// Распространение ошибки на выход картинки
+				// Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ РѕС€РёР±РєРё РЅР° РІС‹С…РѕРґ РєР°СЂС‚РёРЅРєРё
 				for (int l = 0; l < w2_count; l++) {
 					TeacherCNN.Revers_Perceptron_to_CNN(IMAGE_OUT_D, WEIGHTS[0][l]);
 				}
-				// Копирование ошибки на подвыборочный слой
+				// РљРѕРїРёСЂРѕРІР°РЅРёРµ РѕС€РёР±РєРё РЅР° РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f2_count; l++) {
 					for (int li = 0; li < 4; li++) {
 						for (int lj = 0; lj < 4; lj++) {
@@ -414,90 +336,56 @@ int main()
 						}
 					}
 				}
-				// Распространение ошибки на сверточный слой
-				vector<std::thread> threads_first_backPooling;
-				threads_first_backPooling.reserve(f2_count);
+				// Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ РѕС€РёР±РєРё РЅР° СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f2_count; l++) {
-					threads_first_backPooling.emplace_back(threadFunctionReversPooling, std::ref(TeacherCNN), std::ref(IMAGE_5_D[l]), std::ref(IMAGE_4_D[l]));
-					/*IMAGE_4_D[l] = TeacherCNN.ReversPooling(IMAGE_5_D[l], 2, 2);*/
+					IMAGE_4_D[l] = TeacherCNN.ReversPooling(IMAGE_5_D[l], 2, 2);
 				}
-				for (int l = 0; l < f2_count; l++) {
-					threads_first_backPooling[l].join();
-				}
-				// Распространение ошибки на подвыборочный слой
+				// Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ РѕС€РёР±РєРё РЅР° РїРѕРґРІС‹Р±РѕСЂРѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f1_count; l++) {
 					IMAGE_3_D[l] = TeacherCNN.ReversConvolution(IMAGE_4_D[l*k], FILTERS1[l*k]);
 					for (int ll = 1; ll < k; ll++) {
 						IMAGE_3_D[l] = IMAGE_3_D[l] + TeacherCNN.ReversConvolution(IMAGE_4_D[l*k + ll], FILTERS1[l*k + ll]);
 					}
 				}
-				vector<std::thread> threads_second_backPooling;
-				threads_second_backPooling.reserve(f2_count);
-				// Распространение ошибки на сверточный слой
+				// Р Р°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёРµ РѕС€РёР±РєРё РЅР° СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f1_count; l++) {
-					threads_second_backPooling.emplace_back(threadFunctionReversPooling, std::ref(TeacherCNN), std::ref(IMAGE_3_D[l]), std::ref(IMAGE_2_D[l]));
-					/*IMAGE_2_D[l] = TeacherCNN.ReversPooling(IMAGE_3_D[l], 2, 2);*/
+					IMAGE_2_D[l] = TeacherCNN.ReversPooling(IMAGE_3_D[l], 2, 2);
 				}
+				// РџСЂРёРјРµРјРµРЅРёРµ РіСЂР°РґРёРµРЅС‚РЅРѕРіРѕ СЃРїСѓСЃРєР° 
+				// РџРµСЂРІС‹Р№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f1_count; l++) {
-					threads_second_backPooling[l].join();
+					TeacherCNN.GradDes(IMAGE_1, IMAGE_2_D[l], FILTERS[l]);
 				}
-				// Примемение градиентного спуска 
-				// Первый сверточный слой
-				vector<std::thread> threads_first_grad;
-				threads_first_grad.reserve(f1_count);
-				for (int l = 0; l < f1_count; l++) {
-					threads_first_grad.emplace_back(threadFunctionGradCNN, std::ref(TeacherCNN),std::ref(IMAGE_1), std::ref(IMAGE_2_D[l]), std::ref(FILTERS[l]));
-					/*TeacherCNN.GradDes(IMAGE_1, IMAGE_2_D[l], FILTERS[l]);*/
-				}
-				for (int l = 0; l < f1_count; l++) {
-					threads_first_grad[l].join();
-				}
-				// Второй сверточный слой
-				vector<std::thread> threads_second_grad;
-				threads_second_grad.reserve(f2_count);
+				// Р’С‚РѕСЂРѕР№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 				for (int l = 0; l < f1_count; l++) {
 					for (int ll = 0; ll < k; ll++) {
-						threads_second_grad.emplace_back(threadFunctionGradCNN, std::ref(TeacherCNN), std::ref(IMAGE_3[l]), std::ref(IMAGE_4_D[l*k + ll]), std::ref(FILTERS1[l*k + ll]));
-						/*TeacherCNN.GradDes(IMAGE_3[l], IMAGE_4_D[l*k + ll], FILTERS1[l*k + ll]);*/
+						TeacherCNN.GradDes(IMAGE_3[l], IMAGE_4_D[l*k + ll], FILTERS1[l*k + ll]);
 					}
 				}
-				for (int l = 0; l < f2_count; l++) {
-					threads_second_grad[l].join();
+				// РџРµСЂС†РµРїС‚СЂРѕРЅ
+				// РџРµСЂРІС‹Р№ СЃР»РѕР№
+				for (int l = 0; l < w1_count; l++) { // РџСЂРёРјРµРјРµРЅРёРµ РіСЂР°РґРёРµРЅС‚РЅРѕРіРѕ СЃРїСѓСЃРєР° РїРѕ РІСЃРµРј РЅРµР№СЂРѕРЅРЅР°Рј РїРµСЂРІРѕРіРѕ СЃР»РѕСЏ
+					Teacher.GradDes(WEIGHTS[0][l], IMAGE_OUT, f, MATRIX_OUT[0][l]);
 				}
-				// Перцептрон
-				// Первый слой
-				vector<std::thread> threads_first_Pgrad;
-				threads_first_Pgrad.reserve(w1_count);
-				for (int l = 0; l < w1_count; l++) { // Примемение градиентного спуска по всем нейроннам первого слоя
-					threads_first_Pgrad.emplace_back(threadFunctionGradPer, std::ref(Teacher), std::ref(WEIGHTS[0][l]), std::ref(IMAGE_OUT), std::ref(f), std::ref(MATRIX_OUT[0][l]));
-					/*Teacher.GradDes(WEIGHTS[0][l], IMAGE_OUT, f, MATRIX_OUT[0][l]);*/
-				}
-				for (int l = 0; l < w1_count; l++) {
-					threads_first_Pgrad[l].join();
-				}
-				// Второй слой
-				vector<std::thread> threads_second_Pgrad;
-				threads_second_Pgrad.reserve(w2_count);
-				for (int l = 0; l < w2_count; l++) { // Примемение градиентного спуска по всем нейроннам второго слоя
+				// Р’С‚РѕСЂРѕР№ СЃР»РѕР№
+			for (int l = 0; l < w2_count; l++) { // РџСЂРёРјРµРјРµРЅРёРµ РіСЂР°РґРёРµРЅС‚РЅРѕРіРѕ СЃРїСѓСЃРєР° РїРѕ РІСЃРµРј РЅРµР№СЂРѕРЅРЅР°Рј РІС‚РѕСЂРѕРіРѕ СЃР»РѕСЏ
 					summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]);
-					threads_second_Pgrad.emplace_back(threadFunctionGradPer, std::ref(Teacher), std::ref(WEIGHTS1[0][l]), std::ref(MATRIX_OUT), std::ref(f), std::ref(summ));
-					/*Teacher.GradDes(WEIGHTS1[0][l], MATRIX_OUT, f, summ);*/
+					Teacher.GradDes(WEIGHTS1[0][l], MATRIX_OUT, f, summ);
 				}
-				for (int l = 0; l < w2_count; l++) {
-					threads_second_Pgrad[l].join();
-				}
-				// Обнуление ошибок
-				for (int l = 0; l < w1_count; l++) { // Обнуление ошибки нейронов 1 слоя
+				// РћР±РЅСѓР»РµРЅРёРµ РѕС€РёР±РѕРє
+				for (int l = 0; l < w1_count; l++) { // РћР±РЅСѓР»РµРЅРёРµ РѕС€РёР±РєРё РЅРµР№СЂРѕРЅРѕРІ 1 СЃР»РѕСЏ
 					WEIGHTS[0][l].GetD() = 0;
 				}
+				// РћР±РЅСѓР»РµРЅРёСЏ РІРµРєС‚РѕСЂР° РѕС€РёР±РѕРє
 				IMAGE_OUT_D.Fill(0);
+				// "Р—Р°РјРµРґР»РµРЅРёРµ РѕР±СѓС‡РµРЅРёСЏ СЃРµС‚Рё"
 				Teacher.getE() -= Teacher.getE() * 0.00001;
 				TeacherCNN.getE() -= TeacherCNN.getE() * 0.00001;
 			}
 		}
 	}
 
-	// Сохраняем веса
+	// РЎРѕС…СЂР°РЅРµРЅРёРµ РІРµСЃРѕРІ
 	ofstream fWeights;
 	fWeights.open("Weights.txt");
 	for (int i = 0; i < f1_count; i++) {
@@ -511,7 +399,7 @@ int main()
 	fWeights.close();
 
 #else
-	 //Считывание весов
+	 //РЎС‡РёС‚С‹РІР°РЅРёРµ РІРµСЃРѕРІ
 	 ifstream fWeights;
 	 fWeights.open("Weights.txt");
 	 for (int i = 0; i < f1_count; i++) {
@@ -529,12 +417,12 @@ int main()
 
 #endif // Teach
 
-	 // Создание тестовой выборки
+	 // РЎРѕР·РґР°РЅРёРµ С‚РµСЃС‚РѕРІРѕР№ РІС‹Р±РѕСЂРєРё
 	 vector<vector<Matrix<double>>> TestNums(10);
 	 for (int i = 0; i < 10; i++) {
 		 TestNums[i] = vector<Matrix<double>>(100);
 	 }
-	 // Считывание тестовой выборки
+	 // РЎС‡РёС‚С‹РІР°РЅРёРµ С‚РµСЃС‚РѕРІРѕР№ РІС‹Р±РѕСЂРєРё
 	 folder = "..\\Image_to_txt\\";
 	 for (int i = 0; i < 10; i++) {
 		 file = to_string(i) + ".txt";
@@ -545,30 +433,31 @@ int main()
 		 }
 		 inputt.close();
 	 }
-	 int errors_network = 0;
-	// Вывод на экран реультатов тестирования сети
+	// РџРµСЂРµРјРµРЅРЅР°СЏ РѕС€РёР±РѕРє СЃРµС‚Рё
+	int errors_network = 0;
+	// Р’С‹РІРѕРґ РЅР° СЌРєСЂР°РЅ СЂРµСѓР»СЊС‚Р°С‚РѕРІ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ СЃРµС‚Рё
 	cout << "Test network:" << endl;
-	for (int i = 0; i < 10; i++) { // Цикл прохода по тестовой выборке
+	for (int i = 0; i < 10; i++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ С‚РµСЃС‚РѕРІРѕР№ РІС‹Р±РѕСЂРєРµ
 		for (int j = 0; j < 30; j++) {
 			int max = 0;
-			// Работа сети
-			// Считывание картика поданной на вход сети
+			// Р Р°Р±РѕС‚Р° СЃРµС‚Рё
+			// РЎС‡РёС‚С‹РІР°РЅРёРµ РєР°СЂС‚РёРєР° РїРѕРґР°РЅРЅРѕР№ РЅР° РІС…РѕРґ СЃРµС‚Рё
 			IMAGE_1 = TestNums[i][j];
-			// Проход картинки через первый сверточный слой
+			// РџСЂРѕС…РѕРґ РєР°СЂС‚РёРЅРєРё С‡РµСЂРµР· РїРµСЂРІС‹Р№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 			for (int l = 0; l < f1_count; l++) {
 				IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
 			}
-			// Операция макспулинга
+			// РћРїРµСЂР°С†РёСЏ РјР°РєСЃРїСѓР»РёРЅРіР°
 			for (int l = 0; l < f1_count; l++) {
 				IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);
 			}
-			// Проход картинки через второй сверточный слой
+			// РџСЂРѕС…РѕРґ РєР°СЂС‚РёРЅРєРё С‡РµСЂРµР· РІС‚РѕСЂРѕР№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 			for (int l = 0; l < f1_count; l++) {
 				for (int ll = 0; ll < k; ll++) {
 					IMAGE_4[l*k + ll] = NeyronCNN.Svertka(FILTERS1[l*k + ll], IMAGE_3[l]);
 				}
 			}
-			// Операция макспулинга
+			// РћРїРµСЂР°С†РёСЏ РјР°РєСЃРїСѓР»РёРЅРіР°
 			for (int l = 0; l < f2_count; l++) {
 				IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 			}
@@ -579,30 +468,33 @@ int main()
 					}
 				}
 			}
-			// Проход по перцептрону
-			// Проход по первому слою
-			for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
+			// РџСЂРѕС…РѕРґ РїРѕ РїРµСЂС†РµРїС‚СЂРѕРЅСѓ
+			// РџСЂРѕС…РѕРґ РїРѕ РїРµСЂРІРѕРјСѓ СЃР»РѕСЋ
+			for (int l = 0; l < w1_count; l++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ СЃРµС‚Рё
+				summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // РџРѕР»СѓС‡РµРЅРёРµ РІР·РІРµС€РµРЅРЅРѕР№ СЃСѓРјРјС‹
 				MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 			}
-			for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-				y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
+			for (int l = 0; l < w2_count; l++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ СЃРµС‚Рё
+				summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // РџРѕР»СѓС‡РµРЅРёРµ РІР·РІРµС€РµРЅРЅРѕР№ СЃСѓРјРјС‹
+				y[l] = Neyron.FunkActiv(summ, F); // Р—Р°РїРёСЃСЊ РІС‹С…РѕРґР° l-С‚РѕРіРѕ РЅРµР№СЂРѕРЅР° РІ РјР°СЃСЃРёРІ РІС‹С…РѕРґРѕРІ СЃРµС‚Рё
 			}
-			for (int l = 1; l < w2_count; l++) { // Получение результатов сети
+			for (int l = 1; l < w2_count; l++) { // РџРѕР»СѓС‡РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ СЃРµС‚Рё
 				if (y[l] > y[max]) {
 					max = l;
 				}
 			}
+			// Р’С‹РІРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РЅР° СЌРєСЂР°РЅ
 			cout << "Test " << i << " : " << "recognized " << max << ' ' << y[max] << endl;
+			// РџРѕРґСЃС‡РµС‚ РѕС€РёР±РѕРє
 			if (max != i) {
 				errors_network++;
 			}
 		}
 	}
+	// Р’С‹РІРѕРґ РєРѕР»РёС‡РµСЃС‚РІР° РѕС€РёР±РѕРє РЅР° СЌРєСЂР°РЅ
 	cout << errors_network << endl;
 
-	// Считывание тестовой выборки
+	// РЎС‡РёС‚С‹РІР°РЅРёРµ С‚РµСЃС‚РѕРІРѕР№ РІС‹Р±РѕСЂРєРё
 	folder = "..\\Image_to_txt\\";
 	for (int i = 0; i < 10; i++) {
 		file = to_string(i) + "_tests.txt";
@@ -613,31 +505,31 @@ int main()
 		}
 		inputt.close();
 	}
-
+	// РџРµСЂРµРјРµРЅРЅР°СЏ РєРѕР»РёС‡РµСЃС‚РІР° РѕС€РёР±РѕРє РЅР° С‚РµСЃС‚РѕРІРѕР№ РІС‹Р±РѕСЂРєРµ
 	int errors_resilience = 0;
-	// Вывод на экран реультатов тестирования сети
+	// Р’С‹РІРѕРґ РЅР° СЌРєСЂР°РЅ СЂРµСѓР»СЊС‚Р°С‚РѕРІ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ СЃРµС‚Рё
 	cout << "Test resilience:" << endl;
-	for (int i = 0; i < 10; i++) { // Цикл прохода по тестовой выборке
+	for (int i = 0; i < 10; i++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ С‚РµСЃС‚РѕРІРѕР№ РІС‹Р±РѕСЂРєРµ
 		for (int j = 0; j < 40; j++) {
 			max = 0;
-			// Работа сети
-			// Считывание картика поданной на вход сети
+			// Р Р°Р±РѕС‚Р° СЃРµС‚Рё
+			// РЎС‡РёС‚С‹РІР°РЅРёРµ РєР°СЂС‚РёРєР° РїРѕРґР°РЅРЅРѕР№ РЅР° РІС…РѕРґ СЃРµС‚Рё
 			IMAGE_1 = TestNums[i][j];
-			// Проход картинки через первый сверточный слой
+			// РџСЂРѕС…РѕРґ РєР°СЂС‚РёРЅРєРё С‡РµСЂРµР· РїРµСЂРІС‹Р№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 			for (int l = 0; l < f1_count; l++) {
 				IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
 			}
-			// Операция макспулинга
+			// РћРїРµСЂР°С†РёСЏ РјР°РєСЃРїСѓР»РёРЅРіР°
 			for (int l = 0; l < f1_count; l++) {
 				IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);
 			}
-			// Проход картинки через второй сверточный слой
+			// РџСЂРѕС…РѕРґ РєР°СЂС‚РёРЅРєРё С‡РµСЂРµР· РІС‚РѕСЂРѕР№ СЃРІРµСЂС‚РѕС‡РЅС‹Р№ СЃР»РѕР№
 			for (int l = 0; l < f1_count; l++) {
 				for (int ll = 0; ll < k; ll++) {
 					IMAGE_4[l*k + ll] = NeyronCNN.Svertka(FILTERS1[l*k + ll], IMAGE_3[l]);
 				}
 			}
-			// Операция макспулинга
+			// РћРїРµСЂР°С†РёСЏ РјР°РєСЃРїСѓР»РёРЅРіР°
 			for (int l = 0; l < f2_count; l++) {
 				IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
 			}
@@ -648,28 +540,31 @@ int main()
 					}
 				}
 			}
-			// Проход по перцептрону
-			// Проход по первому слою
-			for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
+			// РџСЂРѕС…РѕРґ РїРѕ РїРµСЂС†РµРїС‚СЂРѕРЅСѓ
+			// РџСЂРѕС…РѕРґ РїРѕ РїРµСЂРІРѕРјСѓ СЃР»РѕСЋ
+			for (int l = 0; l < w1_count; l++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ СЃРµС‚Рё
+				summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // РџРѕР»СѓС‡РµРЅРёРµ РІР·РІРµС€РµРЅРЅРѕР№ СЃСѓРјРјС‹
 				MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
 			}
-			for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-				y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
+			for (int l = 0; l < w2_count; l++) { // Р¦РёРєР» РїСЂРѕС…РѕРґР° РїРѕ СЃРµС‚Рё
+				summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // РџРѕР»СѓС‡РµРЅРёРµ РІР·РІРµС€РµРЅРЅРѕР№ СЃСѓРјРјС‹
+				y[l] = Neyron.FunkActiv(summ, F); // Р—Р°РїРёСЃСЊ РІС‹С…РѕРґР° l-С‚РѕРіРѕ РЅРµР№СЂРѕРЅР° РІ РјР°СЃСЃРёРІ РІС‹С…РѕРґРѕРІ СЃРµС‚Рё
 			}
-			for (int l = 1; l < w2_count; l++) { // Получение результатов сети
+			for (int l = 1; l < w2_count; l++) { // РџРѕР»СѓС‡РµРЅРёРµ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ СЃРµС‚Рё
 				if (y[l] > y[max]) {
 					max = l;
 				}
 			}
+			// Р’С‹РІРѕРґ СЂРµР·СѓР»СЊС‚Р°С‚РѕРІ РЅР° СЌРєСЂР°РЅ
 			cout << "Test " << i << " : " << "recognized " << max << ' ' << y[max] << endl;
+			// РџРѕРґСЃС‡РµС‚ РѕС€РёР±РѕРє
 			if (max != i) {
 				errors_resilience++;
 			}
 
 		}
 	}
+	// Р’С‹РІРѕРґ РЅР° СЌРєСЂР°РЅ СЂРµСѓР»СЊС‚Р°С‚РѕРІ С‚РµСЃС‚РёСЂРѕРІР°РЅРёСЏ СЃРµС‚Рё
 	cout << errors_resilience << endl;
 	system("pause");
 	return 0;
