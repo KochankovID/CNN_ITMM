@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "Weights.h"
 #include "Func.h"
 #include <vector>
@@ -8,25 +8,25 @@ template <typename T, typename Y>
 class Base_Perceptron
 {
 public:
-	// Конструкторы ----------------------------------------------------------
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ----------------------------------------------------------
 	Base_Perceptron();
-	Base_Perceptron(const Base_Perceptron& copy) = delete; // Запрет копирования
+	Base_Perceptron(const Base_Perceptron& copy) = delete; // Р—Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 
-	// Методы класса ---------------------------------------------------------
-	// Операция суммированию произведений входов на веса нейрона
+	// РњРµС‚РѕРґС‹ РєР»Р°СЃСЃР° ---------------------------------------------------------
+	// РћРїРµСЂР°С†РёСЏ СЃСѓРјРјРёСЂРѕРІР°РЅРёСЋ РїСЂРѕРёР·РІРµРґРµРЅРёР№ РІС…РѕРґРѕРІ РЅР° РІРµСЃР° РЅРµР№СЂРѕРЅР°
 	virtual T Summator(const Matrix<T>& a, const Weights<T>& w);
 	virtual T Summator(std::vector<T> a, const std::vector<T>& w);
 
-	// Функция активации нейрона
+	// Р¤СѓРЅРєС†РёСЏ Р°РєС‚РёРІР°С†РёРё РЅРµР№СЂРѕРЅР°
 	virtual Y FunkActiv(const T&, Func<T,Y>&) = 0;
 
-	// Перегрузка операторов -------------------------------------------------
-	Base_Perceptron& operator= (const Base_Perceptron& copy) = delete; // Запрет копирования
+	// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂРѕРІ -------------------------------------------------
+	Base_Perceptron& operator= (const Base_Perceptron& copy) = delete; // Р—Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 	
-	// Деструктор ------------------------------------------------------------
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ ------------------------------------------------------------
 	virtual ~Base_Perceptron();
 
-	// Класс исключения ------------------------------------------------------
+	// РљР»Р°СЃСЃ РёСЃРєР»СЋС‡РµРЅРёСЏ ------------------------------------------------------
 	class NeyronPerceptronExeption : public std::runtime_error {
 	public:
 		NeyronPerceptronExeption(std::string str) : std::runtime_error(str) {};
@@ -43,7 +43,7 @@ template <typename T, typename Y>
 T Base_Perceptron<T, Y>::Summator(const Matrix<T> & a, const Weights<T> & w)
 {
 	if ((a.getN() != w.getN()) || (a.getM() != w.getM())) {
-		throw Base_Perceptron<T, Y>::NeyronPerceptronExeption("Несовпадение размера матрицы весов и размера матрицы входных сигналов!");
+		throw Base_Perceptron<T, Y>::NeyronPerceptronExeption("РќРµСЃРѕРІРїР°РґРµРЅРёРµ СЂР°Р·РјРµСЂР° РјР°С‚СЂРёС†С‹ РІРµСЃРѕРІ Рё СЂР°Р·РјРµСЂР° РјР°С‚СЂРёС†С‹ РІС…РѕРґРЅС‹С… СЃРёРіРЅР°Р»РѕРІ!");
 	}
 	T sum = 0;
 	for (int i = 0; i < a.getN(); i++) {
@@ -59,7 +59,7 @@ template <typename T, typename Y>
 inline T Base_Perceptron<T, Y>::Summator(std::vector<T> a, const std::vector<T>& w)
 {
 	if (a.size() != w.size()) {
-		throw Base_Perceptron<T,Y>::NeyronPerceptronExeption("Несовпадение размера матрицы весов и размера матрицы входных сигналов!");
+		throw Base_Perceptron<T,Y>::NeyronPerceptronExeption("РќРµСЃРѕРІРїР°РґРµРЅРёРµ СЂР°Р·РјРµСЂР° РјР°С‚СЂРёС†С‹ РІРµСЃРѕРІ Рё СЂР°Р·РјРµСЂР° РјР°С‚СЂРёС†С‹ РІС…РѕРґРЅС‹С… СЃРёРіРЅР°Р»РѕРІ!");
 	}
 	T sum = 0;
 	for (int i = 0; i < a.size(); i++) {

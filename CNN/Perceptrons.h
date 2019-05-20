@@ -1,4 +1,4 @@
-#pragma once
+﻿#pragma once
 #include "NeyronPerceptron.h"
 #include "Functors.h"
 #include "PLearns.h"

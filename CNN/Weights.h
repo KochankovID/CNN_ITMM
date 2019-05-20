@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "Matrix.h"
 #include <iostream>
 #include <iomanip>
@@ -7,37 +7,37 @@ template<typename T>
 class Weights : public Matrix<T>
 {
 public:
-	// Конструкторы ----------------------------------------------------------
-	Weights(); // По умолчанию
-	Weights(const int& i_, const int& j_, const int& wbisas_ = 0); // Инициализатор (нулевая матрица)
-	Weights(T** arr_, const int& i_, const int& j_, const int& wbisas_ = 0); // Инициализатор
-	Weights(const Weights<T>& copy); // Копирования 
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ----------------------------------------------------------
+	Weights(); // РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+	Weights(const int& i_, const int& j_, const int& wbisas_ = 0); // РРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ (РЅСѓР»РµРІР°СЏ РјР°С‚СЂРёС†Р°)
+	Weights(T** arr_, const int& i_, const int& j_, const int& wbisas_ = 0); // РРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ
+	Weights(const Weights<T>& copy); // РљРѕРїРёСЂРѕРІР°РЅРёСЏ 
 
-	// Методы класса ---------------------------------------------------------
-	// Вывод весов на консоль в красивом виде
+	// РњРµС‚РѕРґС‹ РєР»Р°СЃСЃР° ---------------------------------------------------------
+	// Р’С‹РІРѕРґ РІРµСЃРѕРІ РЅР° РєРѕРЅСЃРѕР»СЊ РІ РєСЂР°СЃРёРІРѕРј РІРёРґРµ
 	void Out();
 
-	// Получение доступа к d
+	// РџРѕР»СѓС‡РµРЅРёРµ РґРѕСЃС‚СѓРїР° Рє d
 	T& GetD() { return d; };
 	const T& GetD() const { return d; };
 
-	// Получение доступа к wbisas
+	// РџРѕР»СѓС‡РµРЅРёРµ РґРѕСЃС‚СѓРїР° Рє wbisas
 	T& GetWBias() { return wbias; };
 	const T& GetWBias() const { return wbias; };
 
-	// Перегрузки операторов ------------------------
-	Weights<T>& operator= (const Weights<T>& copy); // Оператор присваивания
-	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Weights<T1>& mat); // Оператор вывод матрицы в поток
-	template <typename T1> friend std::istream& operator>> (std::istream& in, Weights<T1>& mat); // Оператор чтение матрицы из потока
+	// РџРµСЂРµРіСЂСѓР·РєРё РѕРїРµСЂР°С‚РѕСЂРѕРІ ------------------------
+	Weights<T>& operator= (const Weights<T>& copy); // РћРїРµСЂР°С‚РѕСЂ РїСЂРёСЃРІР°РёРІР°РЅРёСЏ
+	template <typename T1> friend std::ostream& operator<< (std::ostream& out, const Weights<T1>& mat); // РћРїРµСЂР°С‚РѕСЂ РІС‹РІРѕРґ РјР°С‚СЂРёС†С‹ РІ РїРѕС‚РѕРє
+	template <typename T1> friend std::istream& operator>> (std::istream& in, Weights<T1>& mat); // РћРїРµСЂР°С‚РѕСЂ С‡С‚РµРЅРёРµ РјР°С‚СЂРёС†С‹ РёР· РїРѕС‚РѕРєР°
 
 
-	// Деструктор ------------------------------------------------------------
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ ------------------------------------------------------------
 	~Weights();
 private:
-	// Величина производной функции ошибки
+	// Р’РµР»РёС‡РёРЅР° РїСЂРѕРёР·РІРѕРґРЅРѕР№ С„СѓРЅРєС†РёРё РѕС€РёР±РєРё
 	T d;
 
-	// Вес нейрона сдвига
+	// Р’РµСЃ РЅРµР№СЂРѕРЅР° СЃРґРІРёРіР°
 	T wbias;
 
 };

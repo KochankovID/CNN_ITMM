@@ -1,4 +1,4 @@
-#pragma once
+п»ї#pragma once
 #include "Weights.h"
 #include "NeyronPerceptron.h"
 #include <cstdlib>
@@ -7,55 +7,55 @@ template<typename T, typename Y>
 class PerceptronLearning
 {
 public:
-	// Конструкторы ----------------------------------------------------------
-	PerceptronLearning(); // По умолчанию
-	PerceptronLearning(const double& E_); // Инициализатор
-	PerceptronLearning(const NeyronPerceptron<T,Y>& copy) = delete; // Запрет копирования
+	// РљРѕРЅСЃС‚СЂСѓРєС‚РѕСЂС‹ ----------------------------------------------------------
+	PerceptronLearning(); // РџРѕ СѓРјРѕР»С‡Р°РЅРёСЋ
+	PerceptronLearning(const double& E_); // РРЅРёС†РёР°Р»РёР·Р°С‚РѕСЂ
+	PerceptronLearning(const NeyronPerceptron<T,Y>& copy) = delete; // Р—Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
 
-	// Методы класса ---------------------------------------------------------
-	// Обучение однослойного перцептрона методом обратного распространения ошибки
+	// РњРµС‚РѕРґС‹ РєР»Р°СЃСЃР° ---------------------------------------------------------
+	// РћР±СѓС‡РµРЅРёРµ РѕРґРЅРѕСЃР»РѕР№РЅРѕРіРѕ РїРµСЂС†РµРїС‚СЂРѕРЅР° РјРµС‚РѕРґРѕРј РѕР±СЂР°С‚РЅРѕРіРѕ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ РѕС€РёР±РєРё
 	void WTSimplePerceptron(const Y& a, const Y& y, Weights<T>& w, const Matrix<T>& in);
 	
-	// Метод обратного распространения ошибки
+	// РњРµС‚РѕРґ РѕР±СЂР°С‚РЅРѕРіРѕ СЂР°СЃРїСЂРѕСЃС‚СЂР°РЅРµРЅРёСЏ РѕС€РёР±РєРё
 	static void BackPropagation(Matrix<Weights<T>>& w, const Weights<T>& y);
 	static void BackPropagation(Matrix<Weights<T>>& w, const Matrix<Weights<T>>& y);
 
-	// Метод градиентного спуска
+	// РњРµС‚РѕРґ РіСЂР°РґРёРµРЅС‚РЅРѕРіРѕ СЃРїСѓСЃРєР°
 	void GradDes(Weights<T>& w, Matrix<T>& in, Func<T, Y>& F, const T& x);
 
-	// Метод вычисления средней квадратичной ошибки
+	// РњРµС‚РѕРґ РІС‹С‡РёСЃР»РµРЅРёСЏ СЃСЂРµРґРЅРµР№ РєРІР°РґСЂР°С‚РёС‡РЅРѕР№ РѕС€РёР±РєРё
 	static Y RMS_error(const Y* a, const Y* y, const int& lenth);
 
-	// Метод вычисления ошибки выходного слоя
+	// РњРµС‚РѕРґ РІС‹С‡РёСЃР»РµРЅРёСЏ РѕС€РёР±РєРё РІС‹С…РѕРґРЅРѕРіРѕ СЃР»РѕСЏ
 	static Y PartDOutLay(const Y& a, const Y& y);
 
-	// Метод стягивания весов
+	// РњРµС‚РѕРґ СЃС‚СЏРіРёРІР°РЅРёСЏ РІРµСЃРѕРІ
 	void retract(Matrix<Weights<T>>& weights,const int& decs);
 	void retract(Weights<T>& weights, const int& decs);
 
-	// Тасование последовательности
+	// РўР°СЃРѕРІР°РЅРёРµ РїРѕСЃР»РµРґРѕРІР°С‚РµР»СЊРЅРѕСЃС‚Рё
 	void shuffle(int* arr, const int& lenth);
 
-	// Метод получения доступа к кофиценту обучения
+	// РњРµС‚РѕРґ РїРѕР»СѓС‡РµРЅРёСЏ РґРѕСЃС‚СѓРїР° Рє РєРѕС„РёС†РµРЅС‚Сѓ РѕР±СѓС‡РµРЅРёСЏ
 	double& getE() { return E; };
 
-	// Перегрузка операторов -------------------------------------------------
-	PerceptronLearning& operator= (const PerceptronLearning& copy) = delete; // Запрет копирования
-	friend std::ostream& operator<<(std::ostream& out, const PerceptronLearning& mat) = delete; // Запрет вывода в поток
-	friend std::istream& operator>>(std::istream& out, PerceptronLearning& mat) = delete; // Запрет считывания из потока
+	// РџРµСЂРµРіСЂСѓР·РєР° РѕРїРµСЂР°С‚РѕСЂРѕРІ -------------------------------------------------
+	PerceptronLearning& operator= (const PerceptronLearning& copy) = delete; // Р—Р°РїСЂРµС‚ РєРѕРїРёСЂРѕРІР°РЅРёСЏ
+	friend std::ostream& operator<<(std::ostream& out, const PerceptronLearning& mat) = delete; // Р—Р°РїСЂРµС‚ РІС‹РІРѕРґР° РІ РїРѕС‚РѕРє
+	friend std::istream& operator>>(std::istream& out, PerceptronLearning& mat) = delete; // Р—Р°РїСЂРµС‚ СЃС‡РёС‚С‹РІР°РЅРёСЏ РёР· РїРѕС‚РѕРєР°
 
-	// Деструктор ------------------------------------------------------------
+	// Р”РµСЃС‚СЂСѓРєС‚РѕСЂ ------------------------------------------------------------
 	~PerceptronLearning();
 
-	// Класс исключения ------------------------------------------------------
+	// РљР»Р°СЃСЃ РёСЃРєР»СЋС‡РµРЅРёСЏ ------------------------------------------------------
 	class LearningExeption : public std::runtime_error {
 	public:
 		LearningExeption(std::string str) : std::runtime_error(str) {};
 		~LearningExeption() {};
 	};
 protected:
-	// Поля класса ----------------------------------
-	double E; // Кофицент обучения
+	// РџРѕР»СЏ РєР»Р°СЃСЃР° ----------------------------------
+	double E; // РљРѕС„РёС†РµРЅС‚ РѕР±СѓС‡РµРЅРёСЏ
 };
 
 template<typename T, typename Y>
@@ -72,7 +72,7 @@ template<typename T, typename Y>
 inline void PerceptronLearning<T, Y>::WTSimplePerceptron(const Y & a, const Y & y, Weights<T> & w, const Matrix<T>& in)
 {
 	if ((w.getN() != in.getN()) || (w.getM() != in.getM())) {
-		throw LearningExeption("Несовпадение размеров входной матрицы и матрицы весов!");
+		throw LearningExeption("РќРµСЃРѕРІРїР°РґРµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ РІС…РѕРґРЅРѕР№ РјР°С‚СЂРёС†С‹ Рё РјР°С‚СЂРёС†С‹ РІРµСЃРѕРІ!");
 	}
 	T delta = a - y;
 	T ii = 0;
@@ -116,7 +116,7 @@ template<typename T, typename Y>
 inline void PerceptronLearning<T, Y>::GradDes(Weights<T>& w, Matrix<T>& in, Func<T, Y>& F, const T& x)
 {
 	if ((w.getN() != in.getN()) || (w.getM() != in.getM())) {
-		throw LearningExeption("Несовпадение размеров входной матрицы и матрицы весов!");
+		throw LearningExeption("РќРµСЃРѕРІРїР°РґРµРЅРёРµ СЂР°Р·РјРµСЂРѕРІ РІС…РѕРґРЅРѕР№ РјР°С‚СЂРёС†С‹ Рё РјР°С‚СЂРёС†С‹ РІРµСЃРѕРІ!");
 	}
 
 	for (int i = 0; i < w.getN(); i++) {

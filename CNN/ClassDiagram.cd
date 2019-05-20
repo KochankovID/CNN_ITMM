@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Matrix&lt;T&gt;" Collapsed="true">
+    <Position X="2" Y="0.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAggAABAAAAAAAAAAAQAEgAEgCAAAEgAhCAAAEgA=</HashCode>
+      <FileName>Matrix.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base_Cnn&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAABAACAAAAAAAAIAAAAAAAAAAAAAAIgAAAAAAA=</HashCode>
+      <FileName>Base_Cnn.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NeyronСnn&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAACAABACAAAAAAAAAAAAAAAABgAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>NeyronCnn.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="CNNLearning&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAgIAAAAAAAAAAAABCAEAAAAIAAAgAIAAo=</HashCode>
+      <FileName>CNNLearning.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Base_Perceptron&lt;T, Y&gt;" Collapsed="true">
+    <Position X="0.5" Y="3.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAASAAAAAAAAAAAAAAAAAEAAIAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Base_Perceptron.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="NeyronPerceptron&lt;T, Y&gt;" Collapsed="true">
+    <Position X="0.5" Y="4.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAACAAAAAAAAAAAAAAAAgAAAEAAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>NeyronPerceptron.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="PerceptronLearning&lt;T, Y&gt;" Collapsed="true">
+    <Position X="0.5" Y="5.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AEAQAAIAgAAAAAAAAAQAAIAAAAAAEAAAAAQgAgAAABI=</HashCode>
+      <FileName>PerceptronLearning.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Filter&lt;T&gt;" Collapsed="true">
+    <Position X="3.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>YAEAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAgAAAAAAA=</HashCode>
+      <FileName>Filter.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Weights&lt;T&gt;" Collapsed="true">
+    <Position X="0.5" Y="1.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAAAABAAAgAAAAAAAAAAAAAAAAAEAEAgBAACAAA=</HashCode>
+      <FileName>Weights.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Func&lt;T, Y&gt;" Collapsed="true">
+    <Position X="2" Y="2.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAEAAAAAAAAAAAAAAAAAABAAAAAAA=</HashCode>
+      <FileName>Func.h</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>

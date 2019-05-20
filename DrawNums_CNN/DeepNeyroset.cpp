@@ -6,13 +6,11 @@
 
 using namespace std;
 
-Deepnetwork::Deepnetwork() : F(2), f(2), FILTERS(f1_count), FILTERS1(f2_count), WEIGHTS(1, w1_count), WEIGHTS1(1, w2_count), 
+Deepnetwork::Deepnetwork() : F(0.8), f(0.8), FILTERS(f1_count), FILTERS1(f2_count), WEIGHTS(1, w1_count), WEIGHTS1(1, w2_count),
 	MATRIX_OUT(1, w1_count), IMAGE_1(image_width, image_height), IMAGE_2(f1_count), IMAGE_3(f1_count), IMAGE_4(f2_count),
-	IMAGE_5(f2_count), IMAGE_2_D(f1_count), IMAGE_3_D(f1_count), IMAGE_4_D(f2_count), IMAGE_5_D(f2_count)
+	IMAGE_5(f2_count), IMAGE_2_D(f1_count), IMAGE_3_D(f1_count), IMAGE_4_D(f2_count), IMAGE_5_D(f2_count), IMAGE_OUT(neyron_height, neyron_width)
 {
 	srand(time(0));
-	Teacher.getE() = 0.08;
-	TeacherCNN.getE() = 0.0000009;
 
 	// Создание весов фильтров первого слоя
 	for (int i = 0; i < f1_count; i++) {
@@ -94,7 +92,7 @@ Deepnetwork::Deepnetwork() : F(2), f(2), FILTERS(f1_count), FILTERS1(f2_count), 
 
 }
 
-pair<int,int> Deepnetwork::Neyroset(int& rez)
+int Deepnetwork::Neyroset()
 {
 	// Создание тестовой выборки
 	Matrix<double> TestNums;
@@ -103,62 +101,50 @@ pair<int,int> Deepnetwork::Neyroset(int& rez)
 	inputt >> TestNums;
 	inputt.close();
 	int max = 0;
-	Matrix<double> NULL_M(28,28);
-	NULL_M.Fill(-1);
 	// Работа сети
 	// Считывание картика поданной на вход сети
+	IMAGE_1 = TestNums;
 	// Проход картинки через первый сверточный слой
-	for (int i = 0; i < 252; i += 28) {
-		for (int j = 0; j < 252; j += 28) {
-			IMAGE_1 = TestNums.getPodmatrix(i,j,28,28);
-			max = 0;
-			if (IMAGE_1 == NULL_M) {
-				continue;
-			}
-			for (int ii = 0; ii < 10; ii++) {
-				y[ii] = 0;
-			}
-			for (int l = 0; l < f1_count; l++) {
-				IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
-			}
-			// Операция макспулинга
-			for (int l = 0; l < f1_count; l++) {
-				IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);
-			}
-			// Проход картинки через второй сверточный слой
-			for (int l = 0; l < f1_count; l++) {
-				for (int ll = 0; ll < k; ll++) {
-					IMAGE_4[l*k + ll] = NeyronCNN.Svertka(FILTERS1[l*k + ll], IMAGE_3[l]);
-				}
-			}
-			// Операция макспулинга
-			for (int l = 0; l < f2_count; l++) {
-				IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
-			}
-			// Проход по перцептрону
-			// Проход по первому слою
-			for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(IMAGE_5[l], WEIGHTS[0][l]); // Получение взвешенной суммы
-				MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
-			}
-			for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
-				summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
-				y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
-			}
-			for (int l = 1; l < w2_count; l++) { // Получение результатов сети
-				if (y[l] > y[max]) {
-					max = l;
-				}
-			}
-			if (y[max] > 0.6) {
-				rez = max;
-				ofstream out("Text.txt");
-				out << IMAGE_1;
-				return pair<int, int> (i,j);
+	for (int l = 0; l < f1_count; l++) {
+		IMAGE_2[l] = NeyronCNN.Svertka(FILTERS[l], IMAGE_1);
+	}
+	// Операция макспулинга
+	for (int l = 0; l < f1_count; l++) {
+		IMAGE_3[l] = NeyronCNN.Pooling(IMAGE_2[l], 2, 2);
+	}
+	// Проход картинки через второй сверточный слой
+	for (int l = 0; l < f1_count; l++) {
+		for (int ll = 0; ll < k; ll++) {
+			IMAGE_4[l*k + ll] = NeyronCNN.Svertka(FILTERS1[l*k + ll], IMAGE_3[l]);
+		}
+	}
+	// Операция макспулинга
+	for (int l = 0; l < f2_count; l++) {
+		IMAGE_5[l] = NeyronCNN.Pooling(IMAGE_4[l], 2, 2);
+	}
+	for (int l = 0; l < f2_count; l++) {
+		for (int li = 0; li < 4; li++) {
+			for (int lj = 0; lj < 4; lj++) {
+				IMAGE_OUT[li][l * 4 + lj] = IMAGE_5[l][li][lj];
 			}
 		}
 	}
-	return pair<int, int>(0, 0);
+	// Проход по перцептрону
+	// Проход по первому слою
+	for (int l = 0; l < w1_count; l++) { // Цикл прохода по сети
+		summ = Neyron.Summator(IMAGE_OUT, WEIGHTS[0][l]); // Получение взвешенной суммы
+		MATRIX_OUT[0][l] = Neyron.FunkActiv(summ, F);
+	}
+	for (int l = 0; l < w2_count; l++) { // Цикл прохода по сети
+		summ = Neyron.Summator(MATRIX_OUT, WEIGHTS1[0][l]); // Получение взвешенной суммы
+		y[l] = Neyron.FunkActiv(summ, F); // Запись выхода l-того нейрона в массив выходов сети
+	}
+	for (int l = 1; l < w2_count; l++) { // Получение результатов сети
+		if (y[l] > y[max]) {
+			max = l;
+		}
+	}
+		return max;
 }
 	Deepnetwork::~Deepnetwork()
 	{
